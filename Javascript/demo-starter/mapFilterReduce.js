@@ -74,4 +74,18 @@ console.log(total);
 
 let totalPrice = cart.reduce((acc, cur) => (acc += cur.unitPrice), 0);
 let totalProductCount = cart.reduce((acc, cur) => (acc += cur.quantity), 0);
-console.log(totalPrice, totalProductCount);
+console.log({ totalPrice, totalProductCount });
+
+let totals = cart.reduce(
+  (acc, product) => {
+    return {
+      totalPrice: acc.totalPrice + product.unitPrice * product.quantity,
+      totalProductCount: acc.totalProductCount + product.quantity,
+    };
+  },
+  {
+    totalPrice: 0,
+    totalProductCount: 0,
+  }
+);
+console.log(totals);
