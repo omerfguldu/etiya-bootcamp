@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node pair1.js"
+    "start": "node index.js",
+    "start-scope": "node scope.js",
+    "start-functions": "node functions.js",
+    "start-loops": "node loops.js",
+    "start-mapFilterReduce": "node mapFilterReduce.js",
+    "start-pair1": "node pair1.js",
+    "start-restAndSpread": "node restAndSpread.js",
+    "start-statements": "node statements.js"
   },
   "keywords": [],
   "author": "",
