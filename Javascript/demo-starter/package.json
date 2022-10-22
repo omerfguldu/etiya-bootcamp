@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "start-scope": "node scope.js",
@@ -11,6 +12,10 @@
     "start-mapFilterReduce": "node mapFilterReduce.js",
     "start-pair1": "node pair1.js",
     "start-restAndSpread": "node restAndSpread.js",
+    "start-destructring": "node destructring.js",
+    "start-oop": "node oop.js",
+    "start-oop2": "node oop2.js",
+    "start-oop3": "node oop3.js",
     "start-statements": "node statements.js"
   },
   "keywords": [],

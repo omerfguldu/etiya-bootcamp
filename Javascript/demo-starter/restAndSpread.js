@@ -1,4 +1,4 @@
-function sizCevapVerin() {
+export function sizCevapVerin() {
   return [10, 20, 30, 40, 50];
 }
 
@@ -20,7 +20,7 @@ function avg(cevapVerenKisiSayisi, ...numbers) {
 
 //* Spread Operator
 //* dizi elemanlarini tek tek parametre olarak gonderir, yani birbirinden ayristirir.
-const cevaplariniz = sizCevapVerin();
+export const cevaplariniz = sizCevapVerin();
 const result = avg(26, ...cevaplariniz);
 console.log("ortalama: ", result);
 console.log(Math.max(...cevaplariniz));
