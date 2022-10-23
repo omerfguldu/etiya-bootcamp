@@ -4,8 +4,8 @@ export default class CourseService {
     this.logger = logger;
   }
 
-  getCourses() {
-    return this.courses;
+  getCourses(filterCallback) {
+    return filterCallback ? this.courses.filter(filterCallback) : this.courses;
   }
 
   addCourse(newCourse) {
@@ -18,5 +18,14 @@ export default class CourseService {
       (course) => course.courseId !== courseId
     );
     this.logger.log("ID of the deleted course is", courseId);
+  }
+
+  updateCourse(courseId, updatedData) {
+    this.courses = this.courses.map((course) => {
+      if (course.courseId === courseId) {
+        return { ...course, ...updatedData };
+      }
+      return course;
+    });
   }
 }

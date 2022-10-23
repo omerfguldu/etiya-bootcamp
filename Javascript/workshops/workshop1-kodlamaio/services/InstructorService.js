@@ -4,8 +4,10 @@ export default class InstructorService {
     this.instructors = [];
   }
 
-  getInstructors() {
-    return this.instructors;
+  getInstructors(filterCallback) {
+    return filterCallback
+      ? this.instructors.filter(filterCallback)
+      : this.instructors;
   }
 
   addInstructor(newInstructor) {
@@ -18,5 +20,14 @@ export default class InstructorService {
       (instructor) => instructor.instructorId !== instructorId
     );
     this.logger.log("ID of the deleted instructor is", instructorId);
+  }
+
+  updateInstructor(instructorId, updatedData) {
+    this.instructors = this.instructors.map((instructor) => {
+      if (instructor.instructorId === instructorId) {
+        return { ...instructor, ...updatedData };
+      }
+      return instructor;
+    });
   }
 }

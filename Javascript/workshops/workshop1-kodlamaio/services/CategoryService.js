@@ -4,8 +4,10 @@ export default class CategoryService {
     this.logger = logger;
   }
 
-  getCategories() {
-    return this.categories;
+  getCategories(filterCallback) {
+    return filterCallback
+      ? this.categories.filter(filterCallback)
+      : this.categories;
   }
 
   addCategory(newCategory) {
@@ -18,5 +20,14 @@ export default class CategoryService {
       (category) => category.categoryId !== categoryId
     );
     this.logger.log("ID of the deleted category is", categoryId);
+  }
+
+  updateCategory(categoryId, updatedData) {
+    this.categories = this.categories.map((category) => {
+      if (category.categoryId === categoryId) {
+        return { ...category, ...updatedData };
+      }
+      return category;
+    });
   }
 }
