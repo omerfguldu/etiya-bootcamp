@@ -1,6 +1,3 @@
-"use strict";
-exports.__esModule = true;
-exports.CategoryService = void 0;
 var CategoryService = /** @class */ (function () {
     function CategoryService() {
         this.categories = [];
@@ -24,4 +21,4 @@ var CategoryService = /** @class */ (function () {
     };
     return CategoryService;
 }());
-exports.CategoryService = CategoryService;
+export { CategoryService };
