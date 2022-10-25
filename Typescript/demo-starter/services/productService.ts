@@ -1,6 +1,6 @@
 import { Product } from "../models/productModel";
 export class ProductService {
-  products: Product[] = [];
+  private products: Product[] = [];
   getAll(): Product[] {
     return this.products;
   }

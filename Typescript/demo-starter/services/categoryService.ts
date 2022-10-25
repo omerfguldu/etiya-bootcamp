@@ -1,6 +1,6 @@
 import { Category } from "../models/categoryModel";
 export class CategoryService {
-  categories: Category[] = [];
+  private categories: Category[] = [];
   getAll(): Category[] {
     return this.categories;
   }
