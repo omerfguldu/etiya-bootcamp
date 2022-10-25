@@ -25,3 +25,9 @@ export class CourseLogger extends BaseLogger {
     console.log(`${this.getTime()} Course Logger`, message, data);
   }
 }
+
+export class UserLogger extends BaseLogger {
+  log(message, data) {
+    console.log(`${this.getTime()} User Logger`, message, data);
+  }
+}

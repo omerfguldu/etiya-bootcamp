@@ -6,7 +6,8 @@ export default class Course {
     courseDescripton,
     courseInstructor,
     courseFee,
-    coursePicture
+    coursePicture,
+    registeredUsers
   ) {
     this.courseId = courseId;
     this.courseCategory = courseCategory;
@@ -15,5 +16,6 @@ export default class Course {
     this.courseInstructor = courseInstructor;
     this.courseFee = courseFee;
     this.coursePicture = coursePicture;
+    this.registeredUsers = registeredUsers;
   }
 }

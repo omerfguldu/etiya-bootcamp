@@ -1,6 +1,8 @@
 import Category from "./model/CategoryModel.js";
 import Instructor from "./model/InstructorModel.js";
 import Course from "./model/CourseModel.js";
+import User from "./model/UserModel.js";
+import UserService from "./services/UserService.js";
 import CategoryService from "./services/CategoryService.js";
 import CourseService from "./services/CourseService.js";
 import InstructorService from "./services/InstructorService.js";
@@ -8,17 +10,45 @@ import {
   CategoryLogger,
   InstructorLogger,
   CourseLogger,
+  UserLogger,
 } from "./services/LoggerService.js";
 
 //* LOGGERS
 const categoryLogger = new CategoryLogger();
 const instructorLogger = new InstructorLogger();
 const courseLogger = new CourseLogger();
+const userLogger = new UserLogger();
 
 //* SERVICES
 const categoryService = new CategoryService(categoryLogger);
 const instructorService = new InstructorService(instructorLogger);
-const courseService = new CourseService(courseLogger);
+const userService = new UserService(userLogger);
+const courseService = new CourseService(courseLogger, userService);
+
+//* USER CREATION
+const userOmer = new User(
+  1,
+  "Omer",
+  "Guldu",
+  "omerfguldu@gmail.com",
+  "12345",
+  "Picture",
+  []
+);
+const userJohn = new User(
+  2,
+  "John",
+  "Doe",
+  "johndoe@gmail.com",
+  "12345",
+  "Picture",
+  []
+);
+console.log(
+  "------------------------ LOGS THAT COME FROM WHEN WE CREATE USERS ------------------------ "
+);
+userService.addUser(userOmer);
+userService.addUser(userJohn);
 
 //* CATEGORY CREATION
 const categoryProgramming = new Category(1, "Programming");
@@ -53,7 +83,8 @@ const courseJavascript = new Course(
   "This course will teach Javascript ",
   instructorHalitKalayci,
   "Free",
-  "Picture"
+  "Picture",
+  []
 );
 const courseAngular = new Course(
   2,
@@ -62,7 +93,8 @@ const courseAngular = new Course(
   "This course will teach Angular ",
   instructorAhmetCetinkaya,
   "Free",
-  "Picture"
+  "Picture",
+  []
 );
 const courseEnglish = new Course(
   3,
@@ -71,7 +103,8 @@ const courseEnglish = new Course(
   "This course will teach English ",
   instructorEnginDemirog,
   "Free",
-  "Picture"
+  "Picture",
+  []
 );
 
 console.log(
@@ -128,3 +161,44 @@ categoryService.updateCategory(1, { categoryName: "Advanced English" });
 console.log(
   categoryService.getCategories((category) => category.categoryId === 1)
 );
+
+console.log(
+  "------------------------ REGISTER USER TO A COURSE  ------------------------"
+);
+courseService.registerUser(1, userOmer);
+courseService.registerUser(3, userJohn);
+
+console.log(
+  "------------------------ LOG COURSE'S REGISTERED MEMBERS  ------------------------"
+);
+courseService
+  .getCourses()
+  .filter((course) =>
+    console.log(`${course.courseTitle}`, course.registeredUsers)
+  );
+
+console.log(
+  "------------------------ LOG OF COURSES THAT USER'S REGISTERED  ------------------------"
+);
+userService
+  .getUsers()
+  .filter((user) => console.log(`${user.userName}`, user.registeredCourses));
+
+console.log(
+  "------------------------ UPDATED USER LOG  ------------------------"
+);
+userService.updateUser(1, { userName: "Omer Faruk" });
+console.log(userService.getUsers((user) => user.userId === 1));
+
+console.log(
+  "------------------------ REGISTER USER TO A COURSE  ------------------------"
+);
+courseService.registerUser(3, userOmer);
+userService
+  .getUsers()
+  .filter((user) => console.log(`${user.userName}`, user.registeredCourses));
+courseService
+  .getCourses()
+  .filter((course) =>
+    console.log(`${course.courseTitle}`, course.registeredUsers)
+  );

@@ -1,7 +1,8 @@
 export default class CourseService {
-  constructor(logger) {
+  constructor(logger, user) {
     this.courses = [];
     this.logger = logger;
+    this.user = user;
   }
 
   getCourses(filterCallback) {
@@ -27,5 +28,21 @@ export default class CourseService {
       }
       return course;
     });
+  }
+
+  registerUser(courseId, user) {
+    let courseName = "";
+    this.courses.filter((course) => {
+      if (course.courseId === courseId) {
+        courseName = course.courseTitle;
+        course.registeredUsers.push(user);
+        this.user.users.filter((u) => {
+          if (u.userId === user.userId) {
+            u.registeredCourses.push(course);
+          }
+        });
+      }
+    });
+    this.logger.log(`${courseName} has a new member`, user);
   }
 }
