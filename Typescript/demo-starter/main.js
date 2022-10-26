@@ -7,10 +7,10 @@ import { CategoryService } from "./services/categoryService.js";
 import { ProductService } from "./services/productService.js";
 var categoryService = new CategoryService();
 var productService = new ProductService();
-categoryService.addCategory({ categoryId: 1, categoryName: "Pantolon" });
-categoryService.addCategory({ categoryId: 2, categoryName: "Kazak" });
-categoryService.addCategory({ categoryId: 3, categoryName: "Kadin Giyim" });
-categoryService.addCategory({ categoryId: 4, categoryName: "Erkek Giyim" });
+categoryService.addCategory({ id: 1, name: "Pantolon" });
+categoryService.addCategory({ id: 2, name: "Kazak" });
+categoryService.addCategory({ id: 3, name: "Kadin Giyim" });
+categoryService.addCategory({ id: 4, name: "Erkek Giyim" });
 console.log("-------------------- getAllCategories Log --------------------");
 console.log(categoryService.getAll());
 console.log("-------------------- getCategoryById Log --------------------");
@@ -20,40 +20,40 @@ console.log("-------------------- deleteCategory Log --------------------");
 categoryService.deleteCategory(3);
 console.log(categoryService.getAll());
 console.log("-------------------- updateCategory Log --------------------");
-categoryService.updateCategory({ categoryId: 4, categoryName: "Gomlek" });
+categoryService.updateCategory({ id: 4, name: "Gomlek" });
 console.log(categoryService.getAll());
 console.log("-------------------- getAllProducts Log --------------------");
 productService.addProduct({
-    productId: 1,
-    productName: "Deri Ayakkabi",
-    productPrice: 500,
-    productCategory: "Ayakkabi",
-    productSeller: "Dockers",
-    productCategoryId: 5
+    id: 1,
+    name: "Deri Ayakkabi",
+    price: 500,
+    category: "Ayakkabi",
+    seller: "Dockers",
+    categoryId: 5
 });
 productService.addProduct({
-    productId: 2,
-    productName: "Kareli Gomlek",
-    productPrice: 200,
-    productCategory: "Gomlek",
-    productSeller: "Pull&Bear",
-    productCategoryId: 4
+    id: 2,
+    name: "Kareli Gomlek",
+    price: 200,
+    category: "Gomlek",
+    seller: "Pull&Bear",
+    categoryId: 4
 });
 productService.addProduct({
-    productId: 3,
-    productName: "Kot Pantolon",
-    productPrice: 300,
-    productCategory: "Pantolon",
-    productSeller: "Mavi",
-    productCategoryId: 1
+    id: 3,
+    name: "Kot Pantolon",
+    price: 300,
+    category: "Pantolon",
+    seller: "Mavi",
+    categoryId: 1
 });
 productService.addProduct({
-    productId: 4,
-    productName: "Kumas Pantolon",
-    productPrice: 200,
-    productCategory: "Pantolon",
-    productSeller: "LCW",
-    productCategoryId: 1
+    id: 4,
+    name: "Kumas Pantolon",
+    price: 200,
+    category: "Pantolon",
+    seller: "LCW",
+    categoryId: 1
 });
 console.log(productService.getAll());
 console.log("-------------------- getProductById Log --------------------");

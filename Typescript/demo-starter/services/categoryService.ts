@@ -1,4 +1,4 @@
-import { Category } from "../models/categoryModel";
+import { Category } from "../models/category";
 export class CategoryService {
   private categories: Category[] = [];
   getAll(): Category[] {
@@ -6,9 +6,7 @@ export class CategoryService {
   }
 
   getById(categoryId: number): Category | undefined {
-    return this.categories.find(
-      (category) => category.categoryId === categoryId
-    );
+    return this.categories.find((category) => category.id === categoryId);
   }
 
   addCategory(category: Category) {
@@ -17,14 +15,14 @@ export class CategoryService {
 
   deleteCategory(categoryId: number) {
     this.categories = this.categories.filter(
-      (category) => category.categoryId !== categoryId
+      (category) => category.id !== categoryId
     );
     return `${categoryId} category deleted`;
   }
 
   updateCategory(updateCategory: Category) {
     let foundCategoryIndex = this.categories.findIndex(
-      (category) => category.categoryId === updateCategory.categoryId
+      (category) => category.id === updateCategory.id
     );
     this.categories[foundCategoryIndex] = updateCategory;
   }

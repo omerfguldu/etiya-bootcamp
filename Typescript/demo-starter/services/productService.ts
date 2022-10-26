@@ -1,4 +1,4 @@
-import { Product } from "../models/productModel";
+import { Product } from "../models/product";
 export class ProductService {
   private products: Product[] = [];
   getAll(): Product[] {
@@ -6,13 +6,11 @@ export class ProductService {
   }
 
   getById(productId: number): Product | undefined {
-    return this.products.find((product) => product.productId === productId);
+    return this.products.find((product) => product.id === productId);
   }
 
   getProductsByCategoryId(categoryId: number): Product[] {
-    return this.products.filter(
-      (product) => product.productCategoryId === categoryId
-    );
+    return this.products.filter((product) => product.categoryId === categoryId);
   }
 
   addProduct(product: Product) {
@@ -20,15 +18,13 @@ export class ProductService {
   }
 
   deleteProduct(productId: number) {
-    this.products = this.products.filter(
-      (product) => product.productId !== productId
-    );
+    this.products = this.products.filter((product) => product.id !== productId);
     return `${productId} product deleted`;
   }
 
   updateProduct(productId: number, updatedData: any) {
     this.products = this.products.map((product) => {
-      if (productId === product.productId) {
+      if (productId === product.id) {
         return { ...product, ...updatedData };
       }
       return product;

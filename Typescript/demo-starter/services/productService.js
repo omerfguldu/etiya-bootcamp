@@ -17,21 +17,21 @@ var ProductService = /** @class */ (function () {
         return this.products;
     };
     ProductService.prototype.getById = function (productId) {
-        return this.products.find(function (product) { return product.productId === productId; });
+        return this.products.find(function (product) { return product.id === productId; });
     };
     ProductService.prototype.getProductsByCategoryId = function (categoryId) {
-        return this.products.filter(function (product) { return product.productCategoryId === categoryId; });
+        return this.products.filter(function (product) { return product.categoryId === categoryId; });
     };
     ProductService.prototype.addProduct = function (product) {
         this.products.push(product);
     };
     ProductService.prototype.deleteProduct = function (productId) {
-        this.products = this.products.filter(function (product) { return product.productId !== productId; });
+        this.products = this.products.filter(function (product) { return product.id !== productId; });
         return "".concat(productId, " product deleted");
     };
     ProductService.prototype.updateProduct = function (productId, updatedData) {
         this.products = this.products.map(function (product) {
-            if (productId === product.productId) {
+            if (productId === product.id) {
                 return __assign(__assign({}, product), updatedData);
             }
             return product;
