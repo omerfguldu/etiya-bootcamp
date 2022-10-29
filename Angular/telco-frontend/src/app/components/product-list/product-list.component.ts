@@ -8,7 +8,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class ProductListComponent implements OnInit {
   products: string[] = [];
-  productForm: FormGroup;
+  productForm!: FormGroup;
 
   constructor() {
     this.fillProducts();
@@ -27,11 +27,11 @@ export class ProductListComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const productValue: string = this.productForm.get(
-      'productData.productName'
-    ).value;
-    this.addProduct(productValue);
-    this.productForm.reset();
+    // const productValue: string = this.productForm.get(
+    //   'productData.productName'
+    // ).value;
+    // this.addProduct(productValue);
+    // this.productForm.reset();
   }
 
   addProduct(value: string): void {

@@ -1,6 +1,8 @@
-<ul *ngIf="categories.length > 3">
+<ul *ngIf="categories">
   <ng-template ngFor let-category [ngForOf]="categories">
-    <li *ngIf="category.length > 3">{{ category }}</li>
+    <li *ngIf="category.name.length > 1">
+      {{ category.id }} {{ category.name }}
+    </li>
   </ng-template>
 </ul>
 
@@ -23,3 +25,22 @@
 <ng-template #enMessage>
   <div>Hello</div>
 </ng-template>
+
+<!-- Reactive Form -->
+<h1>Form - Add</h1>
+<form [formGroup]="categoryAddForm" (ngSubmit)="addCategory()">
+  <input type="text" placeholder="Name" formControlName="name" />
+  <br />
+  <input type="text" placeholder="Description" formControlName="description" />
+  <br />
+  <button type="submit" [disabled]="!categoryAddForm.valid">Add</button>
+</form>
+
+<hr />
+
+<!-- ngModel Form -->
+<h1>Form - Delete</h1>
+Silinecek olan kategori id: {{ categoryIdToDelete }}
+<br />
+<input type="text" placeholder="ID" [(ngModel)]="categoryIdToDelete" />
+<button (click)="deleteCategory()">Delete</button>
