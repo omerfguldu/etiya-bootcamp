@@ -7,6 +7,7 @@ import { CalculatorComponent } from './components/calculator/calculator.componen
 import { ListviewComponent } from './components/listview/listview.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -19,8 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   exports: [],
   providers: [],

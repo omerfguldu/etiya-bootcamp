@@ -1,10 +1,121 @@
-<ul *ngIf="categories">
+<div class="container mt-5">
+  <div class="row mb-5">
+    <div class="col-xs-12 col-md-8">
+      <h2 style="color: rgb(122, 115, 115)">
+        {{
+          !editMode
+            ? "Add New Category"
+            : "Update Category with ID " + selectedCategory.id
+        }}
+      </h2>
+      <form [formGroup]="categoryAddForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="input-name" class="form-label">Category Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="input-name"
+            formControlName="name"
+          />
+          <span
+            class="error-message"
+            *ngIf="
+              categoryAddForm.get('name')?.invalid &&
+              (categoryAddForm.get('name')?.touched ||
+                categoryAddForm.get('name')?.dirty)
+            "
+          >
+            Category name field is required.
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label for="textarea-desc" class="form-label"
+            >Category Description</label
+          >
+          <textarea
+            class="form-control"
+            id="textarea-desc"
+            rows="3"
+            formControlName="description"
+          ></textarea>
+          <span
+            class="error-message"
+            *ngIf="
+              categoryAddForm.get('description')?.invalid &&
+              (categoryAddForm.get('description')?.touched ||
+                categoryAddForm.get('description')?.dirty)
+            "
+          >
+            Category description field is required and must be more than 10
+            characters.
+          </span>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="categoryAddForm.invalid"
+        >
+          {{ editMode ? "Update" : "Add" }}
+        </button>
+        <button
+          style="margin-left: 10px"
+          *ngIf="editMode"
+          class="btn btn-danger"
+          (click)="cancelEditing()"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8">
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-header">
+            <th scope="col">ID</th>
+            <th scope="col">NAME</th>
+            <th scope="col">DESCRIPTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-body" *ngFor="let category of categories">
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td class="description-data">
+              {{ category.description }}
+              <div class="table-edit-buttons">
+                <button
+                  (click)="updateFormAndFindCategory(category.id)"
+                  class="btn btn-warning"
+                >
+                  <fa-icon [icon]="editIcon"></fa-icon>
+                </button>
+                <button
+                  class="btn btn-danger"
+                  (click)="deleteCategory(category.id)"
+                >
+                  X
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ----------------------------------------------------------------------- -->
+
+<!-- <ul *ngIf="categories">
   <ng-template ngFor let-category [ngForOf]="categories">
     <li *ngIf="category.name.length > 1">
       {{ category.id }} {{ category.name }}
     </li>
   </ng-template>
-</ul>
+</ul> -->
 
 <!-- <ul *ngIf="categories.length > 3">
   <ng-container *ngFor="let category of categories">
@@ -18,29 +129,10 @@
   </div>
 </ul> -->
 
-<ng-container *ngIf="language === 'tr'; else enMessage">
+<!-- <ng-container *ngIf="language === 'tr'; else enMessage">
   <div>Merhaba</div>
 </ng-container>
 
 <ng-template #enMessage>
   <div>Hello</div>
-</ng-template>
-
-<!-- Reactive Form -->
-<h1>Form - Add</h1>
-<form [formGroup]="categoryAddForm" (ngSubmit)="addCategory()">
-  <input type="text" placeholder="Name" formControlName="name" />
-  <br />
-  <input type="text" placeholder="Description" formControlName="description" />
-  <br />
-  <button type="submit" [disabled]="!categoryAddForm.valid">Add</button>
-</form>
-
-<hr />
-
-<!-- ngModel Form -->
-<h1>Form - Delete</h1>
-Silinecek olan kategori id: {{ categoryIdToDelete }}
-<br />
-<input type="text" placeholder="ID" [(ngModel)]="categoryIdToDelete" />
-<button (click)="deleteCategory()">Delete</button>
+</ng-template> -->

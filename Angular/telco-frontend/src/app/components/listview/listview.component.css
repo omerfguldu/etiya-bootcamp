@@ -1,0 +1,45 @@
+table {
+  border-collapse: collapse;
+  border-radius: 10px;
+  border-style: hidden;
+  box-shadow: 0 0 0 1px rgb(221, 209, 209); /* this draws the table border  */
+  overflow: hidden;
+}
+
+.table-header {
+  color: #fff;
+  background-color: rgb(206, 59, 59);
+  border-color: rgba(133, 118, 118, 0.3);
+  font-size: 16px;
+}
+
+.table-body {
+  font-size: 14px;
+}
+
+.table-body td {
+  padding: 20px;
+}
+
+.table-body td:first-of-type {
+  text-align: center;
+}
+
+.description-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-edit-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.error-message {
+  color: rgb(206, 59, 59);
+  font-size: 12px;
+}

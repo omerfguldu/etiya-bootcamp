@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { Category } from '../../models/category';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-listview',
@@ -14,11 +15,11 @@ import { Category } from '../../models/category';
   styleUrls: ['./listview.component.css'],
 })
 export class ListviewComponent implements OnInit {
+  editIcon = faPenToSquare;
+  editMode = false;
   //* component icerisinde yer alan propertyler bizim icin state tutar.
   categories!: Category[];
-  language: string = 'tr';
-
-  categoryIdToDelete!: number;
+  selectedCategory!: Category;
   categoryAddForm!: FormGroup;
 
   //* IoC (Inversion of Control) Container
@@ -30,17 +31,19 @@ export class ListviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCategories();
-    // this.categoriesService
-    //   .add({ id: 9, name: 'Name 9', description: 'Description 9' })
-    //   .subscribe();
-    // this.categoriesService.delete(9).subscribe();
     this.createCategoryAddForm();
   }
 
   createCategoryAddForm() {
     this.categoryAddForm = this.formBuilder.group({
-      name: [null, Validators.required],
-      description: [null, [Validators.required, Validators.minLength(10)]],
+      name: [
+        this.editMode ? this.selectedCategory.name : null,
+        Validators.required,
+      ],
+      description: [
+        this.editMode ? this.selectedCategory.description : null,
+        [Validators.required, Validators.minLength(10)],
+      ],
     });
   }
 
@@ -48,17 +51,6 @@ export class ListviewComponent implements OnInit {
     this.categoriesService.getCategories().subscribe((res) => {
       //* Observer Design Pattern
       this.categories = res;
-    });
-  }
-
-  changeCategoryIdToDelete(event: any) {
-    this.categoryIdToDelete = event.target.value;
-  }
-
-  deleteCategory() {
-    this.categoriesService.delete(this.categoryIdToDelete).subscribe((res) => {
-      this.categoryIdToDelete = 0;
-      this.getCategories();
     });
   }
 
@@ -78,5 +70,54 @@ export class ListviewComponent implements OnInit {
         this.getCategories();
       },
     });
+  }
+
+  updateFormAndFindCategory(id: number) {
+    this.editMode = true;
+    const foundedCategory = this.categories.filter(
+      (category) => category.id === id
+    );
+    [this.selectedCategory] = foundedCategory;
+    this.createCategoryAddForm();
+  }
+
+  cancelEditing() {
+    this.editMode = false;
+    this.categoryAddForm.reset();
+  }
+
+  updateCategory() {
+    const category: Category = {
+      id: this.selectedCategory.id,
+      ...this.categoryAddForm.value,
+    };
+    this.categoriesService.update(category).subscribe({
+      next: (res) => {
+        console.info(`Category ${category.id} has updated`);
+      },
+      error: (err) => {
+        console.log(category);
+        console.error(err);
+      },
+      complete: () => {
+        this.editMode = false;
+        this.categoryAddForm.reset();
+        this.getCategories();
+      },
+    });
+  }
+
+  deleteCategory(id: number) {
+    this.categoriesService.delete(id).subscribe((res) => {
+      this.getCategories();
+    });
+  }
+
+  onSubmit() {
+    if (this.editMode) {
+      this.updateCategory();
+      return;
+    }
+    this.addCategory();
   }
 }
