@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { Category } from '../../models/category';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPenToSquare,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-listview',
@@ -15,8 +13,8 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./listview.component.css'],
 })
 export class ListviewComponent implements OnInit {
-  editIcon = faPenToSquare;
-  editMode = false;
+  editIcon: IconDefinition = faPenToSquare;
+  editMode: boolean = false;
   //* component icerisinde yer alan propertyler bizim icin state tutar.
   categories!: Category[];
   selectedCategory!: Category;
@@ -34,7 +32,7 @@ export class ListviewComponent implements OnInit {
     this.createCategoryAddForm();
   }
 
-  createCategoryAddForm() {
+  createCategoryAddForm(): void {
     this.categoryAddForm = this.formBuilder.group({
       name: [
         this.editMode ? this.selectedCategory.name : null,
@@ -47,14 +45,14 @@ export class ListviewComponent implements OnInit {
     });
   }
 
-  getCategories() {
+  getCategories(): void {
     this.categoriesService.getCategories().subscribe((res) => {
       //* Observer Design Pattern
       this.categories = res;
     });
   }
 
-  addCategory() {
+  addCategory(): void {
     const category: Category = {
       ...this.categoryAddForm.value,
     };
@@ -72,21 +70,21 @@ export class ListviewComponent implements OnInit {
     });
   }
 
-  updateFormAndFindCategory(id: number) {
+  updateFormAndFindCategory(id: number): void {
     this.editMode = true;
-    const foundedCategory = this.categories.filter(
-      (category) => category.id === id
+    const foundedCategory: Category[] = this.categories.filter(
+      (category: Category) => category.id === id
     );
     [this.selectedCategory] = foundedCategory;
     this.createCategoryAddForm();
   }
 
-  cancelEditing() {
+  cancelEditing(): void {
     this.editMode = false;
     this.categoryAddForm.reset();
   }
 
-  updateCategory() {
+  updateCategory(): void {
     const category: Category = {
       id: this.selectedCategory.id,
       ...this.categoryAddForm.value,
@@ -107,13 +105,13 @@ export class ListviewComponent implements OnInit {
     });
   }
 
-  deleteCategory(id: number) {
+  deleteCategory(id: number): void {
     this.categoriesService.delete(id).subscribe((res) => {
       this.getCategories();
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.editMode) {
       this.updateCategory();
       return;
