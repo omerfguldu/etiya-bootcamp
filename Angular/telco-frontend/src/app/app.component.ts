@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'telco-frontend';
+  isLoading: boolean = false;
+  today: Date = new Date();
 
   constructor(private loadingService: LoadingService) {}
 
@@ -25,7 +27,7 @@ export class AppComponent implements OnInit {
 
   subscribeToLoading() {
     this.loadingService.isLoadingSubject.subscribe((isLoading) => {
-      console.log(`${isLoading} durumu`);
+      this.isLoading = isLoading;
     });
   }
 

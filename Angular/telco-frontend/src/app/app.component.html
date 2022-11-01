@@ -1,7 +1,28 @@
-<h1>Loading...</h1>
+<h1>{{ "Merhaba Angular" | lowercase }}</h1>
+<h3>{{ today | date: "dd-mm-yyyy" }}</h3>
+<h3>{{ 10 | createFakeArray }}</h3>
 
-<button class="btn btn-primary" (click)="startLoading()">Start Loading</button>
-<button class="btn btn-primary" (click)="stopLoading()">Stop Loading</button>
+<p>{{ "halit,anil,burak,burak,busranur" | split: "," }}</p>
+
+<div class="spinner-container" *ngIf="isLoading">
+  <div class="overlay show"></div>
+  <div class="spinner show">
+    <div class="loader"></div>
+    <p>Loading...</p>
+  </div>
+</div>
+
+<!-- 1-10 arasi sayilari listeye yazdir. -->
+<ul>
+  <li *ngFor="let i of 10 | createFakeArray">{{ i }}</li>
+</ul>
+
+<ul>
+  <li *ngFor="let i of 'omer-faruk-guldu' | split: '-'">
+    {{ i }}
+  </li>
+</ul>
+
 <!-- <h3>Hello Angular</h3> -->
 <!-- <h2>{{ title }}</h2>
 <h2>{{ 26 + 18 }}</h2>
@@ -10,5 +31,4 @@
 <button (click)="btnClick()">Tikla</button>
 <app-calculator></app-calculator> -->
 <app-listview></app-listview>
-<hr />
-<!-- <app-product-list></app-product-list> -->
+<router-outlet></router-outlet>

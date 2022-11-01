@@ -9,6 +9,10 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { CreateFakeArrayPipe } from './pipes/create-fake-array.pipe';
+import { SplitPipe } from './pipes/split.pipe';
+import { LoginComponent } from './pages/login/login.component';
+import { HomepageComponent } from './pages/homepage/homepage.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +20,10 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
     CalculatorComponent,
     ListviewComponent,
     ProductListComponent,
+    CreateFakeArrayPipe,
+    SplitPipe,
+    LoginComponent,
+    HomepageComponent,
   ],
   imports: [
     BrowserModule,
