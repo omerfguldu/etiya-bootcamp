@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { LoadingService } from './services/loading.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'telco-frontend';
+
+  constructor(private loadingService: LoadingService) {}
+
+  ngOnInit(): void {
+    this.subscribeToLoading();
+  }
 
   sumOfNumbers(a: number, b: number): number {
     return a + b;
@@ -14,5 +21,19 @@ export class AppComponent {
 
   btnClick() {
     alert('Butona tiklandi.');
+  }
+
+  subscribeToLoading() {
+    this.loadingService.isLoadingSubject.subscribe((isLoading) => {
+      console.log(`${isLoading} durumu`);
+    });
+  }
+
+  startLoading() {
+    this.loadingService.startLoading();
+  }
+
+  stopLoading() {
+    this.loadingService.stopLoading();
   }
 }
