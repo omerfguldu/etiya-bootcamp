@@ -46,9 +46,14 @@ export class ListviewComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.categoriesService.getCategories().subscribe((res) => {
-      //* Observer Design Pattern
-      this.categories = res;
+    this.categoriesService.getCategories().subscribe({
+      next: (res) => {
+        //* Observer Design Pattern
+        this.categories = res;
+      },
+      error: (err) => {
+        console.error(err.message);
+      },
     });
   }
 
@@ -57,7 +62,7 @@ export class ListviewComponent implements OnInit {
       ...this.categoryAddForm.value,
     };
     this.categoriesService.add(category).subscribe({
-      next: (res) => {
+      next: () => {
         console.info(`Category ${category.name} has added`);
       },
       error: (err) => {
@@ -90,7 +95,7 @@ export class ListviewComponent implements OnInit {
       ...this.categoryAddForm.value,
     };
     this.categoriesService.update(category).subscribe({
-      next: (res) => {
+      next: () => {
         console.info(`Category ${category.id} has updated`);
       },
       error: (err) => {
@@ -106,8 +111,16 @@ export class ListviewComponent implements OnInit {
   }
 
   deleteCategory(id: number): void {
-    this.categoriesService.delete(id).subscribe((res) => {
-      this.getCategories();
+    this.categoriesService.delete(id).subscribe({
+      next: () => {
+        console.info(`Category ${id} has deleted`);
+      },
+      error: (err) => {
+        console.error(err.message);
+      },
+      complete: () => {
+        this.getCategories();
+      },
     });
   }
 

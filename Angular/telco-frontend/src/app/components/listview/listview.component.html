@@ -43,8 +43,7 @@
             class="error-message"
             *ngIf="
               categoryAddForm.get('description')?.invalid &&
-              (categoryAddForm.get('description')?.touched ||
-                categoryAddForm.get('description')?.dirty)
+              categoryAddForm.get('description')?.touched
             "
           >
             Category description field is required and must be more than 10
