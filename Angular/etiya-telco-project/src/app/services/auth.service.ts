@@ -10,7 +10,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   helper = new JwtHelperService();
-  // decodedToken: Subject<Token> = new Subject<Token>();
   decodedToken!: Token;
 
   constructor(private http: HttpClient) {}
@@ -30,11 +29,6 @@ export class AuthService {
   }
 
   isTokenValid(token: string): boolean {
-    const tokenExpirationDate = this.getTokenExpirationDate(token);
-    const currentDate = new Date();
-    if (tokenExpirationDate) {
-      return currentDate > tokenExpirationDate ? false : true;
-    }
-    return false;
+    return this.helper.isTokenExpired(token) ? false : true;
   }
 }

@@ -1,0 +1,52 @@
+main {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  background-color: rgb(240, 240, 240);
+  padding: 0.8rem;
+  gap: 1rem;
+}
+
+.sidebar-container {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  width: 320px;
+}
+
+.sidebar {
+  height: 100%;
+}
+
+.content-container {
+  width: 100%;
+  padding-right: 1rem;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-input {
+  width: 400px;
+  height: 48px;
+}
+
+.dropdown {
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+.dropdown a {
+  gap: 10px;
+}
+
+.activeLink {
+  background-color: rgba(192, 222, 247, 0.5);
+  color: rgb(35, 24, 189) !important;
+  font-weight: bold;
+}

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Token } from './../../models/token';
 import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -8,19 +9,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./homepage.component.css'],
 })
 export class HomepageComponent implements OnInit {
-  // tokenValues!: Token;
   tokenValue!: Token;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    console.log('home calisti');
     this.tokenValue = this.authService.decodedToken;
-    // this.subscribeToTokenValue();
+    this.getServices();
   }
 
-  // subscribeToTokenValue() {
-  //   this.authService.deneme.subscribe((value) => {
-  //     this.tokenValue = value;
-  //   });
-  // }
+  getServices() {
+    this.http.get('http://localhost:3000/services').subscribe((res) => {
+      console.log(res);
+    });
+  }
 }
