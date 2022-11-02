@@ -1,0 +1,49 @@
+<ul>
+  <li *ngFor="let item of services">
+    {{ item.name }}
+    <button class="btn btn-danger" (click)="deleteService(item.id)">
+      Delete
+    </button>
+    <button class="btn btn-warning" (click)="updateService(item)">
+      Update
+    </button>
+  </li>
+</ul>
+
+<button
+  style="margin: 50px; padding: 10px"
+  type="button"
+  class="btn btn-primary"
+  (click)="openPopup()"
+>
+  Show Data
+</button>
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{ display: displayStyle }"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Service</h4>
+      </div>
+      <div class="modal-body">
+        <form id="myForm" [formGroup]="addServiceForm" (submit)="addService()">
+          <!-- <p>{{ error }}</p> -->
+          <label for="name">Service name</label>
+          <input formControlName="name" type="text" placeholder="Enter name" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button form="myForm" type="submit">
+          {{ isUpdate ? "Update" : "Add" }}
+        </button>
+        <button type="button" class="btn btn-danger" (click)="closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

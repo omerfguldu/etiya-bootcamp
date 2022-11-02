@@ -14,5 +14,7 @@ export class LocalstorageService {
     localStorage.setItem('token', item);
   }
 
-  deleteItem() {}
+  deleteItem() {
+    localStorage.removeItem('token');
+  }
 }

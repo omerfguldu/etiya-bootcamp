@@ -1,3 +1,4 @@
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -8,18 +9,30 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
+import { ServicesComponent } from './components/services/services.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomepageComponent, HomeComponent, AboutComponent, SettingsComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomepageComponent,
+    AboutComponent,
+    SettingsComponent,
+    SidebarComponent,
+    HeaderComponent,
+    ServicesComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FontAwesomeModule,
   ],
   providers: [
     {

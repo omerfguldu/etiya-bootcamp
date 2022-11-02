@@ -1,7 +1,21 @@
-<div class="form-container text-center">
-  <div class="form-signin w-100 m-auto">
+<div class="login-container">
+  <div class="image-container">
+    <img
+      class="bg-image"
+      src="https://img.freepik.com/free-vector/digital-mobile-telecommunication-tower-network-connection-background_1017-25469.jpg?w=1380&t=st=1667418331~exp=1667418931~hmac=e85938a3a13a2905a42763987166b95feb3a11a8a951ddcf7dbba232db1a3077"
+      alt=""
+    />
+  </div>
+  <div class="form-signin">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <img class="mb-4" src="" alt="" width="72" height="57" />
+      <img
+        src="https://www.etiya.com/files/logo.svg"
+        alt=""
+        width="128"
+        height="128"
+        class="rounded-circle me-2"
+      />
+      <!-- <img class="mb-4" src="" alt="" width="72" height="57" /> -->
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
       <div class="form-floating">

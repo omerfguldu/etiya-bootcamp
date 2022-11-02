@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './components/about/about.component';
-import { HomeComponent } from './components/home/home.component';
+import { ServicesComponent } from './components/services/services.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -18,12 +18,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'services',
         pathMatch: 'full',
       },
       {
-        path: 'home',
-        component: HomeComponent,
+        path: 'services',
+        component: ServicesComponent,
       },
       {
         path: 'about',
