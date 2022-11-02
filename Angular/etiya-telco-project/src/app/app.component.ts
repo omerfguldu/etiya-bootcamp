@@ -1,5 +1,7 @@
+import { LocalstorageService } from './services/localstorage.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +10,23 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
-  constructor(private router: Router) {}
+  userToken!: string;
+  constructor(
+    private router: Router,
+    private localstorageService: LocalstorageService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    if (!this.isLoggedIn) {
+    this.userToken = this.localstorageService.getItem() || '';
+    if (
+      !this.userToken ||
+      (this.userToken && !this.authService.isTokenValid(this.userToken))
+    ) {
       this.router.navigateByUrl('login');
       return;
     }
+    this.authService.decodeToken(this.userToken);
     this.router.navigateByUrl('homepage');
   }
 }

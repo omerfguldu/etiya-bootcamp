@@ -1,11 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import {
-  FormGroup,
-  FormBuilder,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { Router } from '@angular/router';
+import { LocalstorageService } from './../../services/localstorage.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,19 +12,30 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private localstorageService: LocalstorageService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createLoginForm();
   }
 
   onSubmit() {
-    console.log(this.loginForm.value);
-    this.http
-      .post('http://localhost:3000/auth/login', this.loginForm.value)
-      .subscribe((res) => {
-        console.log(res);
-      });
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (res) => {
+        this.localstorageService.setItem(res['access_token']);
+        this.authService.decodeToken(res['access_token']);
+        this.router.navigateByUrl('homepage');
+        this.clearFormFields();
+      },
+      error: (err) => {
+        console.error(err.error.message);
+        // this.clearFormFields();
+      },
+    });
   }
 
   createLoginForm() {
@@ -35,5 +43,9 @@ export class LoginComponent implements OnInit {
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
+  }
+
+  clearFormFields() {
+    this.loginForm.reset();
   }
 }
