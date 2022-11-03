@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class LoadingService {
   isLoadingSubject: Subject<boolean> = new Subject<boolean>();
   pendingRequestCount: number = 0;
+
   constructor() {}
 
   startLoading() {

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  IconDefinition,
+  faPenToSquare,
+  faTrash,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { Service } from 'src/app/models/service';
 import { ServicesService } from 'src/app/services/services.service';
 
@@ -9,6 +15,9 @@ import { ServicesService } from 'src/app/services/services.service';
   styleUrls: ['./services.component.css'],
 })
 export class ServicesComponent implements OnInit {
+  updateIcon: IconDefinition = faPenToSquare;
+  deleteIcon: IconDefinition = faTrash;
+  plusIcon: IconDefinition = faPlus;
   services: Service[] = [];
   isModal: boolean = false;
   isUpdate: boolean = false;

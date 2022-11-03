@@ -1,4 +1,6 @@
-import { Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { LocalstorageService } from './localstorage.service';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
@@ -12,10 +14,19 @@ export class AuthService {
   helper = new JwtHelperService();
   decodedToken!: Token;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private localstorageService: LocalstorageService,
+    private router: Router
+  ) {}
 
   login(user: User): Observable<any> {
     return this.http.post('http://localhost:3000/auth/login', user);
+  }
+
+  logout() {
+    this.localstorageService.deleteItem('token');
+    this.router.navigateByUrl('login');
   }
 
   decodeToken(token: string) {

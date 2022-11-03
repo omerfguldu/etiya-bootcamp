@@ -21,13 +21,13 @@
           height="32"
           class="rounded-circle me-2"
         />
-        <strong>mdo</strong>
+        <strong>{{ activeUserName.userName }}</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
         <li><a class="dropdown-item">Settings</a></li>
         <li><a class="dropdown-item">Profile</a></li>
         <li><hr class="dropdown-divider" /></li>
-        <li><a class="dropdown-item" (click)="logout()">Sign out</a></li>
+        <li><a class="dropdown-item" (click)="logout()">Log out</a></li>
       </ul>
     </div>
   </header>

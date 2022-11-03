@@ -14,15 +14,46 @@
 }
 
 .active {
-  background-color: #ff922b !important;
-  color: #000 !important;
+  background-color: transparent !important;
+  color: #ff922b !important;
   font-weight: bold;
 }
 
 .nav-link {
-  transition: all 0.5s ease;
+  display: flex;
+  justify-content: center;
+  gap: 0.7rem;
+  transition: background-color 0.5s ease;
+}
+
+.nav-link p {
+  margin: 0;
+  padding: 0;
 }
 
 .nav-link:hover {
-  background-color: #ffc078;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  padding-right: 1rem;
+  width: max-content;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon-container:hover {
+  color: #ff6b6b;
+}
+
+.icon-container p {
+  margin: 0;
+}
+
+.logout-icon {
+  font-size: 1.5rem;
+  padding: 0 1rem;
 }

@@ -1,11 +1,11 @@
-import { Router } from '@angular/router';
-import { LocalstorageService } from './../../services/localstorage.service';
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import {
   faGear,
   faBell,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import { Token } from 'src/app/models/token';
 
 @Component({
   selector: 'app-header',
@@ -15,15 +15,14 @@ import {
 export class HeaderComponent implements OnInit {
   settingsIcon: IconDefinition = faGear;
   notificationsIcon: IconDefinition = faBell;
-  constructor(
-    private localstorageService: LocalstorageService,
-    private router: Router
-  ) {}
+  activeUserName!: Token;
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activeUserName = this.authService.decodedToken;
+  }
 
   logout() {
-    this.localstorageService.deleteItem();
-    this.router.navigateByUrl('login');
+    this.authService.logout();
   }
 }

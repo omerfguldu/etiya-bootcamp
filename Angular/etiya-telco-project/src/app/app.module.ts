@@ -9,22 +9,23 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import { AboutComponent } from './components/about/about.component';
-import { SettingsComponent } from './components/settings/settings.component';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ServicesComponent } from './components/services/services.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { CustomersComponent } from './components/customers/customers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomepageComponent,
-    AboutComponent,
-    SettingsComponent,
     SidebarComponent,
     HeaderComponent,
     ServicesComponent,
+    LoadingComponent,
+    CustomersComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +39,11 @@ import { ServicesComponent } from './components/services/services.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true,
     },
   ],

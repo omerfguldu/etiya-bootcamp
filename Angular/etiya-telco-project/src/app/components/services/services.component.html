@@ -1,8 +1,9 @@
 <div class="services-container">
   <div class="services-header">
     <h3>Services</h3>
-    <button class="btn btn-primary" (click)="openPopup()">
-      Add New Service
+    <button class="btn btn-add-service" (click)="openPopup()">
+      <fa-icon [icon]="plusIcon"></fa-icon>
+      New Service
     </button>
   </div>
   <div class="services-content">
@@ -14,34 +15,18 @@
       <strong>{{ service.id }}</strong>
       <p>{{ service.name }}</p>
       <div class="service-buttons">
-        <button class="btn btn-warning" (click)="updateService(service)">
-          Update
-        </button>
-        <button class="btn btn-danger" (click)="deleteService(service.id)">
-          Delete
-        </button>
+        <fa-icon
+          class="fa-icon update-icon"
+          [icon]="updateIcon"
+          (click)="updateService(service)"
+        ></fa-icon>
+        <fa-icon
+          class="fa-icon delete-icon"
+          [icon]="deleteIcon"
+          (click)="deleteService(service.id)"
+        ></fa-icon>
       </div>
     </div>
-    <!-- <ul class="services-list">
-      <li class="services-list-item" *ngFor="let item of services">
-        {{ item.name }}
-        <button class="btn btn-danger" (click)="deleteService(item.id)">
-          Delete
-        </button>
-        <button class="btn btn-warning" (click)="updateService(item)">
-          Update
-        </button>
-      </li>
-    </ul>
-
-    <button
-      style="margin: 50px; padding: 10px"
-      type="button"
-      class="btn btn-primary"
-      (click)="openPopup()"
-    >
-      Show Data
-    </button> -->
   </div>
 </div>
 
@@ -52,24 +37,49 @@
   role="dialog"
   [ngStyle]="{ display: displayStyle }"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Add Service</h4>
+        <h4 class="modal-title">
+          {{
+            isUpdate ? "Update Service " + selectedService.id : "Add Service"
+          }}
+        </h4>
       </div>
-      <div class="modal-body">
-        <form id="myForm" [formGroup]="addServiceForm" (submit)="addService()">
-          <!-- <p>{{ error }}</p> -->
-          <label for="name">Service name</label>
-          <input formControlName="name" type="text" placeholder="Enter name" />
+      <div class="modal-body p-5">
+        <form [formGroup]="addServiceForm" (submit)="addService()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Service Name</label>
+            <input
+              id="name"
+              formControlName="name"
+              type="text"
+              class="form-control"
+              placeholder="Please enter a service name"
+            />
+            <p
+              class="error-message"
+              *ngIf="
+                addServiceForm.get('name')?.invalid &&
+                addServiceForm.get('name')?.touched
+              "
+            >
+              Service name field can't be empty.
+            </p>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button form="myForm" type="submit">
-          {{ isUpdate ? "Update" : "Add" }}
-        </button>
         <button type="button" class="btn btn-danger" (click)="closePopup()">
           Close
+        </button>
+        <button
+          form="myForm"
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="addServiceForm.invalid"
+        >
+          {{ isUpdate ? "Update" : "Add" }}
         </button>
       </div>
     </div>
