@@ -6,11 +6,13 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Token } from '../models/token';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  controllerUrl = `${environment.apiUrl}/auth`;
   helper = new JwtHelperService();
   decodedToken!: Token;
 
@@ -21,7 +23,7 @@ export class AuthService {
   ) {}
 
   login(user: User): Observable<any> {
-    return this.http.post('http://localhost:3000/auth/login', user);
+    return this.http.post(`${this.controllerUrl}/login`, user);
   }
 
   logout() {
