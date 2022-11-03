@@ -12,10 +12,17 @@
 }
 
 .btn-add-service {
-  background-color: #f59f00;
+  background-color: #0c082f;
+  color: #fff;
   font-weight: 700;
   display: flex;
   gap: 1rem;
+  transition: all 0.5s ease;
+}
+
+.btn-add-service:hover {
+  background-color: #ff922b;
+  color: #0c082f;
 }
 
 .services-content {

@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, finalize } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class NotificationInterceptor implements HttpInterceptor {
@@ -16,6 +17,9 @@ export class NotificationInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    if (request.url === `${environment.apiUrl}/auth/login`) {
+      return next.handle(request);
+    }
     if (request.method === 'GET') {
       return next.handle(request);
     }
