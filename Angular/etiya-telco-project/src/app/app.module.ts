@@ -3,6 +3,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,8 @@ import { ServicesComponent } from './components/services/services.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ToastrModule } from 'ngx-toastr';
+import { NotificationInterceptor } from './interceptors/notification.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,12 @@ import { FooterComponent } from './components/footer/footer.component';
     ReactiveFormsModule,
     HttpClientModule,
     FontAwesomeModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 1000,
+      progressBar: true,
+      preventDuplicates: true,
+    }),
   ],
   providers: [
     {
@@ -46,6 +55,11 @@ import { FooterComponent } from './components/footer/footer.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NotificationInterceptor,
       multi: true,
     },
   ],
