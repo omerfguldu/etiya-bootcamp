@@ -1,23 +1,51 @@
-<ul>
-  <li *ngFor="let item of services">
-    {{ item.name }}
-    <button class="btn btn-danger" (click)="deleteService(item.id)">
-      Delete
+<div class="services-container">
+  <div class="services-header">
+    <h3>Services</h3>
+    <button class="btn btn-primary" (click)="openPopup()">
+      Add New Service
     </button>
-    <button class="btn btn-warning" (click)="updateService(item)">
-      Update
-    </button>
-  </li>
-</ul>
+  </div>
+  <div class="services-content">
+    <div class="services-list-title">
+      <strong>ID</strong>
+      <strong>Service Name</strong>
+    </div>
+    <div class="services-list-item" *ngFor="let service of services">
+      <strong>{{ service.id }}</strong>
+      <p>{{ service.name }}</p>
+      <div class="service-buttons">
+        <button class="btn btn-warning" (click)="updateService(service)">
+          Update
+        </button>
+        <button class="btn btn-danger" (click)="deleteService(service.id)">
+          Delete
+        </button>
+      </div>
+    </div>
+    <!-- <ul class="services-list">
+      <li class="services-list-item" *ngFor="let item of services">
+        {{ item.name }}
+        <button class="btn btn-danger" (click)="deleteService(item.id)">
+          Delete
+        </button>
+        <button class="btn btn-warning" (click)="updateService(item)">
+          Update
+        </button>
+      </li>
+    </ul>
 
-<button
-  style="margin: 50px; padding: 10px"
-  type="button"
-  class="btn btn-primary"
-  (click)="openPopup()"
->
-  Show Data
-</button>
+    <button
+      style="margin: 50px; padding: 10px"
+      type="button"
+      class="btn btn-primary"
+      (click)="openPopup()"
+    >
+      Show Data
+    </button> -->
+  </div>
+</div>
+
+<!-- MODAL -->
 <div
   class="modal"
   tabindex="-1"

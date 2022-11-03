@@ -21,7 +21,10 @@ form {
   width: 400px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2rem;
+  border-bottom-left-radius: 20px;
+  /* text-align: center; */
 }
 
 .form-signin .form-floating:focus-within {
@@ -30,14 +33,10 @@ form {
 
 .form-signin input[type="email"] {
   margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
 }
 
 .form-signin input[type="password"] {
   margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 .image-container {
@@ -47,4 +46,10 @@ form {
 .bg-image {
   overflow: hidden;
   height: 100%;
+}
+
+.register-text {
+  color: #ff922b;
+  font-weight: bold;
+  cursor: pointer;
 }
