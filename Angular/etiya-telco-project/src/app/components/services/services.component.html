@@ -47,7 +47,7 @@
         </h4>
       </div>
       <div class="modal-body p-5">
-        <form [formGroup]="addServiceForm" (submit)="addService()">
+        <form id="myForm" [formGroup]="addServiceForm" (submit)="addService()">
           <div class="mb-3">
             <label for="name" class="form-label">Service Name</label>
             <input
