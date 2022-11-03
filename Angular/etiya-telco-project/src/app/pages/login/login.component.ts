@@ -1,19 +1,21 @@
 import { Router } from '@angular/router';
 import { LocalstorageService } from './../../services/localstorage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   isLoading: boolean = false;
   isUserValid: boolean = true;
+  subscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -26,6 +28,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.createLoginForm();
     this.subscribeToLoading();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSubmit() {
@@ -52,12 +58,14 @@ export class LoginComponent implements OnInit {
   }
 
   subscribeToLoading() {
-    this.loadingService.isLoadingSubject.subscribe((isLoading) => {
-      this.isLoading = isLoading;
-      if (!this.isLoading && this.isUserValid) {
-        this.router.navigateByUrl('homepage');
+    this.subscription = this.loadingService.isLoadingSubject.subscribe(
+      (isLoading) => {
+        this.isLoading = isLoading;
+        if (!this.isLoading && this.isUserValid) {
+          this.router.navigateByUrl('homepage');
+        }
       }
-    });
+    );
   }
 
   clearFormFields() {
