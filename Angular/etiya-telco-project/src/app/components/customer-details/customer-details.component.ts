@@ -19,6 +19,7 @@ export class CustomerDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private customersService: CustomersService,
+    private http: HttpClient,
     private subscriptionsService: SubscriptionsService,
     private servicesService: ServicesService
   ) {}
