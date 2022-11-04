@@ -30,8 +30,10 @@
   flex-direction: column;
   gap: 1rem;
   overflow: scroll;
+  overflow-x: hidden;
+
   max-height: 700px;
-  padding: 0 1rem 4rem 1rem;
+  padding: 0 1rem 5rem 1rem;
 }
 
 /* scrollbar styling starts */
@@ -69,14 +71,6 @@
 
 .services-list-item p {
   margin: 0;
-}
-
-tr {
-  width: 100% !important;
-}
-
-.service-data-row {
-  position: relative;
 }
 
 .service-buttons {

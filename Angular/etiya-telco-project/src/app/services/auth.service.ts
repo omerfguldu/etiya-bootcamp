@@ -3,27 +3,31 @@ import { LocalstorageService } from './localstorage.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { LoginDto } from '../models/loginDto';
 import { Token } from '../models/token';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
+import { LoginResponseModel } from '../models/loginResonseModel';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  controllerUrl = `${environment.apiUrl}/auth`;
-  helper = new JwtHelperService();
+  private controllerUrl = `${environment.apiUrl}/auth`;
   decodedToken!: Token;
 
   constructor(
     private http: HttpClient,
     private localstorageService: LocalstorageService,
-    private router: Router
+    private router: Router,
+    private helper: JwtHelperService
   ) {}
 
-  login(user: User): Observable<any> {
-    return this.http.post(`${this.controllerUrl}/login`, user);
+  login(user: LoginDto): Observable<LoginResponseModel> {
+    return this.http.post<LoginResponseModel>(
+      `${this.controllerUrl}/login`,
+      user
+    );
   }
 
   logout() {
@@ -34,14 +38,16 @@ export class AuthService {
   decodeToken(token: string) {
     const tokenValues: Token = this.helper.decodeToken(token);
     this.decodedToken = tokenValues;
-    console.log(this.decodedToken);
   }
 
-  getTokenExpirationDate(token: string) {
-    return this.helper.getTokenExpirationDate(token);
+  get isAuthenticated(): boolean {
+    const token = this.localstorageService.getItem('token');
+    if (!token) return false;
+    if (this.helper.isTokenExpired()) return false;
+    return true;
   }
 
-  isTokenValid(token: string): boolean {
-    return this.helper.isTokenExpired(token) ? false : true;
+  get jwtToken(): string | null {
+    return this.localstorageService.getItem('token');
   }
 }

@@ -1,0 +1,37 @@
+.customers-list-title,
+.customers-list-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  background-color: rgba(255, 255, 255, 0.856);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.customers-list-item:hover {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.customers-list-item p {
+  margin: 0;
+}
+
+.customer-buttons {
+  position: absolute;
+  display: flex;
+  right: 2rem;
+  gap: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fa-icon {
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.update-icon:hover {
+  color: #fcc419;
+}

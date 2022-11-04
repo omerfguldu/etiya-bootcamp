@@ -37,7 +37,6 @@ export class ServicesComponent implements OnInit {
     this.getServices();
     this.createAddServiceForm();
   }
-
   createAddServiceForm() {
     this.addServiceForm = this.formbuilder.group({
       name: ['', Validators.required],
@@ -46,13 +45,11 @@ export class ServicesComponent implements OnInit {
   getServices() {
     this.servicesService.getServices().subscribe({
       next: (response) => {
-        console.log(response);
         this.services = response;
       },
       error: (err) => {
         console.log(err);
       },
-      complete: () => {},
     });
   }
   addService() {
@@ -62,8 +59,8 @@ export class ServicesComponent implements OnInit {
     if (this.isUpdate === true) {
       service.id = this.selectedService.id;
       this.servicesService.updateService(service).subscribe({
-        next: (res) => {
-          console.log(res);
+        error: (err) => {
+          console.error(err);
         },
         complete: () => {
           this.closePopup();
@@ -72,16 +69,13 @@ export class ServicesComponent implements OnInit {
       });
       return;
     }
-    this.servicesService.addService(service).subscribe((res) => {
-      console.log(res);
+    this.servicesService.addService(service).subscribe(() => {
       this.getServices();
       this.closePopup();
     });
   }
   deleteService(id: number) {
-    console.log(id);
-    this.servicesService.deleteService(id).subscribe((res) => {
-      console.log(res);
+    this.servicesService.deleteService(id).subscribe(() => {
       this.getServices();
     });
   }

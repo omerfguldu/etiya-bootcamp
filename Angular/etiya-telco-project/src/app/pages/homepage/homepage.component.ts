@@ -14,12 +14,5 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit(): void {
     this.tokenValue = this.authService.decodedToken;
-    this.getServices();
-  }
-
-  getServices() {
-    this.http.get('http://localhost:3000/services').subscribe((res) => {
-      console.log(res);
-    });
   }
 }

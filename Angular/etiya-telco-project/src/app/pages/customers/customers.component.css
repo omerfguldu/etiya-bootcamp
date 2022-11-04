@@ -1,0 +1,41 @@
+.customers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.customers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.customers-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 700px;
+  padding: 0 1rem 4rem 1rem;
+}
+
+/* scrollbar styling starts */
+.customers-content::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.customers-content::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f5f5f5;
+}
+
+.customers-content::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+/* scrollbar styling ends */

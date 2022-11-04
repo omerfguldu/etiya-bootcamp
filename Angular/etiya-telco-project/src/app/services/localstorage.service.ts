@@ -7,14 +7,14 @@ export class LocalstorageService {
   constructor() {}
 
   getItem(key: string) {
-    return localStorage.getItem(`${key}`);
+    return localStorage.getItem(key);
   }
 
   setItem(key: string, item: any) {
-    localStorage.setItem(`${key}`, item);
+    localStorage.setItem(key, item);
   }
 
   deleteItem(key: string) {
-    localStorage.removeItem(`${key}`);
+    localStorage.removeItem(key);
   }
 }

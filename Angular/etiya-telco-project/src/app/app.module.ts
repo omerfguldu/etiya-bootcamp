@@ -13,12 +13,15 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
-import { ServicesComponent } from './components/services/services.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { CustomersComponent } from './components/customers/customers.component';
+import { CustomerListComponent } from './components/customer-list/customer-list.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationInterceptor } from './interceptors/notification.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
+import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
+import { CustomersComponent } from './pages/customers/customers.component';
+import { ServicesComponent } from './pages/services/services.component';
 
 @NgModule({
   declarations: [
@@ -27,10 +30,12 @@ import { NotificationInterceptor } from './interceptors/notification.interceptor
     HomepageComponent,
     SidebarComponent,
     HeaderComponent,
-    ServicesComponent,
     LoadingComponent,
-    CustomersComponent,
+    CustomerListComponent,
     FooterComponent,
+    CustomerDetailsComponent,
+    CustomersComponent,
+    ServicesComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +49,13 @@ import { NotificationInterceptor } from './interceptors/notification.interceptor
       timeOut: 1000,
       progressBar: true,
       preventDuplicates: true,
+    }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+      },
     }),
   ],
   providers: [

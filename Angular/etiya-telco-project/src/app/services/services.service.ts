@@ -9,7 +9,7 @@ import { Service } from '../models/service';
   providedIn: 'root',
 })
 export class ServicesService {
-  controllerUrl = `${environment.apiUrl}/services`;
+  private controllerUrl = `${environment.apiUrl}/services`;
 
   constructor(private httpClient: HttpClient) {}
 
