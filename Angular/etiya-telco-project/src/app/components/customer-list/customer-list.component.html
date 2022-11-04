@@ -1,15 +1,21 @@
 <div class="customers-list-title">
   <strong>ID</strong>
-  <strong>Service Name</strong>
+  <strong>First Name</strong>
+  <strong>Last Name</strong>
+  <strong>Date of Birth</strong>
+  <strong>National ID</strong>
 </div>
-<div class="customers-list-item">
-  <strong> customer.id </strong>
-  <p>customer.name</p>
+<div class="customers-list-item" *ngFor="let customer of customers">
+  <strong> {{ customer.customerId }} </strong>
+  <p>{{ customer.firstName }}</p>
+  <p>{{ customer.lastName }}</p>
+  <p>{{ customer.dateOfBirth }}</p>
+  <p>{{ customer.nationalIdentity }}</p>
   <div class="customer-buttons">
     <fa-icon
-      class="fa-icon update-icon"
+      class="fa-icon info-icon"
       [icon]="updateIcon"
-      (click)="goToDetails()"
+      (click)="goToDetails(customer.customerId)"
     ></fa-icon>
   </div>
 </div>

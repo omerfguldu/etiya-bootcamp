@@ -6,7 +6,6 @@ import {
   faTrash,
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import { ToastrService } from 'ngx-toastr';
 import { Service } from 'src/app/models/service';
 import { ServicesService } from 'src/app/services/services.service';
 
@@ -29,8 +28,7 @@ export class ServicesComponent implements OnInit {
   };
   constructor(
     private servicesService: ServicesService,
-    private formbuilder: FormBuilder,
-    private toastr: ToastrService
+    private formbuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@
 .customers-list-item {
   position: relative;
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 1fr repeat(4, 2fr);
   background-color: rgba(255, 255, 255, 0.856);
   padding: 1rem;
   border-radius: 10px;
@@ -27,11 +27,11 @@
 }
 
 .fa-icon {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.update-icon:hover {
-  color: #fcc419;
+.info-icon:hover {
+  color: #228be6;
 }
