@@ -13,6 +13,11 @@ import { CreateFakeArrayPipe } from './pipes/create-fake-array.pipe';
 import { SplitPipe } from './pipes/split.pipe';
 import { LoginComponent } from './pages/login/login.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { JwtModule } from '@auth0/angular-jwt';
+import { ServicesListComponent } from './components/services-list/services-list.component';
+import { FilterServicePipe } from './pipes/filter-service.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +29,8 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
     SplitPipe,
     LoginComponent,
     HomepageComponent,
+    ServicesListComponent,
+    FilterServicePipe,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +39,17 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-left',
+    }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+      },
+    }),
   ],
   exports: [],
   providers: [
