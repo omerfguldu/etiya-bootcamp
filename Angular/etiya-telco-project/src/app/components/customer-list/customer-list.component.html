@@ -1,6 +1,35 @@
-<input [(ngModel)]="searchName" type="text" />
-<input [(ngModel)]="searchSurName" type="text" />
-<input [(ngModel)]="searchDate" type="date" />
+<div class="query-form-container">
+  <p>Filter Customers</p>
+  <div class="input-container">
+    <div class="name-input">
+      <label for="name">First Name</label>
+      <input
+        id="name"
+        [(ngModel)]="searchName"
+        class="form-control"
+        type="text"
+      />
+    </div>
+    <div class="surname-input">
+      <label for="surname">Last Name</label>
+      <input
+        id="surname"
+        [(ngModel)]="searchSurName"
+        class="form-control"
+        type="text"
+      />
+    </div>
+    <div class="date-input">
+      <label for="date">Date of Birth</label>
+      <input
+        id="date"
+        [(ngModel)]="searchDate"
+        class="form-control"
+        type="date"
+      />
+    </div>
+  </div>
+</div>
 
 <div class="customers-list-title">
   <strong>ID</strong>

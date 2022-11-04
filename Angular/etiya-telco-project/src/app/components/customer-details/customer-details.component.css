@@ -9,11 +9,22 @@
   margin-bottom: 1rem;
 }
 
+.customer-subscriptions-title,
+.customer-subscription-item {
+  display: grid;
+  grid-template-columns: 1fr repeat(2, 2fr);
+  background-color: rgba(255, 255, 255, 0.856);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
 .customers-list-item:hover {
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
-.customers-list-item p {
+.customers-list-item p,
+.customer-subscription-item p {
   margin: 0;
 }
 

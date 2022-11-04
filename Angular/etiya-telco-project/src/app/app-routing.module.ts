@@ -23,7 +23,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'services',
+        redirectTo: 'services', // ! services olacak
         pathMatch: 'full',
       },
       {

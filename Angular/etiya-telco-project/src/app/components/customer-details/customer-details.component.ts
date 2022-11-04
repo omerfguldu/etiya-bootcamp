@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../../models/customer';
 import { CustomersService } from 'src/app/services/customers.service';
+import { SubscriptionsService } from 'src/app/services/subscriptions.service';
+import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
   selector: 'app-customer-details',
@@ -17,7 +18,8 @@ export class CustomerDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private customersService: CustomersService,
-    private http: HttpClient
+    private subscriptionsService: SubscriptionsService,
+    private servicesService: ServicesService
   ) {}
 
   ngOnInit(): void {
@@ -33,10 +35,26 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   getCustomerSubscriptions(id: number) {
-    this.http
-      .get(`http://localhost:3000/subscriptions?customerId=${id}`)
-      .subscribe((res) => {
-        this.customerSubscriptions = res;
+    this.subscriptionsService
+      .getSubscriptionsWithCustomerId(id)
+      .subscribe((response) => {
+        this.customerSubscriptions = response;
+        this.customerSubscriptions.map((customerSubscription: any) => {
+          this.servicesService
+            .getService(customerSubscription.serviceId)
+            .subscribe((response) => {
+              customerSubscription.serviceName = response.name;
+            });
+        });
+        
       });
   }
+
+  // getCustomerSubscriptions(id: number) {
+  //   this.http
+  //     .get(`http://localhost:3000/subscriptions?customerId=${id}`)
+  //     .subscribe((res) => {
+  //       this.customerSubscriptions = res;
+  //     });
+  // }
 }

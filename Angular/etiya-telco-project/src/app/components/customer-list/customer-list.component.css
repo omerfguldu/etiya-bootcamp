@@ -35,3 +35,36 @@
 .info-icon:hover {
   color: #228be6;
 }
+
+.query-form-container {
+  position: relative;
+  /* background-color: lightgreen; */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+
+  padding: 1.5rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.query-form-container p {
+  margin: 0;
+  padding: 0 1rem;
+  position: absolute;
+  background-color: #edf2ff;
+  top: -10px;
+}
+
+.input-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* justify-content: space-around; */
+  gap: 0.5rem;
+}
+
+.input-container label {
+  font-size: 0.7rem;
+}
+
+.input-container input {
+  /* width: 100%; */
+}
