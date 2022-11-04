@@ -23,6 +23,7 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
 import { CustomersComponent } from './pages/customers/customers.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { FilterServicePipe } from './pipes/filter-service.pipe';
+import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { FilterServicePipe } from './pipes/filter-service.pipe';
     CustomersComponent,
     ServicesComponent,
     FilterServicePipe,
+    FilterCustomersPipe,
   ],
   imports: [
     BrowserModule,

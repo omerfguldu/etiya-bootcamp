@@ -16,6 +16,9 @@ export class CustomerListComponent implements OnInit {
   updateIcon: IconDefinition = faCircleInfo;
   customers!: Customer[];
 
+  searchName: string = '';
+  searchSurName: string = '';
+  searchDate: Date = new Date(1970, 1, 1);
   constructor(
     private router: Router,
     private customersService: CustomersService

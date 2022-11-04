@@ -1,3 +1,7 @@
+<input [(ngModel)]="searchName" type="text" />
+<input [(ngModel)]="searchSurName" type="text" />
+<input [(ngModel)]="searchDate" type="date" />
+
 <div class="customers-list-title">
   <strong>ID</strong>
   <strong>First Name</strong>
@@ -5,7 +9,13 @@
   <strong>Date of Birth</strong>
   <strong>National ID</strong>
 </div>
-<div class="customers-list-item" *ngFor="let customer of customers">
+<div
+  class="customers-list-item"
+  *ngFor="
+    let customer of customers
+      | filterCustomers: searchName:searchSurName:searchDate
+  "
+>
   <strong> {{ customer.customerId }} </strong>
   <p>{{ customer.firstName }}</p>
   <p>{{ customer.lastName }}</p>
