@@ -4,6 +4,7 @@ import { Customer } from '../../models/customer';
 import { CustomersService } from 'src/app/services/customers.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { ServicesService } from 'src/app/services/services.service';
+import { SubscriptionsResponse } from 'src/app/models/subscriptionsResponse';
 
 @Component({
   selector: 'app-customer-details',
@@ -12,7 +13,7 @@ import { ServicesService } from 'src/app/services/services.service';
 })
 export class CustomerDetailsComponent implements OnInit {
   selectedUserID!: number;
-  customerSubscriptions: any;
+  customerSubscriptions: SubscriptionsResponse[] = [];
   customerDetails!: Customer[];
 
   constructor(
@@ -39,17 +40,15 @@ export class CustomerDetailsComponent implements OnInit {
       .getSubscriptionsWithCustomerId(id)
       .subscribe((response) => {
         this.customerSubscriptions = response;
-        this.customerSubscriptions.map((customerSubscription: any) => {
+        this.customerSubscriptions.map((customerSubscription) => {
           this.servicesService
             .getService(customerSubscription.serviceId)
             .subscribe((response) => {
               customerSubscription.serviceName = response.name;
             });
         });
-        
       });
   }
-
   // getCustomerSubscriptions(id: number) {
   //   this.http
   //     .get(`http://localhost:3000/subscriptions?customerId=${id}`)
