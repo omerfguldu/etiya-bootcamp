@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Customer } from '../models/customer';
+import { IndividualCustomer } from '../models/individualCustomer';
 
 @Pipe({
   name: 'filterCustomers',
 })
 export class FilterCustomersPipe implements PipeTransform {
-  transform(value: Customer[], ...args: any[]): Customer[] {
-    return value?.filter((customer: Customer) => {
+  transform(value: IndividualCustomer[], ...args: any[]): IndividualCustomer[] {
+    return value?.filter((customer: IndividualCustomer) => {
       const [day, month, year] = customer.dateOfBirth.split('.');
       let date = new Date(+year, +month - 1, +day);
       return (
@@ -21,8 +21,3 @@ export class FilterCustomersPipe implements PipeTransform {
     });
   }
 }
-/* .filter((customer) => {
-        return customer.lastName
-          .toLocaleLowerCase()
-          .includes(args[1].toLocaleLowerCase());
-      }); */

@@ -1,60 +1,131 @@
-<div class="query-form-container">
-  <p>Filter Customers</p>
-  <div class="input-container">
-    <div class="name-input">
-      <label for="name">First Name</label>
-      <input
-        id="name"
-        [(ngModel)]="searchName"
-        class="form-control"
-        type="text"
-      />
+<select
+  class="form-select form-select-md mb-3"
+  aria-label=".form-select-lg example"
+  [(ngModel)]="customerType"
+  (ngModelChange)="onCustomerTypeChange($event)"
+>
+  <option selected>Individual Customers</option>
+  <option>Corporate Customers</option>
+</select>
+
+<h5 class="mb-4">{{ customerTypeText }} Customers</h5>
+
+<div *ngIf="showIndividualCustomers">
+  <div class="query-form-container">
+    <p>Filter Customers</p>
+    <div class="input-container">
+      <div class="name-input">
+        <label for="name">First Name</label>
+        <input
+          id="name"
+          [(ngModel)]="searchName"
+          class="form-control"
+          type="text"
+        />
+      </div>
+      <div class="surname-input">
+        <label for="surname">Last Name</label>
+        <input
+          id="surname"
+          [(ngModel)]="searchSurName"
+          class="form-control"
+          type="text"
+        />
+      </div>
+      <div class="date-input">
+        <label for="date">Date of Birth</label>
+        <input
+          id="date"
+          [(ngModel)]="searchDate"
+          class="form-control"
+          type="date"
+        />
+      </div>
     </div>
-    <div class="surname-input">
-      <label for="surname">Last Name</label>
-      <input
-        id="surname"
-        [(ngModel)]="searchSurName"
-        class="form-control"
-        type="text"
-      />
-    </div>
-    <div class="date-input">
-      <label for="date">Date of Birth</label>
-      <input
-        id="date"
-        [(ngModel)]="searchDate"
-        class="form-control"
-        type="date"
-      />
+  </div>
+  <div class="customers-list-title individual-title">
+    <strong>ID</strong>
+    <strong>First Name</strong>
+    <strong>Last Name</strong>
+    <strong>Date of Birth</strong>
+    <strong>National ID</strong>
+  </div>
+  <div
+    class="customers-list-item individual-item"
+    *ngFor="
+      let customer of individualCustomers
+        | filterCustomers: searchName:searchSurName:searchDate
+    "
+  >
+    <strong> {{ customer.customerId }} </strong>
+    <p>{{ customer.firstName }}</p>
+    <p>{{ customer.lastName }}</p>
+    <p>{{ customer.dateOfBirth }}</p>
+    <p>{{ customer.nationalIdentity }}</p>
+    <div class="customer-buttons">
+      <fa-icon
+        class="fa-icon info-icon"
+        [icon]="updateIcon"
+        (click)="goToDetails(customer.customerId)"
+      ></fa-icon>
     </div>
   </div>
 </div>
 
-<div class="customers-list-title">
-  <strong>ID</strong>
-  <strong>First Name</strong>
-  <strong>Last Name</strong>
-  <strong>Date of Birth</strong>
-  <strong>National ID</strong>
-</div>
-<div
-  class="customers-list-item"
-  *ngFor="
-    let customer of customers
-      | filterCustomers: searchName:searchSurName:searchDate
-  "
->
-  <strong> {{ customer.customerId }} </strong>
-  <p>{{ customer.firstName }}</p>
-  <p>{{ customer.lastName }}</p>
-  <p>{{ customer.dateOfBirth }}</p>
-  <p>{{ customer.nationalIdentity }}</p>
-  <div class="customer-buttons">
-    <fa-icon
-      class="fa-icon info-icon"
-      [icon]="updateIcon"
-      (click)="goToDetails(customer.customerId)"
-    ></fa-icon>
+<div *ngIf="showCorporateCustomers">
+  <div class="query-form-container">
+    <p>Filter Customers</p>
+    <div class="input-container">
+      <div class="name-input">
+        <label for="cId">Customer ID</label>
+        <input
+          id="cId"
+          [(ngModel)]="searchId"
+          class="form-control"
+          type="text"
+        />
+      </div>
+      <div class="name-input">
+        <label for="name">Company Name</label>
+        <input
+          id="name"
+          [(ngModel)]="searchCompanyName"
+          class="form-control"
+          type="text"
+        />
+      </div>
+      <div class="name-input">
+        <label for="tax">Tax Number</label>
+        <input
+          id="tax"
+          [(ngModel)]="searchTax"
+          class="form-control"
+          type="text"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="customers-list-title corporate-title">
+    <strong>ID</strong>
+    <strong>Company Name</strong>
+    <strong>Tax Number</strong>
+  </div>
+  <div
+    class="customers-list-item corporate-item"
+    *ngFor="
+      let customer of corporateCustomers
+        | filterCorporateCustomers: searchId:searchCompanyName:searchTax
+    "
+  >
+    <strong> {{ customer.customerId }} </strong>
+    <p>{{ customer.companyName }}</p>
+    <p>{{ customer.taxNumber }}</p>
+    <div class="customer-buttons">
+      <fa-icon
+        class="fa-icon info-icon"
+        [icon]="updateIcon"
+        (click)="goToDetails(customer.customerId)"
+      ></fa-icon>
+    </div>
   </div>
 </div>

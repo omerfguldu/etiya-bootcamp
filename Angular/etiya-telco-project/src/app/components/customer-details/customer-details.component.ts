@@ -1,10 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Customer } from '../../models/customer';
+import { IndividualCustomer } from '../../models/individualCustomer';
 import { CustomersService } from 'src/app/services/customers.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { ServicesService } from 'src/app/services/services.service';
 import { SubscriptionsResponse } from 'src/app/models/subscriptionsResponse';
+import { CorporateCustomer } from 'src/app/models/corporateCustomer';
 
 @Component({
   selector: 'app-customer-details',
@@ -13,8 +14,10 @@ import { SubscriptionsResponse } from 'src/app/models/subscriptionsResponse';
 })
 export class CustomerDetailsComponent implements OnInit {
   selectedUserID!: number;
+  customerType!: string;
   customerSubscriptions: SubscriptionsResponse[] = [];
-  customerDetails!: Customer[];
+  individualCustomerDetails!: IndividualCustomer[];
+  corporateCustomerDetails!: CorporateCustomer[];
 
   constructor(
     private route: ActivatedRoute,
@@ -26,12 +29,25 @@ export class CustomerDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.selectedUserID = this.route.snapshot.params['id'];
     this.getCustomerSubscriptions(this.selectedUserID);
-    this.getCustomer(this.selectedUserID);
+    this.getIndividualCustomer(this.selectedUserID);
+    this.getCorporateCustomer(this.selectedUserID);
   }
 
-  getCustomer(id: number) {
-    this.customersService.getCustomer(id).subscribe((res) => {
-      this.customerDetails = res;
+  getIndividualCustomer(id: number) {
+    this.customersService.getIndividualCustomer(id).subscribe((res) => {
+      this.individualCustomerDetails = res;
+      if (this.individualCustomerDetails.length > 0) {
+        this.customerType = 'individual';
+      }
+    });
+  }
+
+  getCorporateCustomer(id: number) {
+    this.customersService.getCorporateCustomer(id).subscribe((res) => {
+      this.corporateCustomerDetails = res;
+      if (this.corporateCustomerDetails.length > 0) {
+        this.customerType = 'corporate';
+      }
     });
   }
 
@@ -49,11 +65,4 @@ export class CustomerDetailsComponent implements OnInit {
         });
       });
   }
-  // getCustomerSubscriptions(id: number) {
-  //   this.http
-  //     .get(`http://localhost:3000/subscriptions?customerId=${id}`)
-  //     .subscribe((res) => {
-  //       this.customerSubscriptions = res;
-  //     });
-  // }
 }
