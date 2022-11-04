@@ -8,6 +8,7 @@ import { CustomersComponent } from './pages/customers/customers.component';
 
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { LoginComponent } from './pages/login/login.component';
+import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
   {
     path: 'homepage',
     component: HomepageComponent,
+    canActivate: [LoginGuard],
     children: [
       {
         path: '',

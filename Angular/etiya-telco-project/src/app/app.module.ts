@@ -22,6 +22,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { CustomersComponent } from './pages/customers/customers.component';
 import { ServicesComponent } from './pages/services/services.component';
+import { FilterServicePipe } from './pipes/filter-service.pipe';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ServicesComponent } from './pages/services/services.component';
     CustomerDetailsComponent,
     CustomersComponent,
     ServicesComponent,
+    FilterServicePipe,
   ],
   imports: [
     BrowserModule,
