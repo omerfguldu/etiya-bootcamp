@@ -1,3 +1,4 @@
+import { appReducers } from './store/app.reducer';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +19,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ServicesListComponent } from './components/services-list/services-list.component';
 import { FilterServicePipe } from './pipes/filter-service.pipe';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { OverlayTitleComponent } from './components/overlay-title/overlay-title.component';
+import { StoreModule } from '@ngrx/store';
+import { AppStoreState } from './store/app.state';
 
 @NgModule({
   declarations: [
@@ -31,6 +36,8 @@ import { FilterServicePipe } from './pipes/filter-service.pipe';
     HomepageComponent,
     ServicesListComponent,
     FilterServicePipe,
+    NavbarComponent,
+    OverlayTitleComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +57,7 @@ import { FilterServicePipe } from './pipes/filter-service.pipe';
         },
       },
     }),
+    StoreModule.forRoot<AppStoreState>(appReducers),
   ],
   exports: [],
   providers: [

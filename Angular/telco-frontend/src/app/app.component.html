@@ -1,9 +1,3 @@
-<!-- <h1>{{ "Merhaba Angular" | lowercase }}</h1> -->
-<!-- <h3>{{ today | date: "dd-mm-yyyy" }}</h3>
-<h3>{{ 10 | createFakeArray }}</h3>
-
-<p>{{ "halit,anil,burak,burak,busranur" | split: "," }}</p> -->
-
 <div class="spinner-container" *ngIf="isLoading">
   <div class="overlay show"></div>
   <div class="spinner show">
@@ -12,23 +6,11 @@
   </div>
 </div>
 
-<!-- 1-10 arasi sayilari listeye yazdir. -->
-<!-- <ul>
-  <li *ngFor="let i of 10 | createFakeArray">{{ i }}</li>
-</ul>
-
-<ul>
-  <li *ngFor="let i of 'omer-faruk-guldu' | split: '-'">
-    {{ i }}
-  </li>
-</ul> -->
-
-<!-- <h3>Hello Angular</h3> -->
-<!-- <h2>{{ title }}</h2>
-<h2>{{ 26 + 18 }}</h2>
-<h2>{{ sumOfNumbers(5, 6) }}</h2>
-<h2>{{ sumOfNumbers(3, 4) }}</h2>
-<button (click)="btnClick()">Tikla</button>
-<app-calculator></app-calculator> -->
-<!-- <app-listview></app-listview> -->
+<app-navbar (onLogoutWithValue)="handleOnLogout($event)"></app-navbar>
+<div class="container">
+  <!-- <app-overlay-title text="{{ overlayTitleText }}"></app-overlay-title> -->
+  <app-overlay-title [text]="overlayTitleText"></app-overlay-title>
+</div>
+<!-- logout oldugunu yakalasin -->
+<!-- Goodbye -->
 <router-outlet></router-outlet>

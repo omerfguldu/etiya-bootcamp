@@ -34,14 +34,20 @@ export class LoginComponent implements OnInit {
       this.toastr.error('Lütfen tüm alanları kontrol ediniz..');
       return;
     }
-    this.authService.login(this.loginForm.value).subscribe(
-      (response) => {
-        this.localStorage.set('token', response.access_token);
-        this.router.navigateByUrl('/homepage');
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        // this.localStorage.set('token', response.access_token);
+        this.authService.saveToken(response); // token'i localStorage'a ve store'a da kaydettik.
       },
-      (errorResponse) => {
+      error: (errorResponse) => {
         this.toastr.error(errorResponse.error.message);
-      }
-    );
+      },
+      complete: () => {
+        this.router.navigateByUrl('/homepage');
+        this.authService.emitOnLoginEvent(
+          `Hosgeldiniz ${this.loginForm.value.userName}`
+        );
+      },
+    });
   }
 }
