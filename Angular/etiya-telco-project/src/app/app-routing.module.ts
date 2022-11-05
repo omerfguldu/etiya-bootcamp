@@ -9,6 +9,7 @@ import { CustomersComponent } from './pages/customers/customers.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginGuard } from './guards/login.guard';
+import { NewCustomerComponent } from './pages/new-customer/new-customer.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'services', // ! services olacak
+        redirectTo: 'newcustomer', // ! services olacak
         pathMatch: 'full',
       },
       {
@@ -48,6 +49,10 @@ const routes: Routes = [
             component: CustomerDetailsComponent,
           },
         ],
+      },
+      {
+        path: 'newcustomer',
+        component: NewCustomerComponent,
       },
     ],
   },
