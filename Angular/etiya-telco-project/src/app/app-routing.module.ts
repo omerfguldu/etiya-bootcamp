@@ -1,3 +1,4 @@
+import { CustomerServicesFormComponent } from './components/customer-services-form/customer-services-form.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,6 +11,7 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginGuard } from './guards/login.guard';
 import { NewCustomerComponent } from './pages/new-customer/new-customer.component';
+import { CustomerInfoFormComponent } from './components/customer-info-form/customer-info-form.component';
 
 const routes: Routes = [
   {
@@ -53,6 +55,21 @@ const routes: Routes = [
       {
         path: 'newcustomer',
         component: NewCustomerComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'info',
+            pathMatch: 'full',
+          },
+          {
+            path: 'info',
+            component: CustomerInfoFormComponent,
+          },
+          {
+            path: 'services',
+            component: CustomerServicesFormComponent,
+          },
+        ],
       },
     ],
   },
