@@ -62,6 +62,9 @@ export class CustomersService {
       `${this.individualUrl}?customerId=${id}`
     );
   }
+  addCorporateCustomer(customer: CorporateCustomer) {
+    return this.httpClient.post<CorporateCustomer>(this.corporateUrl, customer);
+  }
 
   getCorporateCustomers(): Observable<CorporateCustomer[]> {
     return this.httpClient.get<CorporateCustomer[]>(this.corporateUrl);

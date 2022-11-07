@@ -7,7 +7,7 @@ import { IndividualCustomer } from '../models/individualCustomer';
 export class FilterCustomersPipe implements PipeTransform {
   transform(value: IndividualCustomer[], ...args: any[]): IndividualCustomer[] {
     return value?.filter((customer: IndividualCustomer) => {
-      const [day, month, year] = customer.dateOfBirth.split('.');
+      const [year, month, day] = customer.dateOfBirth.split('-');
       let date = new Date(+year, +month - 1, +day);
       return (
         customer.firstName

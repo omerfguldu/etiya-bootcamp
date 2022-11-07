@@ -1,7 +1,5 @@
-export interface SubscriptionsResponse {
-  id: number;
-  serviceId: number;
-  customerId: number;
+import { Subscriptions } from './subscriptions';
+
+export interface SubscriptionsResponse extends Subscriptions {
   serviceName: string;
-  dateStarted: Date;
 }
