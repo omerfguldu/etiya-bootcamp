@@ -26,11 +26,6 @@ import { FilterServicePipe } from './pipes/filter-service.pipe';
 import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
 import { FilterCorporateCustomersPipe } from './pipes/filter-corporate-customers.pipe';
 import { NewCustomerComponent } from './pages/new-customer/new-customer.component';
-import { CustomerInfoFormComponent } from './components/customer-info-form/customer-info-form.component';
-import { StoreModule } from '@ngrx/store';
-import { appReducers } from './store/app.reducer';
-import { AppStoreState } from './store/app.state';
-import { CustomerServicesFormComponent } from './components/customer-services-form/customer-services-form.component';
 
 @NgModule({
   declarations: [
@@ -49,8 +44,6 @@ import { CustomerServicesFormComponent } from './components/customer-services-fo
     FilterCustomersPipe,
     FilterCorporateCustomersPipe,
     NewCustomerComponent,
-    CustomerInfoFormComponent,
-    CustomerServicesFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +65,6 @@ import { CustomerServicesFormComponent } from './components/customer-services-fo
         },
       },
     }),
-    StoreModule.forRoot<AppStoreState>(appReducers),
   ],
   providers: [
     {

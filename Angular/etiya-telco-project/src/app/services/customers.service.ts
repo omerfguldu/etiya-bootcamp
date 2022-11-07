@@ -1,16 +1,9 @@
-import {
-  deleteCustomerToRegisterModel,
-  setCustomerToRegisterModel,
-} from './../store/customerToRegister/customerToRegister.actions';
-import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IndividualCustomer } from '../models/individualCustomer';
 import { CorporateCustomer } from '../models/corporateCustomer';
-import { Store } from '@ngrx/store';
-import { AppStoreState } from '../store/app.state';
 
 @Injectable({
   providedIn: 'root',
@@ -18,28 +11,8 @@ import { AppStoreState } from '../store/app.state';
 export class CustomersService {
   private individualUrl = `${environment.apiUrl}/individualCustomers`;
   private corporateUrl = `${environment.apiUrl}/corporateCustomers`;
-  customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
 
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store<AppStoreState>
-  ) {
-    this.customerToRegisterModel$ = this.store.select(
-      (state) => state.customerToRegister.customerToRegisterModel
-    );
-  }
-
-  setCustomerToRegisterModelStoreState(
-    customerToRegisterModel: CustomerToRegisterModel
-  ) {
-    this.store.dispatch(
-      setCustomerToRegisterModel({ customerToRegisterModel })
-    );
-  }
-
-  deleteCustomerToRegisterModelStoreState() {
-    this.store.dispatch(deleteCustomerToRegisterModel());
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getIndividualCustomers(): Observable<IndividualCustomer[]> {
     return this.httpClient.get<IndividualCustomer[]>(this.individualUrl);
@@ -49,10 +22,6 @@ export class CustomersService {
     return this.httpClient.get<IndividualCustomer[]>(
       `${this.individualUrl}?customerId=${id}`
     );
-  }
-
-  getStoredCustomerValue() {
-    return this.customerToRegisterModel$;
   }
 
   getCorporateCustomers(): Observable<CorporateCustomer[]> {
