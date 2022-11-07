@@ -1,0 +1,13 @@
+<div class="services-container">
+  <h6>Choose services that you want to add in by clicking on them.</h6>
+  <div class="services-content">
+    <div
+      class="services-list-item"
+      *ngFor="let service of services; let i = index"
+      (click)="onServiceClick(service, i, $event)"
+    >
+      <p>{{ service.name }}</p>
+    </div>
+  </div>
+  <a (click)="onNext()" class="btn-next">Next</a>
+</div>

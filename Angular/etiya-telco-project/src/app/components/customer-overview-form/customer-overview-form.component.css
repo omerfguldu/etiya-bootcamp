@@ -1,0 +1,53 @@
+.customers-list-title,
+.customers-list-item {
+  position: relative;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.856);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.individual-title,
+.individual-item {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.corporate-title,
+.corporate-item {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.customers-list-item:hover {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.customers-list-item p {
+  margin: 0;
+}
+
+.services-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  padding: 1rem 0;
+}
+
+.services-list-title,
+.services-list-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  background-color: rgba(255, 255, 255, 0.856);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.services-list-item:hover {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.services-list-item p {
+  margin: 0;
+}

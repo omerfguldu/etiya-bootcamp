@@ -1,0 +1,43 @@
+<div *ngIf="customer.firstName">
+  <div class="customers-list-title individual-title">
+    <strong>First Name</strong>
+    <strong>Last Name</strong>
+    <strong>Date of Birth</strong>
+    <strong>National ID</strong>
+  </div>
+  <div class="customers-list-item individual-item">
+    <p>
+      {{ customer.firstName }}
+    </p>
+    <p>{{ customer.lastName }}</p>
+    <p>{{ customer.dateOfBirth | date }}</p>
+    <p>{{ customer.nationalIdentity }}</p>
+  </div>
+</div>
+
+<div *ngIf="!customer.firstName">
+  <div class="customers-list-title corporate-title">
+    <strong>Company Name</strong>
+    <strong>Tax Number</strong>
+  </div>
+  <div class="customers-list-item corporate-item">
+    <p>{{ customer.companyName }}</p>
+    <p>{{ customer.taxNumber }}</p>
+  </div>
+</div>
+
+<div class="services-content">
+  <div class="services-list-title">
+    <strong></strong>
+    <strong>Service Name</strong>
+  </div>
+  <div
+    class="services-list-item"
+    *ngFor="let service of services; let i = index"
+  >
+    <strong>{{ i + 1 }}</strong>
+    <p>{{ service.name }}</p>
+  </div>
+</div>
+
+<a (click)="onSaveCustomer()" class="btn btn-success">Save</a>

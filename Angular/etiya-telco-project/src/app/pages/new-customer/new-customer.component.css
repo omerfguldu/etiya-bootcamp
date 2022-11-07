@@ -21,12 +21,31 @@
   color: #9a9a9a;
 }
 
-.active {
+.circle.active {
   border-color: #f59f00;
+}
+
+.circle.active > .icon {
   color: #f59f00;
+}
+
+.circle.completed {
+  background-color: #f59f00;
+}
+
+.circle.completed > .icon {
+  color: #fff;
 }
 
 .line {
   height: 2px;
   background-color: #9a9a9a;
+}
+
+.line.completed {
+  background-color: #f59f00;
+}
+
+.form-container {
+  margin-top: 3rem;
 }
