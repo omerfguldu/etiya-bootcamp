@@ -36,6 +36,7 @@ import { CorporateListComponent } from './components/corporate-customers/corpora
 import { CorporateDetailsComponent } from './components/corporate-customers/corporate-details/corporate-details.component';
 import { IndividualListComponent } from './components/individual-customers/individual-list/individual-list.component';
 import { IndividualDetailsComponent } from './components/individual-customers/individual-details/individual-details.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,9 @@ import { IndividualDetailsComponent } from './components/individual-customers/in
       },
     }),
     StoreModule.forRoot<AppStoreState>(appReducers),
+    StoreDevtoolsModule.instrument({
+      autoPause: true,
+    }),
   ],
   providers: [
     {
