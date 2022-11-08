@@ -32,21 +32,40 @@
           class="error-message"
           *ngIf="
             loginForm.get('userName')?.invalid &&
-            loginForm.get('userName')?.touched
+            loginForm.get('userName')?.touched &&
+            loginForm.get('userName')?.value === ''
           "
         >
           Username field is required.
         </p>
+        <p
+          class="error-message"
+          *ngIf="
+            loginForm.get('userName')?.invalid &&
+            loginForm.get('userName')?.touched &&
+            loginForm.get('userName')?.value !== '' &&
+            loginForm.get('userName')?.value.length < 3
+          "
+        >
+          Username must contain at least 3 characters.
+        </p>
       </div>
-      <div class="form-floating w-100">
+      <div class="form-floating w-100 password-form">
         <input
           type="password"
           class="form-control"
           id="floatingPassword"
           placeholder="Type password"
           formControlName="password"
+          #passwordInput
         />
+        <fa-icon
+          (click)="onEye()"
+          class="password-icon"
+          [icon]="passwordIcon"
+        ></fa-icon>
         <label for="floatingPassword">Password</label>
+
         <p
           class="error-message"
           *ngIf="

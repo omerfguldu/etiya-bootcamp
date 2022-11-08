@@ -35,6 +35,15 @@
             id="name"
             formControlName="firstName"
           />
+          <p
+            class="error-message"
+            *ngIf="
+              customerInfoForm.get('firstName')?.invalid &&
+              customerInfoForm.get('firstName')?.touched
+            "
+          >
+            First name field is required.
+          </p>
         </div>
         <div class="mb-3">
           <label for="lastname" class="form-label">Last Name</label>
@@ -44,15 +53,33 @@
             id="lastname"
             formControlName="lastName"
           />
+          <p
+            class="error-message"
+            *ngIf="
+              customerInfoForm.get('lastName')?.invalid &&
+              customerInfoForm.get('lastName')?.touched
+            "
+          >
+            Last name field is required.
+          </p>
         </div>
         <div class="mb-3">
           <label for="nationalid" class="form-label">National Identity</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="nationalid"
             formControlName="nationalIdentity"
           />
+          <p
+            class="error-message"
+            *ngIf="
+              customerInfoForm.get('nationalIdentity')?.invalid &&
+              customerInfoForm.get('nationalIdentity')?.touched
+            "
+          >
+            National ID field is required.
+          </p>
         </div>
         <div class="mb-3">
           <label for="birthdate" class="form-label">Date of Birth</label>
@@ -62,7 +89,17 @@
             type="date"
             id="birthdate"
             formControlName="dateOfBirth"
+            [max]="dateOfToday"
           />
+          <p
+            class="error-message"
+            *ngIf="
+              customerInfoForm.get('dateOfBirth')?.invalid &&
+              customerInfoForm.get('dateOfBirth')?.touched
+            "
+          >
+            Date of birth field is required.
+          </p>
         </div>
       </div>
       <div
@@ -77,18 +114,42 @@
             id="cname"
             formControlName="companyName"
           />
+          <p
+            class="error-message"
+            *ngIf="
+              customerInfoForm.get('companyName')?.invalid &&
+              customerInfoForm.get('companyName')?.touched
+            "
+          >
+            Company name field is required.
+          </p>
         </div>
         <div class="mb-3">
           <label for="tax" class="form-label">Tax Number</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="tax"
             formControlName="taxNumber"
           />
+          <p
+            class="error-message"
+            *ngIf="
+              customerInfoForm.get('taxNumber')?.invalid &&
+              customerInfoForm.get('taxNumber')?.touched
+            "
+          >
+            Tax number field is required.
+          </p>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Next</button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="customerInfoForm.invalid"
+      >
+        Next
+      </button>
     </form>
   </div>
 </div>

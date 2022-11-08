@@ -25,7 +25,30 @@
 }
 
 .fa-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
   font-size: 1.2rem;
   color: #0c082f !important;
   cursor: pointer;
+}
+
+.fa-icon::before {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: "";
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.fa-icon:hover::before {
+  background-color: #e9ecef;
 }

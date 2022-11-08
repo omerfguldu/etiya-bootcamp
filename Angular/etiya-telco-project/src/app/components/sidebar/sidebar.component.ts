@@ -5,7 +5,10 @@ import {
   faRightFromBracket,
   faGears,
   faUsers,
+  faUser,
+  faGear,
 } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,12 +19,18 @@ export class SidebarComponent implements OnInit {
   logoutIcon: IconDefinition = faRightFromBracket;
   servicesIcon: IconDefinition = faGears;
   customersIcon: IconDefinition = faUsers;
+  profileIcon: IconDefinition = faUser;
+  settingsIcon: IconDefinition = faGear;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   logout() {
     this.authService.logout();
+  }
+
+  onLogo() {
+    this.router.navigate(['homepage', 'services']);
   }
 }

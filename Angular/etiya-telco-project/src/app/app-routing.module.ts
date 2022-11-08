@@ -27,7 +27,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'services', // ! services olacak
+        redirectTo: 'newcustomer/overview', // ! services olacak
         pathMatch: 'full',
       },
       {

@@ -10,7 +10,7 @@
       {{ customer.firstName }}
     </p>
     <p>{{ customer.lastName }}</p>
-    <p>{{ customer.dateOfBirth | date }}</p>
+    <p>{{ customer.dateOfBirth }}</p>
     <p>{{ customer.nationalIdentity }}</p>
   </div>
 </div>
@@ -40,6 +40,7 @@
   </div>
 </div>
 
-<div class="btn-save">
+<div class="buttons-container">
+  <a (click)="onBack()" class="btn btn-danger">Back</a>
   <a (click)="onSaveCustomer()" class="btn btn-success">Save</a>
 </div>

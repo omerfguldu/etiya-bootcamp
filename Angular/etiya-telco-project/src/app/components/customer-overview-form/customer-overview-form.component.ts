@@ -138,4 +138,8 @@ export class CustomerOverviewFormComponent implements OnInit {
       });
     });
   }
+
+  onBack() {
+    this.router.navigateByUrl('/homepage/newcustomer/services');
+  }
 }

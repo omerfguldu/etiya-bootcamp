@@ -1,8 +1,15 @@
+import { faEye, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { LocalstorageService } from './../../services/localstorage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { Subscription } from 'rxjs';
@@ -13,10 +20,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
   loginForm!: FormGroup;
   isLoading: boolean = false;
   isUserValid: boolean = true;
+  validUserName: string = '';
   subscription!: Subscription;
+  passwordIcon: IconDefinition = faEye;
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.isUserValid = true;
         this.localstorageService.setItem('token', res['access_token']);
         this.authService.decodeToken(res['access_token']);
+        this.validUserName = this.loginForm.get('userName')?.value;
         this.clearFormFields();
       },
       error: () => {
@@ -55,7 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   createLoginForm() {
     this.loginForm = this.fb.group({
-      userName: ['', Validators.required],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', Validators.required],
     });
   }
@@ -68,6 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       (isLoading) => {
         this.isLoading = isLoading;
         if (!this.isLoading && this.isUserValid) {
+          this.toastr.success(`Welcome ${this.validUserName}`);
           this.router.navigateByUrl('homepage');
         } else if (!this.isLoading && !this.isUserValid) {
           this.toastr.error('Login failed.');
@@ -78,5 +90,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   clearFormFields() {
     this.loginForm.reset();
+  }
+
+  onEye() {
+    if (this.passwordInput.nativeElement.type === 'password') {
+      this.passwordInput.nativeElement.type = 'text';
+    } else {
+      this.passwordInput.nativeElement.type = 'password';
+    }
   }
 }

@@ -95,4 +95,8 @@ export class CustomerServicesFormComponent implements OnInit {
     );
     this.router.navigateByUrl('/homepage/newcustomer/overview');
   }
+
+  onBack() {
+    this.router.navigateByUrl('/homepage/newcustomer/info');
+  }
 }

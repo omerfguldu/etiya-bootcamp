@@ -3,10 +3,6 @@
   margin-top: 2rem;
 }
 
-label {
-  font-weight: 500;
-}
-
 .customer-info-form-container {
   display: grid;
   grid-template-columns: 1fr 1fr;

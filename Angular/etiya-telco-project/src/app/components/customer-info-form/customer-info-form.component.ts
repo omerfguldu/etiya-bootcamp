@@ -15,6 +15,8 @@ export class CustomerInfoFormComponent implements OnInit {
   customerType: string = 'Individual Customer';
   customerInfoForm!: FormGroup;
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
+  dateOfToday = new Date().toISOString().split('T')[0];
+
   constructor(
     private fb: FormBuilder,
     private customersService: CustomersService,
@@ -39,6 +41,9 @@ export class CustomerInfoFormComponent implements OnInit {
     this.customersService.setCustomerToRegisterModelStoreState(
       this.customerInfoForm.value
     );
+    this.customerToRegisterModel$.subscribe((res) => {
+      console.log(res);
+    });
     this.router.navigateByUrl('homepage/newcustomer/services');
   }
 

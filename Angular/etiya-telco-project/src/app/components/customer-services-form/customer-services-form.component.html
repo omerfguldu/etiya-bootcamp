@@ -9,5 +9,8 @@
       <p>{{ service.name }}</p>
     </div>
   </div>
-  <a (click)="onNext()" class="btn-next">Next</a>
+  <div class="buttons-container">
+    <a (click)="onBack()" class="btn btn-danger">Back</a>
+    <a (click)="onNext()" class="btn btn-primary">Next</a>
+  </div>
 </div>

@@ -64,3 +64,21 @@ form {
   background-color: #1d165c;
   color: #e67700;
 }
+
+.password-form {
+  position: relative;
+}
+
+.password-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #ced4da;
+  transition: 0.4s all ease;
+}
+
+.password-icon:hover {
+  color: #495057;
+}
