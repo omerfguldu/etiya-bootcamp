@@ -5,8 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Service } from './../../models/service';
 import { CustomersService } from './../../services/customers.service';
 import { CustomerToRegisterModel } from './../../models/customerToRegisterModel';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/models/customer';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { Subscriptions } from 'src/app/models/subscriptions';
@@ -18,7 +18,8 @@ import { InvoicesService } from 'src/app/services/invoices.service';
   templateUrl: './customer-overview-form.component.html',
   styleUrls: ['./customer-overview-form.component.css'],
 })
-export class CustomerOverviewFormComponent implements OnInit {
+export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
+  subscription1!: Subscription;
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
   services: Service[] = [];
@@ -41,17 +42,20 @@ export class CustomerOverviewFormComponent implements OnInit {
     //* OVERVIEW COMPONENT YUKLENDIGINDE STOREDAKI KAYITLI
     //* MUSTERININ BILGILERINI AL VE TURUNU(CORPORATE-INDIVIDUAL) TESPIT ET.
     //* STORE'DA KAYITLI SERVISLERI AL.
-    this.customerToRegisterModel$.subscribe({
+    this.subscription1 = this.customerToRegisterModel$.subscribe({
       next: (res: any) => {
-        this.customer = res.customer;
-        this.customer.nationalIdentity
-          ? (this.customerType = true)
-          : (this.customerType = false);
-        this.services = res.services;
+        if (res.customer) {
+          this.customer = res.customer;
+          this.customer.nationalIdentity
+            ? (this.customerType = true)
+            : (this.customerType = false);
+          this.services = res.services;
+        }
       },
       error: () => {
         this.toastr.error('Something went wrong');
       },
+      complete: () => {},
     });
   }
 
@@ -141,5 +145,9 @@ export class CustomerOverviewFormComponent implements OnInit {
 
   onBack() {
     this.router.navigateByUrl('/homepage/newcustomer/services');
+  }
+
+  ngOnDestroy(): void {
+    // this.subscription1.unsubscribe();
   }
 }

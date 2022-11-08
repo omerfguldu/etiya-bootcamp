@@ -5,6 +5,9 @@
       class="services-list-item"
       *ngFor="let service of services; let i = index"
       (click)="onServiceClick(service, i, $event)"
+      [ngClass]="{
+        selected: servicesSelectedStatus[i] === true
+      }"
     >
       <p>{{ service.name }}</p>
     </div>

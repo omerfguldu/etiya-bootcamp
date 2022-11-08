@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { Service } from 'src/app/models/service';
 import { CustomersService } from 'src/app/services/customers.service';
@@ -11,16 +11,14 @@ import { ServicesService } from 'src/app/services/services.service';
   templateUrl: './customer-services-form.component.html',
   styleUrls: ['./customer-services-form.component.css'],
 })
-export class CustomerServicesFormComponent implements OnInit {
+export class CustomerServicesFormComponent implements OnInit, OnDestroy {
+  subscription1!: Subscription;
+  subscription2!: Subscription;
   services: Service[] = [];
   servicesSelectedStatus: boolean[] = [];
   selectedServices: Service[] = [];
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
-  customerAndServices: CustomerToRegisterModel = {
-    customer: null,
-    services: [],
-  };
 
   constructor(
     private servicesService: ServicesService,
@@ -28,6 +26,7 @@ export class CustomerServicesFormComponent implements OnInit {
     private customersService: CustomersService,
     private router: Router
   ) {
+    console.log('kurucu calisti.');
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
   }
@@ -35,6 +34,14 @@ export class CustomerServicesFormComponent implements OnInit {
   ngOnInit(): void {
     //* SERVISLER GETIRME FONKSIYONUNU CAGIR.
     this.getServices();
+    this.subscription1 = this.customerToRegisterModel$.subscribe({
+      next: (res: any) => {
+        if (res.services) {
+          this.selectedServices = res.services;
+        }
+      },
+      complete: () => {},
+    });
   }
 
   onSubmit() {}
@@ -53,6 +60,11 @@ export class CustomerServicesFormComponent implements OnInit {
       next: (response) => {
         this.services = response;
         this.fillServiceStatus();
+        if (this.selectedServices.length > 0) {
+          this.selectedServices.forEach((service) => {
+            this.servicesSelectedStatus[service.id - 1] = true;
+          });
+        }
       },
       error: (err) => {
         console.log(err);
@@ -85,18 +97,30 @@ export class CustomerServicesFormComponent implements OnInit {
     //* STOREDA KAYITLI CUSTOMER VERISINI GETIR VE DEGISKENE AT.
     //* BU DEGISKENLE BIRLIKTE SECILI SERVISLER DIZISINI
     //* STORE'A KAYDET VE OVERVIEW'A YONLENDIR.
-    this.customerToRegisterModel$.subscribe((res) => {
+    this.subscription2 = this.customerToRegisterModel$.subscribe((res: any) => {
+      // console.log('customer service next');
+      // console.log(res);
+      // if (res.customer) {
+      //   this.customer = res.customer;
+      //   return;
+      // }
       this.customer = res;
     });
-    this.customerAndServices.customer = this.customer;
-    this.customerAndServices.services = this.selectedServices;
-    this.customersService.setCustomerToRegisterModelStoreState(
-      this.customerAndServices
-    );
+    console.log(this.customer);
+    this.customersService.deleteCustomerToRegisterModelStoreState();
+    this.customersService.setCustomerToRegisterModelStoreState({
+      ...this.customer,
+      services: this.selectedServices,
+    });
     this.router.navigateByUrl('/homepage/newcustomer/overview');
   }
 
   onBack() {
     this.router.navigateByUrl('/homepage/newcustomer/info');
+  }
+
+  ngOnDestroy(): void {
+    // this.subscription1.unsubscribe();
+    // this.subscription2.unsubscribe();
   }
 }
