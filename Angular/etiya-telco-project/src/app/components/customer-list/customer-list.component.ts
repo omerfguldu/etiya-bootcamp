@@ -34,11 +34,13 @@ export class CustomerListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //* INDIVIDUAL VE CORPORATE CUSTOMERLARI GETIREN FONKSIYONLARI CAGIR.
     this.getIndividualCustomers();
     this.getCorporateCustomers();
   }
 
   getIndividualCustomers() {
+    //* INDIVIDUAL CUSTOMERLARI GETIR.
     this.customersService.getIndividualCustomers().subscribe({
       next: (response) => {
         this.individualCustomers = response;
@@ -50,6 +52,7 @@ export class CustomerListComponent implements OnInit {
   }
 
   getCorporateCustomers() {
+    //* CORPORATE CUSTOMERLARI GETIR.
     this.customersService.getCorporateCustomers().subscribe({
       next: (response) => {
         this.corporateCustomers = response;
@@ -61,10 +64,13 @@ export class CustomerListComponent implements OnInit {
   }
 
   goToDetails(id: number) {
+    //* SECILI MUSTERININ ID SINI AL VE DETAY SAYFASINA YONLENDIR.
     this.router.navigateByUrl(`${this.router.url}/${id}`);
   }
 
   onCustomerTypeChange(type: string) {
+    //* SELECT INPUTU DEGISTIGINDE LIST EKRANINDA GOZUKEN TEXT'I GUNCELLE.
+    //* SECILEN MUSTERI TURUNE AIT BLOGU GOSTER. DIGERINI GIZLE.
     if (type === 'Individual Customers') {
       this.customerTypeText = 'Individual';
       this.showIndividualCustomers = true;

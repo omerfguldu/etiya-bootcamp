@@ -27,6 +27,8 @@ export class CustomerDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //* ACTIVATED ROUTE ILE MUSTERI ID'YI YAKALA.
+    //* BU ID'YI BASLANGICTA CALISACAK FONKSIYONLARA PARAMETRE OLARAK GEC.
     this.selectedUserID = this.route.snapshot.params['id'];
     this.getCustomerSubscriptions(this.selectedUserID);
     this.getIndividualCustomer(this.selectedUserID);
@@ -34,6 +36,9 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   getIndividualCustomer(id: number) {
+    //* CUSTOMER ID YE AIT BILGILERI INDIVIDUAL CUSTOMERS UZERINDEN GETIRMEYI DENE
+    //* EGER GELEN CEVAP ARRAYINDE ELEMAN VARSA BU MUSTERI INDIVIDUAL TURUNDEDIR.
+    //* GELEN CEVAPLA ILGILI DEGISKENI DOLDUR VE customerType INDIVIDUAL'A ESITLE.
     this.customersService.getIndividualCustomer(id).subscribe((res) => {
       this.individualCustomerDetails = res;
       if (this.individualCustomerDetails.length > 0) {
@@ -43,6 +48,9 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   getCorporateCustomer(id: number) {
+    //* CUSTOMER ID YE AIT BILGILERI CORPRATE CUSTOMERS UZERINDEN GETIRMEYI DENE
+    //* EGER GELEN CEVAP ARRAYINDE ELEMAN VARSA BU MUSTERI CORPRATE TURUNDEDIR.
+    //* GELEN CEVAPLA ILGILI DEGISKENI DOLDUR VE customerType CORPRATE'A ESITLE.
     this.customersService.getCorporateCustomer(id).subscribe((res) => {
       this.corporateCustomerDetails = res;
       if (this.corporateCustomerDetails.length > 0) {
@@ -52,6 +60,10 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   getCustomerSubscriptions(id: number) {
+    //* ILGILI ID'YE AIT SUBSCRIPTIONLARI GETIR.
+    //* SUBSCRIPTIONLARI MAP ILE DON.
+    //* ILGILI SUBSCRIPTION ID YI GETSERVICE METODUNA GONDER.
+    //* BU METODTAN GELEN SERVISIN ADINI SUBSCRIPTION OBJESINE KAYDET.
     this.subscriptionsService
       .getSubscriptionsWithCustomerId(id)
       .subscribe((response) => {

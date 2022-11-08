@@ -1,5 +1,3 @@
-<!-- {{   (customerToRegisterModel$ | async)?.customer | json }} -->
-
 <div *ngIf="customer.firstName">
   <div class="customers-list-title individual-title">
     <strong>First Name</strong>
@@ -42,4 +40,6 @@
   </div>
 </div>
 
-<a (click)="onSaveCustomer()" class="btn btn-success">Save</a>
+<div class="btn-save">
+  <a (click)="onSaveCustomer()" class="btn btn-success">Save</a>
+</div>

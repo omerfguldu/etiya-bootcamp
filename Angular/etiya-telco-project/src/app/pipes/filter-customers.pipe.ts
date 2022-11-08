@@ -6,6 +6,9 @@ import { IndividualCustomer } from '../models/individualCustomer';
 })
 export class FilterCustomersPipe implements PipeTransform {
   transform(value: IndividualCustomer[], ...args: any[]): IndividualCustomer[] {
+    //* INDIVIDUAL CUSTOMER DIZISI OLARAK GELEN VERIYI
+    //* FIRSTNAME | LASTNAME | DATEOFBIRTH PARAMETERLERINDEN GELEN VERILERE
+    //* GORE FILTRELE.
     return value?.filter((customer: IndividualCustomer) => {
       const [year, month, day] = customer.dateOfBirth.split('-');
       let date = new Date(+year, +month - 1, +day);

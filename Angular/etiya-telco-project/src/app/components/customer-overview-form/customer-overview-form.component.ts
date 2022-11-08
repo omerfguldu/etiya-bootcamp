@@ -1,14 +1,13 @@
+import { CorporateCustomer } from 'src/app/models/corporateCustomer';
+import { IndividualCustomer } from 'src/app/models/individualCustomer';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Service } from './../../models/service';
 import { CustomersService } from './../../services/customers.service';
 import { CustomerToRegisterModel } from './../../models/customerToRegisterModel';
 import { Component, OnInit } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Customer } from 'src/app/models/customer';
-import { IndividualCustomer } from 'src/app/models/individualCustomer';
-import { CorporateCustomer } from 'src/app/models/corporateCustomer';
-import { ServicesService } from 'src/app/services/services.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { Subscriptions } from 'src/app/models/subscriptions';
 import { Invoices } from 'src/app/models/invoices';
@@ -24,8 +23,8 @@ export class CustomerOverviewFormComponent implements OnInit {
   customer: any;
   services: Service[] = [];
   customerType: boolean = true;
-  //true ise individual customer
-  //false ise corporate customer
+  //* customerType TRUE ISE INDIVIDUAL
+  //* FALSE ISE CORPORATE CUSTOMER
 
   constructor(
     private customersService: CustomersService,
@@ -39,66 +38,86 @@ export class CustomerOverviewFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.customerToRegisterModel$.subscribe((res: any) => {
-      console.log(res);
-
-      this.customer = res.customer;
-      this.customer.nationalIdentity
-        ? (this.customerType = true)
-        : (this.customerType = false);
-
-      this.services = res.services;
+    //* OVERVIEW COMPONENT YUKLENDIGINDE STOREDAKI KAYITLI
+    //* MUSTERININ BILGILERINI AL VE TURUNU(CORPORATE-INDIVIDUAL) TESPIT ET.
+    //* STORE'DA KAYITLI SERVISLERI AL.
+    this.customerToRegisterModel$.subscribe({
+      next: (res: any) => {
+        this.customer = res.customer;
+        this.customer.nationalIdentity
+          ? (this.customerType = true)
+          : (this.customerType = false);
+        this.services = res.services;
+      },
+      error: () => {
+        this.toastr.error('Something went wrong');
+      },
     });
   }
 
   onSaveCustomer() {
+    //* SAVE BUTONUNA BASILDIGINDA YENI BIR CUSTOMER OLUSTUR
+    //* CORPORATE TURUNDE ISE CUSTOMER NUMBER = TAXNUMBER OLSUN.
+    //* INDIVIDUAL TURUNDE ISE CUSTOMER NUMBER = NATIONAL IDENTITY OLSUN.
     let customer: Customer = {
       customerNumber: 0,
     };
     this.customerType
       ? (customer.customerNumber = +this.customer.nationalIdentity)
       : (customer.customerNumber = +this.customer.taxNumber);
-    console.log(customer);
-    this.customersService.addCustomer(customer).subscribe((res: any) => {
-      console.log(res);
-      if (this.customerType) {
-        //indivudial customer add
-        const customerToAdd = {
-          customerId: res.id,
-          ...this.customer,
-          nationalIdentity: res.customerNumber,
-        };
-        this.customersService
-          .addIndividualCustomer(customerToAdd)
-          .subscribe((res) => {
-            this.addServices(res);
-            console.log(res);
+    this.customersService.addCustomer(customer).subscribe({
+      next: (res: any) => {
+        if (this.customerType) {
+          //* INDIVIDUAL CUSTOMER TURUNDE ISE CALIS VE INDIVIDUAL CUSTOMER'A KAYIT EKLE.
+          const customerToAdd = {
+            customerId: res.id,
+            ...this.customer,
+            nationalIdentity: res.customerNumber,
+          };
+          this.customersService.addIndividualCustomer(customerToAdd).subscribe({
+            next: (res) => {
+              //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
+              this.addServices(res);
+            },
+            error: () => {
+              this.toastr.error('Something went wrong');
+            },
           });
-      } else {
-        const customerToAdd = {
-          customerId: res.id,
-          ...this.customer,
-          taxNumber: res.customerNumber,
-        };
-        this.customersService
-          .addCorporateCustomer(customerToAdd)
-          .subscribe((res) => {
-            this.addServices(res);
-            console.log(res);
+        } else {
+          //* CORPORATE CUSTOMER TURUNDE ISE CALIS VE CORPORATE CUSTOMER'A KAYIT EKLE.
+          const customerToAdd = {
+            customerId: res.id,
+            ...this.customer,
+            taxNumber: res.customerNumber,
+          };
+          this.customersService.addCorporateCustomer(customerToAdd).subscribe({
+            next: (res) => {
+              //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
+              this.addServices(res);
+            },
+            error: () => {
+              this.toastr.error('Something went wrong.');
+            },
           });
-      }
+        }
+      },
+      error: () => {
+        this.toastr.error('Something went wrong.');
+      },
     });
   }
   addServices(customer: any) {
+    //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
+    //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
     this.services.map((service) => {
-      console.log(this.customer);
-
       const subscription: Subscriptions = {
         customerId: customer.customerId,
         serviceId: service.id,
         dateStarted: new Date().toISOString().split('T')[0],
       };
       this.subscriptionsService.addSubscription(subscription).subscribe({
+        //* SUBSCRIPTION EKLENDIKTEN SONRA ILGILI SUBSCRIPTIONA AIT INVOICE OLUSTUR
+        //* OLUSAN INVOICE OBJESINI INVOICES SERVISI ILE DB'YE EKLE.
         next: (response) => {
           let date = new Date(response.dateStarted);
           date.setDate(date.getDate() + 28);
@@ -108,12 +127,9 @@ export class CustomerOverviewFormComponent implements OnInit {
             dateCreated: response.dateStarted,
             dateDue: dateDue,
           };
-          this.invoicesService.addInvoice(invoice).subscribe((response) => {
-            console.log(response);
-          });
+          this.invoicesService.addInvoice(invoice).subscribe();
         },
-        error: (err) => {
-          console.error(err.message);
+        error: () => {
           this.toastr.error('Something went wrong');
         },
         complete: () => {

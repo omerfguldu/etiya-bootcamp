@@ -12,6 +12,8 @@ import { AuthService } from '../services/auth.service';
 export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
+  //* EGER AUTHENTICATED BIR KULLANICI VARSA HTTP ISTEKLERINE
+  //* TOKENI HEADER OLARAK EKLE
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler

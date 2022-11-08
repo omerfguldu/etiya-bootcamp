@@ -13,6 +13,10 @@ import { environment } from '../../environments/environment';
 export class NotificationInterceptor implements HttpInterceptor {
   constructor(private notificationService: NotificationService) {}
 
+  //* HTTP ISTEGI GELDIGINDE ISTEGI KONTROL ET.
+  //* EGER GELEN ISTEK LOGIN EKRANINDAN GELIYORSA BIR SEY YAPMA.
+  //* GELEN ISTEK GET ISE BIR SEY YAPMA.
+  //* POST-DELETE-PUT ISTEKLERI SONLANDIGINDA TOASTR SERVISI ILE BILGILENDIR.
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
@@ -27,13 +31,13 @@ export class NotificationInterceptor implements HttpInterceptor {
       finalize(() => {
         switch (request.method) {
           case 'POST':
-            this.notificationService.showSuccess('Service succesfully added.');
+            this.notificationService.showSuccess('Succesfully added.');
             break;
           case 'DELETE':
-            this.notificationService.showFail('Service deleted.');
+            this.notificationService.showFail('Succesfully deleted.');
             break;
           case 'PUT':
-            this.notificationService.showSuccess('Service updated.');
+            this.notificationService.showSuccess('Succesfully updated.');
             break;
           default:
             break;

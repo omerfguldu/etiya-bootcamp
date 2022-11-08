@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { LocalstorageService } from './../../services/localstorage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -22,10 +23,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private localstorageService: LocalstorageService,
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    //* LOGIN FORMUNU OLUSTURMA FONKSIYONUNU CAGIR VE LOADING GOZLEMLE.
     this.createLoginForm();
     this.subscribeToLoading();
   }
@@ -35,6 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    //* LOGIN FORMDAN GELEN VERILERI SERVISE YOLLA.
+    //* RESPONSE OLUMLU ISE LOCALSTOREGE DA TOKEN OLUSTUR VE TOKEN KEYI EKLE.
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
         this.isUserValid = true;
@@ -42,10 +47,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authService.decodeToken(res['access_token']);
         this.clearFormFields();
       },
-      error: (err) => {
+      error: () => {
         this.isUserValid = false;
-        console.error(err.error.message);
-        // this.clearFormFields();
       },
     });
   }
@@ -58,11 +61,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   subscribeToLoading() {
+    //* LOADING SERVICE GOZLEMLE EGER LOADING TAMAMLANMIS VE USER VALID ISE
+    //* HOMEPAGE'E YONLENDIR.
+    //* LOADING TAMAMLANMIS AMA USER INVALID ISE TOASTR ILE HATA GOSTER.
     this.subscription = this.loadingService.isLoadingSubject.subscribe(
       (isLoading) => {
         this.isLoading = isLoading;
         if (!this.isLoading && this.isUserValid) {
           this.router.navigateByUrl('homepage');
+        } else if (!this.isLoading && !this.isUserValid) {
+          this.toastr.error('Login failed.');
         }
       }
     );

@@ -10,6 +10,7 @@ export class InvoicesService {
   private controllerUrl = `${environment.apiUrl}/invoices`;
 
   constructor(private httpClient: HttpClient) {}
+  //* /invoices ADRESINE KAYIT OLUSTUR.
   addInvoice(invoice: Invoices) {
     return this.httpClient.post<Invoices>(`${this.controllerUrl}`, invoice);
   }

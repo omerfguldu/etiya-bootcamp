@@ -6,12 +6,29 @@
       New Service
     </button>
   </div>
+  <div class="query-form-container bordered-container">
+    <p>Filter Services</p>
+    <div class="input-container">
+      <div class="name-input">
+        <label for="name">Service Name</label>
+        <input
+          id="name"
+          [(ngModel)]="searchName"
+          class="form-control"
+          type="text"
+        />
+      </div>
+    </div>
+  </div>
   <div class="services-content">
     <div class="services-list-title">
       <strong>ID</strong>
       <strong>Service Name</strong>
     </div>
-    <div class="services-list-item" *ngFor="let service of services">
+    <div
+      class="services-list-item"
+      *ngFor="let service of services | filterService: searchName"
+    >
       <strong>{{ service.id }}</strong>
       <p>{{ service.name }}</p>
       <div class="service-buttons">

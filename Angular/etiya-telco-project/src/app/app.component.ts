@@ -19,6 +19,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.userToken = this.localstorageService.getItem('token') || '';
+    //* UYGULAMA ACILDIGINDA LOCALSTORAGE'DA KEY VAR VE AUTHENTICATED ISE
+    //* HOMEPAGE'DEN BASLAT. YOKSA LOGIN PAGE'DEN BASLAT.
     if (!this.authService.isAuthenticated) {
       this.router.navigateByUrl('login');
       return;

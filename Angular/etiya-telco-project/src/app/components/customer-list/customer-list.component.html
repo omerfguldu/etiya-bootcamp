@@ -1,4 +1,4 @@
-<div class="customer-list-container">
+<div class="bordered-container">
   <select
     class="customer-type-select form-select form-select-md mb-3"
     aria-label=".form-select-lg example"
@@ -10,7 +10,7 @@
   </select>
 
   <div *ngIf="showIndividualCustomers" class="mt-5">
-    <div class="query-form-container">
+    <div class="query-form-container bordered-container">
       <p>Filter Customers</p>
       <div class="input-container">
         <div class="name-input">
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="customers-list-title individual-title">
+    <div class="list-title individual-title">
       <strong>ID</strong>
       <strong>First Name</strong>
       <strong>Last Name</strong>
@@ -51,7 +51,7 @@
     </div>
     <ng-container *ngIf="individualCustomers">
       <div
-        class="customers-list-item individual-item"
+        class="list-item individual-item"
         *ngFor="
           let customer of individualCustomers
             | filterCustomers: searchName:searchSurName:searchDate
@@ -76,7 +76,7 @@
   <!-- CORPORATE CUSTOMERS LIST -->
 
   <div *ngIf="showCorporateCustomers" class="mt-5">
-    <div class="query-form-container">
+    <div class="query-form-container bordered-container">
       <p>Filter Customers</p>
       <div class="input-container">
         <div class="name-input">
@@ -108,13 +108,13 @@
         </div>
       </div>
     </div>
-    <div class="customers-list-title corporate-title">
+    <div class="list-title corporate-title">
       <strong>ID</strong>
       <strong>Company Name</strong>
       <strong>Tax Number</strong>
     </div>
     <div
-      class="customers-list-item corporate-item"
+      class="list-item corporate-item"
       *ngFor="
         let customer of corporateCustomers
           | filterCorporateCustomers: searchId:searchCompanyName:searchTax

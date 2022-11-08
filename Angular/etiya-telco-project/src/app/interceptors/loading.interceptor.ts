@@ -12,6 +12,8 @@ import { LoadingService } from '../services/loading.service';
 export class LoadingInterceptor implements HttpInterceptor {
   constructor(private loadingService: LoadingService) {}
 
+  //* BIR HTTP ISTEGI CALISTIGINDA LOADINGI BASLAT
+  //* ISTEK SONLANDIGINDA 1SN SONRA LOADINGI DURDUR.
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler

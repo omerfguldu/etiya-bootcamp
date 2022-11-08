@@ -1,6 +1,6 @@
 <h6>Customer {{ selectedUserID }} Details</h6>
 <div class="individual-customer" *ngIf="customerType === 'individual'">
-  <div class="customers-list-title individual-title">
+  <div class="list-title individual-title">
     <strong>ID</strong>
     <strong>First Name</strong>
     <strong>Last Name</strong>
@@ -8,7 +8,7 @@
     <strong>National ID</strong>
   </div>
   <div
-    class="customers-list-item individual-item"
+    class="list-item individual-item"
     *ngFor="let detail of individualCustomerDetails"
   >
     <strong> {{ detail.customerId }} </strong>
@@ -19,13 +19,13 @@
   </div>
 </div>
 <div class="corporate-customer" *ngIf="customerType === 'corporate'">
-  <div class="customers-list-title corporate-title">
+  <div class="list-title corporate-title">
     <strong>ID</strong>
     <strong>Company Name</strong>
     <strong>Tax Number</strong>
   </div>
   <div
-    class="customers-list-item corporate-item"
+    class="list-item corporate-item"
     *ngFor="let detail of corporateCustomerDetails"
   >
     <strong> {{ detail.customerId }} </strong>
@@ -36,13 +36,13 @@
 <hr />
 <br />
 <h6>Customer {{ selectedUserID }} Subscriptions</h6>
-<div class="customer-subscriptions-title">
+<div class="list-title subscriptions-title">
   <strong>Service ID</strong>
   <strong>Service Name</strong>
   <strong>Date Started</strong>
 </div>
 <div
-  class="customer-subscription-item"
+  class="list-item subscription-item"
   *ngFor="let subscription of customerSubscriptions"
 >
   <strong> {{ subscription.serviceId }} </strong>

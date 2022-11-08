@@ -28,7 +28,6 @@ export class LoginGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (this.authService.isAuthenticated) return true;
-    console.log(this.authService.isAuthenticated);
 
     this.toastr.error("You need to login to access this page's content");
     this.router.navigateByUrl('/login');

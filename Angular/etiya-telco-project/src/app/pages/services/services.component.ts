@@ -18,9 +18,11 @@ export class ServicesComponent implements OnInit {
   updateIcon: IconDefinition = faPenToSquare;
   deleteIcon: IconDefinition = faTrash;
   plusIcon: IconDefinition = faPlus;
+  searchName: string = '';
   services: Service[] = [];
   isModal: boolean = false;
   isUpdate: boolean = false;
+  displayStyle: string = 'none';
   addServiceForm!: FormGroup;
   selectedService: Service = {
     id: 0,
@@ -32,25 +34,33 @@ export class ServicesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //* SERVISLERI GETIR VE SERVIS EKLEME FORMU OLUSTUR.
     this.getServices();
     this.createAddServiceForm();
   }
+
   createAddServiceForm() {
+    //* SERVIS EKLEME FORMU BUILDER
     this.addServiceForm = this.formbuilder.group({
       name: ['', Validators.required],
     });
   }
+
   getServices() {
+    //* SERVISLERI GETIR VE ILGILI DEGISKENE AKTAR.
     this.servicesService.getServices().subscribe({
       next: (response) => {
         this.services = response;
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
+
   addService() {
+    //* UPDATE YAPILACAKSA UPDATESERVICE METODUNU CAGIR.
+    //* YENI SERVIS EKLENECEKSE ADDSERVICE METODUNU CAGIR.
     const service: Service = {
       ...this.addServiceForm.value,
     };
@@ -72,12 +82,17 @@ export class ServicesComponent implements OnInit {
       this.closePopup();
     });
   }
+
   deleteService(id: number) {
+    //* SECILI SERVISI ID'YE GORE SIL
     this.servicesService.deleteService(id).subscribe(() => {
       this.getServices();
     });
   }
+
   updateService(service: Service) {
+    //* UPDATE BUTONU TIKLANDIGINDA SERVIS BILGISINI
+    //* FORM MODALI ACILDIGINDA OTOMATIK OLARAK GOSTER.
     this.isUpdate = true;
     this.openPopup();
     this.selectedService = service;
@@ -86,12 +101,13 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  displayStyle = 'none';
-
   openPopup() {
+    //* MODAL GOSTER
     this.displayStyle = 'block';
   }
+
   closePopup() {
+    //* MODAL GIZLE
     this.displayStyle = 'none';
     this.isUpdate = false;
     this.addServiceForm.reset();

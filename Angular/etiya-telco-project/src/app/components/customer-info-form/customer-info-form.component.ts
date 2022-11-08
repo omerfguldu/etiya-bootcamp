@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./customer-info-form.component.css'],
 })
 export class CustomerInfoFormComponent implements OnInit {
+  //* BASLANGICTA CUSTOMER TYPE INDIVIDUAL OLARAK BELIRLE.
   customerType: string = 'Individual Customer';
   customerInfoForm!: FormGroup;
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
@@ -28,21 +29,21 @@ export class CustomerInfoFormComponent implements OnInit {
   }
 
   onCustomerTypeChange(type: string) {
+    //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
     this.customerType = type;
     this.createCustomerInfoForm();
   }
 
   onSubmit() {
+    //* FORMA GIRILEN BILGILERI STORE'A KAYDET VE SERVIS SECIM EKRANINA YONLENDIR.
     this.customersService.setCustomerToRegisterModelStoreState(
       this.customerInfoForm.value
     );
-    this.customerToRegisterModel$.subscribe((res) => {
-      console.log(res);
-    });
     this.router.navigateByUrl('homepage/newcustomer/services');
   }
 
   createCustomerInfoForm() {
+    //* CUSTOMER TYPE'A GORE FORM BUILDER ILE FORM OLUSTUR.
     if (this.customerType === 'Individual Customer') {
       this.customerInfoForm = this.fb.group({
         firstName: ['', Validators.required],

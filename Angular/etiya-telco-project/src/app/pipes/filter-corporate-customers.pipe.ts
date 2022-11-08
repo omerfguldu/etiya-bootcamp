@@ -5,6 +5,9 @@ import { CorporateCustomer } from '../models/corporateCustomer';
   name: 'filterCorporateCustomers',
 })
 export class FilterCorporateCustomersPipe implements PipeTransform {
+  //* CORPORATE CUSTOMER DIZISI OLARAK GELEN VERIYI
+  //* CUSTOMERID | COMPANYNAME | TAXNUMBER PARAMETERLERINDEN GELEN VERILERE
+  //* GORE FILTRELE.
   transform(value: CorporateCustomer[], ...args: any[]): CorporateCustomer[] {
     return value?.filter((customer: CorporateCustomer) => {
       return (

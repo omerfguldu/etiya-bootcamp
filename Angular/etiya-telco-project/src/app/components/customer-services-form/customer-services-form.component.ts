@@ -33,18 +33,22 @@ export class CustomerServicesFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //* SERVISLER GETIRME FONKSIYONUNU CAGIR.
     this.getServices();
   }
 
   onSubmit() {}
 
   fillServiceStatus() {
+    //* SERVIS SECILI MI DEGIL MI ANLAMAK ICIN
+    //* BASLANGIC DEGERI OLARAK GELEN SERVIS SAYISI KADAR FALSE EKLE.
     for (let i = 0; i < this.services.length; i++) {
       this.servicesSelectedStatus.push(false);
     }
   }
 
   getServices() {
+    //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
     this.servicesService.getServices().subscribe({
       next: (response) => {
         this.services = response;
@@ -57,6 +61,12 @@ export class CustomerServicesFormComponent implements OnInit {
   }
 
   onServiceClick(service: Service, index: number, event: Event) {
+    //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
+    //* SECILI SERVISI GONDER. NGFORDAN GELEN INDEXI GONDER. EVENT'I GONDER.
+    //* EGER SECILI SERVISE KARSILIK SERVISSTATUS DIZISINDEKI INDEX FALSE ISE
+    //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
+    //* SELECTEDSERVICES DIZISINE PUSHLA.
+    //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
     if (this.servicesSelectedStatus[index] === false) {
       this.servicesSelectedStatus[index] = true;
       this.renderer.addClass(event.target, 'selected');
@@ -71,6 +81,10 @@ export class CustomerServicesFormComponent implements OnInit {
   }
 
   onNext() {
+    //* OVERVIEW EKRANINA GECMEK ISTENDIGINDE CALIS.
+    //* STOREDA KAYITLI CUSTOMER VERISINI GETIR VE DEGISKENE AT.
+    //* BU DEGISKENLE BIRLIKTE SECILI SERVISLER DIZISINI
+    //* STORE'A KAYDET VE OVERVIEW'A YONLENDIR.
     this.customerToRegisterModel$.subscribe((res) => {
       this.customer = res;
     });

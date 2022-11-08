@@ -27,6 +27,8 @@ export class NewCustomerComponent implements OnInit {
   url: string = '/homepage/newcustomer';
 
   ngOnInit(): void {
+    //* FORM TASARIMINDA YER ALAN VE PROGRESI GOSTEREN YAPININ
+    //* DUZGUN CALISMASI ICIN URL'E GORE CLASS EKLENMESI VEYA CIKARILMASI ISLEMLERI
     this.route.url.subscribe(() => {
       if (this.userCircleEl !== undefined) {
         if (this.router.url === `${this.url}/info`) {

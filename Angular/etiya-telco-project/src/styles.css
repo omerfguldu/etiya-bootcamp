@@ -18,3 +18,55 @@ body {
   color: #fa5252;
   margin-top: 0.5rem;
 }
+
+.list-title,
+.list-item {
+  position: relative;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.856);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.individual-title,
+.individual-item {
+  grid-template-columns: 1fr repeat(4, 2fr);
+}
+
+.corporate-title,
+.corporate-item {
+  grid-template-columns: 1fr repeat(2, 2fr);
+}
+
+.list-item:hover {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.list-item p {
+  margin: 0;
+}
+
+.query-form-container {
+  padding: 1.5rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.query-form-container p {
+  margin: 0;
+  padding: 0 1rem;
+  position: absolute;
+  background-color: #edf2ff;
+  top: -10px;
+}
+
+.input-container label {
+  font-size: 0.7rem;
+}
+
+.bordered-container {
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+}
