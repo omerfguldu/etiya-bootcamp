@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Service } from './../../models/service';
 import { CustomersService } from './../../services/customers.service';
 import { CustomerToRegisterModel } from './../../models/customerToRegisterModel';
@@ -28,7 +30,9 @@ export class CustomerOverviewFormComponent implements OnInit {
   constructor(
     private customersService: CustomersService,
     private subscriptionsService: SubscriptionsService,
-    private invoicesService: InvoicesService
+    private invoicesService: InvoicesService,
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
@@ -94,9 +98,8 @@ export class CustomerOverviewFormComponent implements OnInit {
         serviceId: service.id,
         dateStarted: new Date().toISOString().split('T')[0],
       };
-      this.subscriptionsService
-        .addSubscription(subscription)
-        .subscribe((response) => {
+      this.subscriptionsService.addSubscription(subscription).subscribe({
+        next: (response) => {
           let date = new Date(response.dateStarted);
           date.setDate(date.getDate() + 28);
           let dateDue = date.toISOString().split('T')[0];
@@ -108,7 +111,15 @@ export class CustomerOverviewFormComponent implements OnInit {
           this.invoicesService.addInvoice(invoice).subscribe((response) => {
             console.log(response);
           });
-        });
+        },
+        error: (err) => {
+          console.error(err.message);
+          this.toastr.error('Something went wrong');
+        },
+        complete: () => {
+          this.router.navigateByUrl('/homepage/customers/list');
+        },
+      });
     });
   }
 }
