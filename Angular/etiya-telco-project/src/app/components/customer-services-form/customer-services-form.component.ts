@@ -12,8 +12,7 @@ import { ServicesService } from 'src/app/services/services.service';
   styleUrls: ['./customer-services-form.component.css'],
 })
 export class CustomerServicesFormComponent implements OnInit, OnDestroy {
-  subscription1!: Subscription;
-  subscription2!: Subscription;
+  subscriptions: Subscription[] = [];
   services: Service[] = [];
   servicesSelectedStatus: boolean[] = [];
   selectedServices: Service[] = [];
@@ -34,14 +33,16 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     //* SERVISLER GETIRME FONKSIYONUNU CAGIR.
     this.getServices();
-    this.subscription1 = this.customerToRegisterModel$.subscribe({
-      next: (res: any) => {
-        if (res.services) {
-          this.selectedServices = res.services;
-        }
-      },
-      complete: () => {},
-    });
+    this.subscriptions.push(
+      this.customerToRegisterModel$.subscribe({
+        next: (res: any) => {
+          if (res.services) {
+            this.selectedServices = res.services;
+          }
+        },
+        complete: () => {},
+      })
+    );
   }
 
   onSubmit() {}
@@ -82,7 +83,7 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     if (this.servicesSelectedStatus[index] === false) {
       this.servicesSelectedStatus[index] = true;
       this.renderer.addClass(event.target, 'selected');
-      this.selectedServices.push(this.services[index]);
+      this.selectedServices = [...this.selectedServices, this.services[index]];
     } else {
       this.servicesSelectedStatus[index] = false;
       this.renderer.removeClass(event.target, 'selected');
@@ -97,17 +98,12 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* STOREDA KAYITLI CUSTOMER VERISINI GETIR VE DEGISKENE AT.
     //* BU DEGISKENLE BIRLIKTE SECILI SERVISLER DIZISINI
     //* STORE'A KAYDET VE OVERVIEW'A YONLENDIR.
-    this.subscription2 = this.customerToRegisterModel$.subscribe((res: any) => {
-      // console.log('customer service next');
-      // console.log(res);
-      // if (res.customer) {
-      //   this.customer = res.customer;
-      //   return;
-      // }
-      this.customer = res;
-    });
+    this.subscriptions.push(
+      this.customerToRegisterModel$.subscribe((res: any) => {
+        this.customer = res;
+      })
+    );
     console.log(this.customer);
-    this.customersService.deleteCustomerToRegisterModelStoreState();
     this.customersService.setCustomerToRegisterModelStoreState({
       ...this.customer,
       services: this.selectedServices,
@@ -120,7 +116,8 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.subscription1.unsubscribe();
-    // this.subscription2.unsubscribe();
+    this.subscriptions.map((sub) => {
+      sub.unsubscribe();
+    });
   }
 }

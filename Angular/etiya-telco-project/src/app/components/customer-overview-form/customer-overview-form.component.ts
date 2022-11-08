@@ -44,13 +44,13 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     //* STORE'DA KAYITLI SERVISLERI AL.
     this.subscription1 = this.customerToRegisterModel$.subscribe({
       next: (res: any) => {
-        if (res.customer) {
-          this.customer = res.customer;
-          this.customer.nationalIdentity
-            ? (this.customerType = true)
-            : (this.customerType = false);
-          this.services = res.services;
-        }
+        const { services, ...customer } = res;
+        this.customer = customer;
+        this.services = services;
+
+        this.customer.nationalIdentity
+          ? (this.customerType = true)
+          : (this.customerType = false);
       },
       error: () => {
         this.toastr.error('Something went wrong');
@@ -148,6 +148,6 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.subscription1.unsubscribe();
+    this.subscription1.unsubscribe();
   }
 }
