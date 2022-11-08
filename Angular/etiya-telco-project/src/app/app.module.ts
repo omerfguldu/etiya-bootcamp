@@ -32,6 +32,10 @@ import { CustomerOverviewFormComponent } from './components/customer-overview-fo
 import { StoreModule } from '@ngrx/store';
 import { appReducers } from './store/app.reducer';
 import { AppStoreState } from './store/app.state';
+import { CorporateListComponent } from './components/corporate-customers/corporate-list/corporate-list.component';
+import { CorporateDetailsComponent } from './components/corporate-customers/corporate-details/corporate-details.component';
+import { IndividualListComponent } from './components/individual-customers/individual-list/individual-list.component';
+import { IndividualDetailsComponent } from './components/individual-customers/individual-details/individual-details.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +57,10 @@ import { AppStoreState } from './store/app.state';
     CustomerInfoFormComponent,
     CustomerServicesFormComponent,
     CustomerOverviewFormComponent,
+    CorporateListComponent,
+    CorporateDetailsComponent,
+    IndividualListComponent,
+    IndividualDetailsComponent,
   ],
   imports: [
     BrowserModule,

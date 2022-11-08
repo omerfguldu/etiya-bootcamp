@@ -16,12 +16,10 @@ export class CustomerDetailsComponent implements OnInit {
   selectedUserID!: number;
   customerType!: string;
   customerSubscriptions: SubscriptionsResponse[] = [];
-  individualCustomerDetails!: IndividualCustomer[];
-  corporateCustomerDetails!: CorporateCustomer[];
 
   constructor(
     private route: ActivatedRoute,
-    private customersService: CustomersService,
+
     private subscriptionsService: SubscriptionsService,
     private servicesService: ServicesService
   ) {}
@@ -30,33 +28,9 @@ export class CustomerDetailsComponent implements OnInit {
     //* ACTIVATED ROUTE ILE MUSTERI ID'YI YAKALA.
     //* BU ID'YI BASLANGICTA CALISACAK FONKSIYONLARA PARAMETRE OLARAK GEC.
     this.selectedUserID = this.route.snapshot.params['id'];
+
+    this.customerType = history.state.customerType;
     this.getCustomerSubscriptions(this.selectedUserID);
-    this.getIndividualCustomer(this.selectedUserID);
-    this.getCorporateCustomer(this.selectedUserID);
-  }
-
-  getIndividualCustomer(id: number) {
-    //* CUSTOMER ID YE AIT BILGILERI INDIVIDUAL CUSTOMERS UZERINDEN GETIRMEYI DENE
-    //* EGER GELEN CEVAP ARRAYINDE ELEMAN VARSA BU MUSTERI INDIVIDUAL TURUNDEDIR.
-    //* GELEN CEVAPLA ILGILI DEGISKENI DOLDUR VE customerType INDIVIDUAL'A ESITLE.
-    this.customersService.getIndividualCustomer(id).subscribe((res) => {
-      this.individualCustomerDetails = res;
-      if (this.individualCustomerDetails.length > 0) {
-        this.customerType = 'individual';
-      }
-    });
-  }
-
-  getCorporateCustomer(id: number) {
-    //* CUSTOMER ID YE AIT BILGILERI CORPRATE CUSTOMERS UZERINDEN GETIRMEYI DENE
-    //* EGER GELEN CEVAP ARRAYINDE ELEMAN VARSA BU MUSTERI CORPRATE TURUNDEDIR.
-    //* GELEN CEVAPLA ILGILI DEGISKENI DOLDUR VE customerType CORPRATE'A ESITLE.
-    this.customersService.getCorporateCustomer(id).subscribe((res) => {
-      this.corporateCustomerDetails = res;
-      if (this.corporateCustomerDetails.length > 0) {
-        this.customerType = 'corporate';
-      }
-    });
   }
 
   getCustomerSubscriptions(id: number) {

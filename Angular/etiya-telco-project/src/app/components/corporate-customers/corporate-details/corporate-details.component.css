@@ -1,0 +1,8 @@
+.customer-buttons {
+  position: absolute;
+  display: flex;
+  right: 2rem;
+  gap: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+}

@@ -1,0 +1,15 @@
+<div class="corporate-customer">
+  <div class="list-title corporate-title">
+    <strong>ID</strong>
+    <strong>Company Name</strong>
+    <strong>Tax Number</strong>
+  </div>
+  <div
+    class="list-item corporate-item"
+    *ngFor="let detail of corporateCustomerDetails"
+  >
+    <strong> {{ detail.customerId }} </strong>
+    <p>{{ detail.companyName }}</p>
+    <p>{{ detail.taxNumber }}</p>
+  </div>
+</div>

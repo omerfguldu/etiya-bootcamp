@@ -1,38 +1,15 @@
 <h6>Customer {{ selectedUserID }} Details</h6>
-<div class="individual-customer" *ngIf="customerType === 'individual'">
-  <div class="list-title individual-title">
-    <strong>ID</strong>
-    <strong>First Name</strong>
-    <strong>Last Name</strong>
-    <strong>Date of Birth</strong>
-    <strong>National ID</strong>
-  </div>
-  <div
-    class="list-item individual-item"
-    *ngFor="let detail of individualCustomerDetails"
-  >
-    <strong> {{ detail.customerId }} </strong>
-    <p>{{ detail.firstName }}</p>
-    <p>{{ detail.lastName }}</p>
-    <p>{{ detail.dateOfBirth }}</p>
-    <p>{{ detail.nationalIdentity }}</p>
-  </div>
-</div>
-<div class="corporate-customer" *ngIf="customerType === 'corporate'">
-  <div class="list-title corporate-title">
-    <strong>ID</strong>
-    <strong>Company Name</strong>
-    <strong>Tax Number</strong>
-  </div>
-  <div
-    class="list-item corporate-item"
-    *ngFor="let detail of corporateCustomerDetails"
-  >
-    <strong> {{ detail.customerId }} </strong>
-    <p>{{ detail.companyName }}</p>
-    <p>{{ detail.taxNumber }}</p>
-  </div>
-</div>
+<ng-container *ngIf="customerType === 'individual'">
+  <app-individual-details
+    [selectedUserID]="selectedUserID"
+  ></app-individual-details>
+</ng-container>
+<ng-container *ngIf="customerType === 'corporate'">
+  <app-corporate-details
+    [selectedUserID]="selectedUserID"
+  ></app-corporate-details>
+</ng-container>
+
 <hr />
 <br />
 <h6>Customer {{ selectedUserID }} Subscriptions</h6>
