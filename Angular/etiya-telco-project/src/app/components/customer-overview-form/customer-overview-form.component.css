@@ -17,3 +17,34 @@
   gap: 1rem;
   padding: 1rem;
 }
+
+.overview-list-title,
+.overview-list-item {
+  position: relative;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.856);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.overview-list-item:hover {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 800px) {
+  .list-item::before {
+    display: none;
+  }
+
+  .individual-item,
+  .corporate-item {
+    font-size: 2rem;
+    padding: 3rem 5rem;
+  }
+
+  .list-item-icon {
+    font-size: 3rem;
+    width: 50px;
+  }
+}

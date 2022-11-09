@@ -63,6 +63,9 @@
 }
 
 .sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 25px;
   height: 25px;
 }
@@ -89,4 +92,11 @@
 .logout-icon {
   font-size: 2rem;
   padding: 0 1rem;
+}
+
+@media screen and (max-width: 800px) {
+  .sidebar-container {
+    position: absolute;
+    display: none;
+  }
 }

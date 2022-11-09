@@ -1,5 +1,12 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { Service } from 'src/app/models/service';
@@ -54,7 +61,7 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* SERVIS SECILI MI DEGIL MI ANLAMAK ICIN
     //* BASLANGIC DEGERI OLARAK GELEN SERVIS SAYISI KADAR FALSE EKLE.
     for (let i = 0; i < this.services.length; i++) {
-      this.servicesSelectedStatus.push(false);
+      this.servicesSelectedStatus[i] = false;
     }
   }
 
@@ -83,6 +90,10 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
     //* SELECTEDSERVICES DIZISINE PUSHLA.
     //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
+    // if(this.formReseted === true){
+
+    // }
+    // this.formReseted = false;
     if (this.servicesSelectedStatus[index] === false) {
       this.servicesSelectedStatus[index] = true;
       this.renderer.addClass(event.target, 'selected');
@@ -114,6 +125,11 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       services: this.selectedServices,
     });
     this.router.navigateByUrl('/homepage/newcustomer/info');
+  }
+
+  onReset() {
+    this.selectedServices = [];
+    this.fillServiceStatus();
   }
 
   ngOnDestroy(): void {

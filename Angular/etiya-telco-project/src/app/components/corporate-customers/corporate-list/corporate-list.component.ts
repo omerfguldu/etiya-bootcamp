@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import {
   faCircleInfo,
   IconDefinition,
+  faFileSignature,
+  faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
 import { CorporateCustomer } from 'src/app/models/corporateCustomer';
 import { CustomersService } from 'src/app/services/customers.service';
@@ -18,6 +20,8 @@ export class CorporateListComponent implements OnInit {
   searchId: string = '';
   searchTax: string = '';
   updateIcon: IconDefinition = faCircleInfo;
+  companyIcon: IconDefinition = faBuilding;
+  taxIcon: IconDefinition = faFileSignature;
   constructor(
     private router: Router,
     private customersService: CustomersService
@@ -44,5 +48,11 @@ export class CorporateListComponent implements OnInit {
     this.router.navigateByUrl(`${this.router.url}/${id}`, {
       state: { customerType: 'corporate' },
     });
+  }
+
+  onReset() {
+    this.searchId = '';
+    this.searchCompanyName = '';    
+    this.searchTax= '';    
   }
 }

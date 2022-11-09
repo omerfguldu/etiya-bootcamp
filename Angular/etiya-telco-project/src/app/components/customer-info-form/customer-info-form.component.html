@@ -143,13 +143,18 @@
           </p>
         </div>
       </div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="customerInfoForm.invalid"
-      >
-        Next
-      </button>
+      <div class="d-flex align-items-center justify-content-end">
+        <button type="button" class="btn btn-warning mx-3" (click)="onReset()">
+          Reset
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="customerInfoForm.invalid"
+        >
+          Next
+        </button>
+      </div>
     </form>
   </div>
 </div>

@@ -13,13 +13,13 @@
 <hr />
 <br />
 <p class="page-subtitle">Customer {{ selectedUserID }} Subscriptions</p>
-<div class="list-title subscriptions-title">
+<div class="subscriptions-list-title subscriptions-title">
   <strong>Service ID</strong>
   <strong>Service Name</strong>
   <strong>Date Started</strong>
 </div>
 <div
-  class="list-item subscription-item"
+  class="subscriptions-list-item subscription-item"
   *ngFor="let subscription of customerSubscriptions"
 >
   <strong> {{ subscription.serviceId }} </strong>

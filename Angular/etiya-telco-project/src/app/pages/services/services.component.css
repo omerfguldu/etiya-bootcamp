@@ -53,3 +53,21 @@
 .query-form-container {
   margin-bottom: 0;
 }
+
+@media screen and (max-width: 800px) {
+  .service-buttons {
+    position: absolute;
+    display: flex;
+    right: 1rem;
+    gap: 1rem;
+    top: 1.5rem;
+  }
+
+  .fa-icon {
+    font-size: 1.3rem;
+  }
+
+  .list-item {
+    margin-bottom: 0;
+  }
+}

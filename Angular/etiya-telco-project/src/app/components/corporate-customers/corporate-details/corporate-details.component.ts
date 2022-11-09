@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {
+  faBuilding,
+  faFileSignature,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 import { CorporateCustomer } from 'src/app/models/corporateCustomer';
 import { CustomersService } from 'src/app/services/customers.service';
-import { ServicesService } from 'src/app/services/services.service';
-import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 
 @Component({
   selector: 'app-corporate-details',
@@ -10,6 +13,8 @@ import { SubscriptionsService } from 'src/app/services/subscriptions.service';
   styleUrls: ['./corporate-details.component.css'],
 })
 export class CorporateDetailsComponent implements OnInit {
+  companyIcon: IconDefinition = faBuilding;
+  taxIcon: IconDefinition = faFileSignature;
   @Input() selectedUserID!: number;
 
   corporateCustomerDetails!: CorporateCustomer[];

@@ -6,3 +6,22 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+@media screen and (max-width: 800px) {
+  .corporate-item {
+    font-size: 2rem;
+    padding: 3rem 5rem;
+  }
+
+  .list-item-icon {
+    font-size: 3rem;
+  }
+
+  .responsive-id {
+    font-size: 1.4rem;
+  }
+
+  .list-item-icon {
+    width: 50px;
+  }
+}

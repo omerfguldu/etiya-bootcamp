@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import {
   faCircleInfo,
   IconDefinition,
+  faUserPen,
+  faCalendarDays,
+  faIdCard,
 } from '@fortawesome/free-solid-svg-icons';
 import { IndividualCustomer } from 'src/app/models/individualCustomer';
 import { CustomersService } from 'src/app/services/customers.service';
@@ -18,6 +21,9 @@ export class IndividualListComponent implements OnInit {
   searchDate: Date = new Date(1970, 1, 1);
   individualCustomers!: IndividualCustomer[];
   updateIcon: IconDefinition = faCircleInfo;
+  nameIcon: IconDefinition = faUserPen;
+  dateIcon: IconDefinition = faCalendarDays;
+  idIcon: IconDefinition = faIdCard;
   dateOfToday = new Date().toISOString().split('T')[0];
   constructor(
     private router: Router,
@@ -43,5 +49,11 @@ export class IndividualListComponent implements OnInit {
     this.router.navigateByUrl(`${this.router.url}/${id}`, {
       state: { customerType: 'individual' },
     });
+  }
+
+  onReset() {
+    this.searchName = '';
+    this.searchSurName = '';
+    this.searchDate = new Date(1970, 1, 1);
   }
 }

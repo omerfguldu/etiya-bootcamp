@@ -56,3 +56,42 @@
 .fa-icon:hover::before {
   background-color: #e9ecef;
 }
+
+.hamburger-menu,
+.hamburger-input {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger-input {
+  opacity: 40%;
+  opacity: 0;
+  z-index: 99;
+  width: 25px;
+  height: 25px;
+}
+
+.line {
+  background-color: var(--color-secondary);
+  width: 25px;
+  height: 3px;
+}
+
+header input:checked.hamburger-menu.mid-line {
+  opacity: 0;
+}
+
+@media screen and (max-width: 800px) {
+  .search-input {
+    display: none;
+  }
+}

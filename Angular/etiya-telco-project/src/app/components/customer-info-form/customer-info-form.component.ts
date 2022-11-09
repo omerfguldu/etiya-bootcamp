@@ -86,6 +86,10 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  onReset() {
+    this.customerInfoForm.reset();
+  }
+
   ngOnDestroy() {
     this.subscription1.unsubscribe();
   }

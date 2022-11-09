@@ -8,7 +8,7 @@
   </div>
   <div class="query-form-container bordered-container">
     <p class="form-label">Filter Services</p>
-    <div class="input-container">
+    <div class="services-input-container">
       <div class="name-input">
         <label class="form-label" for="name">Service Name</label>
         <input
@@ -25,23 +25,25 @@
       <strong>ID</strong>
       <strong>Service Name</strong>
     </div>
-    <div
-      class="list-item"
-      *ngFor="let service of services | filterService: searchName"
-    >
-      <strong>{{ service.id }}</strong>
-      <p>{{ service.name }}</p>
-      <div class="service-buttons">
-        <fa-icon
-          class="fa-icon update-icon"
-          [icon]="updateIcon"
-          (click)="updateService(service)"
-        ></fa-icon>
-        <fa-icon
-          class="fa-icon delete-icon"
-          [icon]="deleteIcon"
-          (click)="deleteService(service.id)"
-        ></fa-icon>
+    <div class="list-item-container">
+      <div
+        class="list-item"
+        *ngFor="let service of services | filterService: searchName"
+      >
+        <strong class="responsive-id">{{ service.id }}</strong>
+        <p>{{ service.name }}</p>
+        <div class="service-buttons">
+          <fa-icon
+            class="fa-icon update-icon"
+            [icon]="updateIcon"
+            (click)="updateService(service)"
+          ></fa-icon>
+          <fa-icon
+            class="fa-icon delete-icon"
+            [icon]="deleteIcon"
+            (click)="deleteService(service.id)"
+          ></fa-icon>
+        </div>
       </div>
     </div>
   </div>

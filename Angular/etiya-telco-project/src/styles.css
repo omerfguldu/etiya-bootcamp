@@ -71,6 +71,22 @@ select {
   margin-bottom: 1.5rem;
 }
 
+.list-item:hover {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.list-item-content {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 2rem;
+}
+
+.list-item-icon {
+  display: none;
+  width: 15px;
+}
+
 .individual-title,
 .individual-item {
   grid-template-columns: 1fr repeat(4, 2fr);
@@ -79,10 +95,6 @@ select {
 .corporate-title,
 .corporate-item {
   grid-template-columns: 1fr repeat(2, 2fr);
-}
-
-.list-item:hover {
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
 .query-form-container {
@@ -145,4 +157,93 @@ label.form-label {
 .btn-add:hover {
   background-color: var(--color-primary);
   color: var(--color-secondary);
+}
+
+.customer-buttons {
+  position: absolute;
+  display: flex;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-container {
+  display: grid;
+  grid-template-columns: repeat(3, 2fr) 1fr;
+  align-items: end;
+  gap: 2rem;
+}
+
+.fa-icon {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.info-icon:hover {
+  color: #228be6;
+}
+
+@media screen and (max-width: 1250px) and (min-width: 1000px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media screen and (max-width: 999px) and (min-width: 801px) {
+  html {
+    font-size: 40%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  body {
+    padding: 0;
+  }
+  .list-title {
+    display: none;
+  }
+
+  .list-item-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .list-item {
+    position: relative;
+    font-size: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 5rem;
+  }
+
+  .customer-buttons {
+    right: 0.8rem;
+    top: 2rem;
+  }
+
+  .responsive-id {
+    position: absolute;
+    left: 1.7rem;
+    top: 0.3rem;
+    color: #fff;
+  }
+
+  .list-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0.75rem;
+    width: 25px;
+    height: 25px;
+    background-color: var(--color-primary);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .list-item-icon {
+    display: block;
+  }
 }

@@ -1,5 +1,11 @@
-import { CorporateCustomer } from 'src/app/models/corporateCustomer';
-import { IndividualCustomer } from 'src/app/models/individualCustomer';
+import {
+  IconDefinition,
+  faFileSignature,
+  faBuilding,
+  faUserPen,
+  faCalendarDays,
+  faIdCard,
+} from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Service } from './../../models/service';
@@ -19,6 +25,11 @@ import { InvoicesService } from 'src/app/services/invoices.service';
   styleUrls: ['./customer-overview-form.component.css'],
 })
 export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
+  nameIcon: IconDefinition = faUserPen;
+  dateIcon: IconDefinition = faCalendarDays;
+  idIcon: IconDefinition = faIdCard;
+  companyIcon: IconDefinition = faBuilding;
+  taxIcon: IconDefinition = faFileSignature;
   subscription1!: Subscription;
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
