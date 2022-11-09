@@ -1,5 +1,5 @@
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   faGear,
   faBell,
@@ -13,6 +13,8 @@ import { Token } from 'src/app/models/token';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  isChecked: boolean = false;
+  @Output() isSidebarActive = new EventEmitter<boolean>();
   settingsIcon: IconDefinition = faGear;
   notificationsIcon: IconDefinition = faBell;
   activeUserName!: Token;
@@ -24,5 +26,9 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  onInputChange() {
+    this.isSidebarActive.emit(this.isChecked);
   }
 }

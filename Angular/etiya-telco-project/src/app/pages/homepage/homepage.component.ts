@@ -9,4 +9,10 @@ export class HomepageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  sideBarStatus: boolean = false;
+
+  onStatusChange(val: boolean) {
+    this.sideBarStatus = val;
+  }
 }
