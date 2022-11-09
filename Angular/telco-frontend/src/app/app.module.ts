@@ -23,6 +23,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { OverlayTitleComponent } from './components/overlay-title/overlay-title.component';
 import { StoreModule } from '@ngrx/store';
 import { AppStoreState } from './store/app.state';
+import { CreateCustomerComponent } from './pages/create-customer/create-customer.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AppStoreState } from './store/app.state';
     FilterServicePipe,
     NavbarComponent,
     OverlayTitleComponent,
+    CreateCustomerComponent,
   ],
   imports: [
     BrowserModule,

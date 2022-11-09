@@ -5,6 +5,6 @@ import { createReducer, on } from '@ngrx/store';
 export const customerReducer = createReducer<CustomerState>(
   initialCustomerState,
   on(setCustomerInfoModel, (currentState, action) => {
-    return { ...currentState, customerInfo: action.};
+    return { ...currentState, customerInfo: action.customerInfoModel };
   })
 );
