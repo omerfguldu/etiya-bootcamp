@@ -1,16 +1,16 @@
 <div class="services-container">
   <div class="services-header">
-    <h3>Services</h3>
-    <button class="btn btn-add-service" (click)="openPopup()">
+    <p class="page-title">Services</p>
+    <button class="btn btn-add" (click)="openPopup()">
       <fa-icon [icon]="plusIcon"></fa-icon>
       New Service
     </button>
   </div>
   <div class="query-form-container bordered-container">
-    <p>Filter Services</p>
+    <p class="form-label">Filter Services</p>
     <div class="input-container">
       <div class="name-input">
-        <label for="name">Service Name</label>
+        <label class="form-label" for="name">Service Name</label>
         <input
           id="name"
           [(ngModel)]="searchName"
@@ -21,12 +21,12 @@
     </div>
   </div>
   <div class="services-content">
-    <div class="services-list-title">
+    <div class="list-title">
       <strong>ID</strong>
       <strong>Service Name</strong>
     </div>
     <div
-      class="services-list-item"
+      class="list-item"
       *ngFor="let service of services | filterService: searchName"
     >
       <strong>{{ service.id }}</strong>

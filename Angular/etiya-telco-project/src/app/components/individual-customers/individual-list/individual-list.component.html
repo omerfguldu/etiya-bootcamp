@@ -1,9 +1,9 @@
 <div class="mt-5">
   <div class="query-form-container bordered-container">
-    <p>Filter Customers</p>
+    <p class="form-label">Filter Customers</p>
     <div class="input-container">
       <div class="name-input">
-        <label for="name">First Name</label>
+        <label class="form-label" for="name">First Name</label>
         <input
           id="name"
           [(ngModel)]="searchName"
@@ -12,7 +12,7 @@
         />
       </div>
       <div class="surname-input">
-        <label for="surname">Last Name</label>
+        <label class="form-label" for="surname">Last Name</label>
         <input
           id="surname"
           [(ngModel)]="searchSurName"
@@ -21,7 +21,7 @@
         />
       </div>
       <div class="date-input">
-        <label for="date">Date of Birth</label>
+        <label class="form-label" for="date">Date of Birth</label>
         <input
           id="date"
           [(ngModel)]="searchDate"

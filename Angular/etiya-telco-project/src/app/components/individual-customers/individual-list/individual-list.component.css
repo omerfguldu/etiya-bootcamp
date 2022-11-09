@@ -2,7 +2,6 @@
   position: absolute;
   display: flex;
   right: 2rem;
-  gap: 1.4rem;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -10,11 +9,11 @@
 .input-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
 .fa-icon {
-  font-size: 1.3rem;
+  font-size: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -23,8 +22,8 @@
   color: #228be6;
 }
 
-.customer-type-switch {
+/* .customer-type-switch {
   margin-bottom: 3rem;
   display: flex;
   gap: 1rem;
-}
+} */

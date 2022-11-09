@@ -8,12 +8,12 @@
 }
 
 .navbar-container header {
-  padding: 0 0.8rem;
-  gap: 1rem;
+  padding: 0.8rem 1.4rem;
+  gap: 2rem;
 }
 
 .search-input {
-  width: 400px;
+  width: 40rem;
 }
 
 .dropdown {
@@ -24,6 +24,10 @@
   cursor: pointer;
 }
 
+.dropdown-item {
+  font-size: 1.5rem;
+}
+
 .fa-icon {
   position: relative;
   display: flex;
@@ -31,8 +35,8 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  font-size: 1.2rem;
-  color: #0c082f !important;
+  font-size: 2rem;
+  color: var(--color-secondary) !important;
   cursor: pointer;
 }
 

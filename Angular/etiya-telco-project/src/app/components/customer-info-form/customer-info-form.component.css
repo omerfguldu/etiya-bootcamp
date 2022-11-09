@@ -3,9 +3,14 @@
   margin-top: 2rem;
 }
 
+.select-container select {
+  font-size: 1.5rem;
+}
+
 .customer-info-form-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  height: 550px;
 }
 
 .customer-info-form {
@@ -28,5 +33,5 @@ button {
 
 .form-image {
   width: 80%;
-  height: 30rem;
+  height: 45rem;
 }

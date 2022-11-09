@@ -1,11 +1,11 @@
 <div *ngIf="customer.firstName">
-  <div class="customers-list-title individual-title">
+  <div class="list-title individual-title">
     <strong>First Name</strong>
     <strong>Last Name</strong>
     <strong>Date of Birth</strong>
     <strong>National ID</strong>
   </div>
-  <div class="customers-list-item individual-item">
+  <div class="list-item individual-item">
     <p>
       {{ customer.firstName }}
     </p>
@@ -16,23 +16,27 @@
 </div>
 
 <div *ngIf="!customer.firstName">
-  <div class="customers-list-title corporate-title">
+  <div class="list-title corporate-title">
     <strong>Company Name</strong>
     <strong>Tax Number</strong>
   </div>
-  <div class="customers-list-item corporate-item">
+  <div class="list-item corporate-item">
     <p>{{ customer.companyName }}</p>
     <p>{{ customer.taxNumber }}</p>
   </div>
 </div>
 
+<br />
+<hr />
+<br />
+
 <div class="services-content">
-  <div class="services-list-title">
+  <div class="list-title services-title">
     <strong></strong>
     <strong>Service Name</strong>
   </div>
   <div
-    class="services-list-item"
+    class="list-item services-item"
     *ngFor="let service of services; let i = index"
   >
     <strong>{{ i + 1 }}</strong>

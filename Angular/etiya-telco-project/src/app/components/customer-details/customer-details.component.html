@@ -1,4 +1,4 @@
-<h6>Customer {{ selectedUserID }} Details</h6>
+<p class="page-subtitle">Customer {{ selectedUserID }} Details</p>
 <ng-container *ngIf="customerType === 'individual'">
   <app-individual-details
     [selectedUserID]="selectedUserID"
@@ -9,10 +9,10 @@
     [selectedUserID]="selectedUserID"
   ></app-corporate-details>
 </ng-container>
-
+<br />
 <hr />
 <br />
-<h6>Customer {{ selectedUserID }} Subscriptions</h6>
+<p class="page-subtitle">Customer {{ selectedUserID }} Subscriptions</p>
 <div class="list-title subscriptions-title">
   <strong>Service ID</strong>
   <strong>Service Name</strong>

@@ -11,61 +11,34 @@
   justify-content: space-between;
 }
 
-.btn-add-service {
-  background-color: #0c082f;
-  color: #fff;
-  font-weight: 700;
-  display: flex;
-  gap: 1rem;
-  transition: all 0.5s ease;
-}
-
-.btn-add-service:hover {
-  background-color: #ff922b;
-  color: #0c082f;
-}
-
 .services-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.services-list-title,
-.services-list-item {
-  position: relative;
-  display: grid;
+.list-title,
+.list-item {
   grid-template-columns: 10rem 1fr;
-  background-color: rgba(255, 255, 255, 0.856);
-  padding: 1rem;
-  border-radius: 10px;
-}
-
-.services-list-item:hover {
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
-}
-
-.services-list-item p {
-  margin: 0;
 }
 
 .service-buttons {
   position: absolute;
   display: flex;
-  right: 2rem;
-  gap: 1.4rem;
+  right: 3rem;
+  gap: 2rem;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .fa-icon {
-  font-size: 1.1rem;
+  font-size: 1.8rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .update-icon:hover {
-  color: #fcc419;
+  color: #e6b216;
 }
 
 .delete-icon:hover {

@@ -4,7 +4,7 @@ main {
   width: 100%;
   border-radius: 20px;
   overflow: hidden;
-  background-color: #edf2ff;
+  background-color: var(--main-background-color);
 }
 
 .content-container {
@@ -33,7 +33,6 @@ main {
 /* scrollbar styling ends */
 
 .router-container {
-  /* max-height: 800px; */
   position: relative;
-  padding: 3rem 7rem;
+  padding: 5rem 10rem;
 }
