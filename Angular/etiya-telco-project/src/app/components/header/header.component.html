@@ -1,6 +1,11 @@
 <div class="navbar-container py-2">
   <header class="d-flex align-items-center justify-content-end">
-    <input type="checkbox" class="hamburger-input" />
+    <input
+      [(ngModel)]="isChecked"
+      (change)="onInputChange()"
+      type="checkbox"
+      class="hamburger-input"
+    />
     <div class="hamburger-menu">
       <span class="line top-line"></span>
       <span class="line mid-line"></span>

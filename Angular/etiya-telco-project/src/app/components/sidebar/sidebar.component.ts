@@ -1,5 +1,5 @@
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import {
   IconDefinition,
   faRightFromBracket,
@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
+  @Input() isActive: boolean = false;
   logoutIcon: IconDefinition = faRightFromBracket;
   servicesIcon: IconDefinition = faGears;
   customersIcon: IconDefinition = faUsers;

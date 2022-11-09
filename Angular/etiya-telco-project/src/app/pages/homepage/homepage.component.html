@@ -1,7 +1,7 @@
 <main>
-  <app-sidebar></app-sidebar>
+  <app-sidebar [isActive]="sideBarStatus"></app-sidebar>
   <div class="content-container">
-    <app-header></app-header>
+    <app-header (isSidebarActive)="onStatusChange($event)"></app-header>
     <div class="router-container">
       <router-outlet></router-outlet>
     </div>

@@ -10,7 +10,7 @@
 .customer-info-form-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 550px;
+  height: 55rem;
 }
 
 .customer-info-form {
@@ -34,4 +34,14 @@ button {
 .form-image {
   width: 80%;
   height: 45rem;
+}
+
+@media screen and (max-width: 600px) {
+  .customer-info-form-container {
+    grid-template-columns: 1fr;
+  }
+
+  .img {
+    display: none;
+  }
 }

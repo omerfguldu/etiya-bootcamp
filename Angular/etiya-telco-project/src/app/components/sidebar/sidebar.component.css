@@ -97,6 +97,15 @@
 @media screen and (max-width: 800px) {
   .sidebar-container {
     position: absolute;
-    display: none;
+    z-index: 999;
+    opacity: 0;
+    left: -30rem;
+    transition: opacity 0.5s ease;
+  }
+
+  .show {
+    opacity: 1;
+    left: 0;
+    padding-top: 5rem;
   }
 }

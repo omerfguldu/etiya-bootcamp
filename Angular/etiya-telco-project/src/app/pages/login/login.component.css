@@ -18,7 +18,7 @@
 }
 
 form {
-  width: 400px;
+  width: 40rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,6 +37,12 @@ form {
 
 .form-signin input[type="password"] {
   margin-bottom: 10px;
+}
+
+.login-input {
+  height: 6rem;
+  font-size: 1.5rem;
+  border-radius: 5px;
 }
 
 .image-container {
@@ -81,4 +87,25 @@ form {
 
 .password-icon:hover {
   color: #495057;
+}
+
+@media screen and (max-width: 800px) {
+  .login-container {
+    border-radius: 0px;
+    grid-template-columns: 1fr;
+  }
+
+  .image-container {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  form {
+    width: 30rem;
+  }
+
+  .img-logo {
+    height: 75px;
+  }
 }
