@@ -18,6 +18,7 @@ export class IndividualListComponent implements OnInit {
   searchDate: Date = new Date(1970, 1, 1);
   individualCustomers!: IndividualCustomer[];
   updateIcon: IconDefinition = faCircleInfo;
+  dateOfToday = new Date().toISOString().split('T')[0];
   constructor(
     private router: Router,
     private customersService: CustomersService

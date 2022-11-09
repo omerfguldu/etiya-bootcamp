@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
   selector: 'app-customer',
@@ -8,7 +9,9 @@ import { faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 })
 export class CustomersComponent implements OnInit {
   plusIcon: IconDefinition = faPlus;
-  constructor() {}
+  constructor(private customerService: CustomersService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customerService.deleteCustomerToRegisterModelStoreState();
+  }
 }

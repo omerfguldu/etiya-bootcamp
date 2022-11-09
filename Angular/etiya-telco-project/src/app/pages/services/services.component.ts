@@ -7,6 +7,7 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { Service } from 'src/app/models/service';
+import { CustomersService } from 'src/app/services/customers.service';
 import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
@@ -30,11 +31,13 @@ export class ServicesComponent implements OnInit {
   };
   constructor(
     private servicesService: ServicesService,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private customersService: CustomersService
   ) {}
 
   ngOnInit(): void {
     //* SERVISLERI GETIR VE SERVIS EKLEME FORMU OLUSTUR.
+    this.customersService.deleteCustomerToRegisterModelStoreState();
     this.getServices();
     this.createAddServiceForm();
   }

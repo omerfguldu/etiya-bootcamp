@@ -41,12 +41,9 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     //* FORMA GIRILEN BILGILERI STORE'A KAYDET VE SERVIS SECIM EKRANINA YONLENDIR.
-    this.customersService.setCustomerToRegisterModelStoreState(
-      this.customerInfoForm.value
-    );
-    console.log('customer info submit');
-    this.customerToRegisterModel$.subscribe((res) => {
-      console.log(res);
+    this.customersService.setCustomerToRegisterModelStoreState({
+      ...this.customerValues,
+      ...this.customerInfoForm.value,
     });
     this.router.navigateByUrl('homepage/newcustomer/services');
   }
@@ -56,11 +53,6 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
     //* EGER STORE'DA KAYITLI VERI VARSA ILK OLARAK O DEGERLERI FORMDA GOSTER.
     this.subscription1 = this.customerToRegisterModel$.subscribe({
       next: (res: any) => {
-        // console.log(res);
-        // if (res.customer) {
-        //   this.customerValues = res;
-        //   return;
-        // }
         this.customerValues = res;
       },
       complete: () => {},

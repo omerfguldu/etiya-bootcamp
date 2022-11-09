@@ -13,6 +13,7 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { Subscription } from 'rxjs';
+import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
   selector: 'app-login',
@@ -34,13 +35,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     private localstorageService: LocalstorageService,
     private router: Router,
     private loadingService: LoadingService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private customersService: CustomersService
   ) {}
 
   ngOnInit(): void {
     //* LOGIN FORMUNU OLUSTURMA FONKSIYONUNU CAGIR VE LOADING GOZLEMLE.
     this.createLoginForm();
     this.subscribeToLoading();
+    this.customersService.deleteCustomerToRegisterModelStoreState();
   }
 
   ngOnDestroy(): void {

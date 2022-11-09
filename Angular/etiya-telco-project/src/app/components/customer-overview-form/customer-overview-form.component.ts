@@ -137,6 +137,9 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
           this.toastr.error('Something went wrong');
         },
         complete: () => {
+          this.subscription1.unsubscribe();
+
+          this.customersService.deleteCustomerToRegisterModelStoreState();
           this.router.navigateByUrl('/homepage/customers/list');
         },
       });

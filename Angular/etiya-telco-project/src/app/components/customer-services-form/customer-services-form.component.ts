@@ -25,7 +25,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     private customersService: CustomersService,
     private router: Router
   ) {
-    console.log('kurucu calisti.');
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
   }
@@ -37,8 +36,12 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       this.customerToRegisterModel$.subscribe({
         next: (res: any) => {
           if (res.services) {
-            this.selectedServices = res.services;
+            const { services, ...customer } = res;
+            this.customer = customer;
+            this.selectedServices = services;
+            return;
           }
+          this.customer = res;
         },
         complete: () => {},
       })
@@ -98,12 +101,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* STOREDA KAYITLI CUSTOMER VERISINI GETIR VE DEGISKENE AT.
     //* BU DEGISKENLE BIRLIKTE SECILI SERVISLER DIZISINI
     //* STORE'A KAYDET VE OVERVIEW'A YONLENDIR.
-    this.subscriptions.push(
-      this.customerToRegisterModel$.subscribe((res: any) => {
-        this.customer = res;
-      })
-    );
-    console.log(this.customer);
     this.customersService.setCustomerToRegisterModelStoreState({
       ...this.customer,
       services: this.selectedServices,
@@ -112,6 +109,10 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
+    this.customersService.setCustomerToRegisterModelStoreState({
+      ...this.customer,
+      services: this.selectedServices,
+    });
     this.router.navigateByUrl('/homepage/newcustomer/info');
   }
 
