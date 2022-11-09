@@ -8,7 +8,7 @@
       *ngFor="let service of services; let i = index"
       (click)="onServiceClick(service, i, $event)"
       [ngClass]="{
-        selected: servicesSelectedStatus[i] === true
+        selected: servicesSelectedStatus[service.id] === true
       }"
     >
       <strong class="responsive-id service-form-id">{{ service.id }}</strong>

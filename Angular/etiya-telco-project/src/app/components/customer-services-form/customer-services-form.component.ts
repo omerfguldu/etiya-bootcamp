@@ -60,9 +60,13 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   fillServiceStatus() {
     //* SERVIS SECILI MI DEGIL MI ANLAMAK ICIN
     //* BASLANGIC DEGERI OLARAK GELEN SERVIS SAYISI KADAR FALSE EKLE.
-    for (let i = 0; i < this.services.length; i++) {
-      this.servicesSelectedStatus[i] = false;
-    }
+    this.services.forEach((service) => {
+      this.servicesSelectedStatus[service.id] = false;
+    });
+
+    // for (let i = 0; i < this.services.length; i++) {
+    //   this.servicesSelectedStatus[i] = false;
+    // }
   }
 
   getServices() {
@@ -73,7 +77,7 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
         this.fillServiceStatus();
         if (this.selectedServices.length > 0) {
           this.selectedServices.forEach((service) => {
-            this.servicesSelectedStatus[service.id - 1] = true;
+            this.servicesSelectedStatus[service.id] = true;
           });
         }
       },
@@ -94,12 +98,12 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
 
     // }
     // this.formReseted = false;
-    if (this.servicesSelectedStatus[index] === false) {
-      this.servicesSelectedStatus[index] = true;
+    if (this.servicesSelectedStatus[service.id] === false) {
+      this.servicesSelectedStatus[service.id] = true;
       this.renderer.addClass(event.target, 'selected');
       this.selectedServices = [...this.selectedServices, this.services[index]];
     } else {
-      this.servicesSelectedStatus[index] = false;
+      this.servicesSelectedStatus[service.id] = false;
       this.renderer.removeClass(event.target, 'selected');
       this.selectedServices = this.selectedServices.filter(
         (srv) => srv.id !== service.id
@@ -112,6 +116,8 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* STOREDA KAYITLI CUSTOMER VERISINI GETIR VE DEGISKENE AT.
     //* BU DEGISKENLE BIRLIKTE SECILI SERVISLER DIZISINI
     //* STORE'A KAYDET VE OVERVIEW'A YONLENDIR.
+    console.log(this.services);
+
     this.customersService.setCustomerToRegisterModelStoreState({
       ...this.customer,
       services: this.selectedServices,
