@@ -12,6 +12,11 @@ import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel'
 import { Service } from 'src/app/models/service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { ServicesService } from 'src/app/services/services.service';
+import { CatalogsService } from 'src/app/services/catalogs.service';
+import { Catalog } from 'src/app/models/catalog';
+import { Store } from '@ngrx/store';
+import { AppStoreState } from 'src/app/store/app.state';
+import { addCatalogsToCatalogsRegisterModel } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 
 @Component({
   selector: 'app-customer-services-form',
@@ -25,20 +30,35 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   selectedServices: Service[] = [];
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
-
+  catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
+  catalogsStore$!: Observable<Catalog[] | null>;
+  selectedCatalogs: Catalog[] = [];
   constructor(
     private servicesService: ServicesService,
     private renderer: Renderer2,
     private customersService: CustomersService,
-    private router: Router
+    private catalogsService: CatalogsService,
+    private router: Router,
+    private store: Store<AppStoreState>
   ) {
+    this.catalogsStore$ = this.store.select(
+      (s) => s.catalogsToRegister.catalogsToRegister
+    );
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
   }
 
   ngOnInit(): void {
+    this.catalogsStore$.subscribe((response) => {
+      console.log(response);
+
+      if (response != null) this.selectedCatalogs = response;
+    });
+
     //* SERVISLER GETIRME FONKSIYONUNU CAGIR.
     this.getServices();
+    this.getCatalogs();
+
     this.subscriptions.push(
       this.customerToRegisterModel$.subscribe({
         next: (res: any) => {
@@ -68,6 +88,13 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //   this.servicesSelectedStatus[i] = false;
     // }
   }
+  getCatalogs() {
+    this.catalogsService.getCatalogs().subscribe({
+      next: (response) => {
+        this.catalogs = response;
+      },
+    });
+  }
 
   getServices() {
     //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
@@ -86,7 +113,29 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       },
     });
   }
+  onCatalogClick(catalog: Catalog) {
+    let removeSelectedCatalog = this.selectedCatalogs.some(
+      (selectedCatalog) => {
+        return selectedCatalog.id === catalog.id;
+      }
+    ); //Check if the selected catalog already exists if it exists remove it with filter method and return
+    if (removeSelectedCatalog) {
+      this.selectedCatalogs = this.selectedCatalogs.filter(
+        (selectedCatalog) => {
+          return selectedCatalog.id !== catalog.id;
+        }
+      );
+      return;
+    }
+    this.selectedCatalogs = [...this.selectedCatalogs, catalog];
 
+    // this.selectedCatalogs.forEach(selectedCatalog=> {
+    //    if(catalog===selectedCatalog)
+    //    this.selectedCatalogs.splice
+    // })
+
+    console.log(this.selectedCatalogs);
+  }
   onServiceClick(service: Service, index: number, event: Event) {
     //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
     //* SECILI SERVISI GONDER. NGFORDAN GELEN INDEXI GONDER. EVENT'I GONDER.
@@ -122,6 +171,11 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       ...this.customer,
       services: this.selectedServices,
     });
+    this.store.dispatch(
+      addCatalogsToCatalogsRegisterModel({
+        catalogsToRegister: this.selectedCatalogs,
+      })
+    );
     this.router.navigateByUrl('/homepage/newcustomer/overview');
   }
 

@@ -1,3 +1,16 @@
+<!-- <div class="select-container">
+  <label for="customerselect" class="form-label">Select Customer Type</label>
+  <select
+    class="form-select mb-3"
+    name="customertype"
+    id="customerselect"
+    [(ngModel)]="customerType"
+    (ngModelChange)="onCustomerTypeChange($event)"
+  >
+    <option selected>Individual Customer</option>
+    <option>Corporate Customer</option>
+  </select>
+</div> -->
 <div class="services-container">
   <p class="form-label">
     Choose services that you want to add in by clicking on them.
@@ -15,9 +28,27 @@
       <p>{{ service.name }}</p>
     </div>
   </div>
+</div>
+
+<div class="services-container">
+  <p class="form-label">
+    Choose catalogs that you want to add in by clicking on them.
+  </p>
+  <div class="services-content">
+    <div
+      class="list-item"
+      *ngFor="let catalog of catalogs; let i = index"
+      (click)="onCatalogClick(catalog)"
+    >
+      <strong class="responsive-id service-form-id">{{ catalog.id }}</strong>
+      <p>{{ catalog.name }}</p>
+    </div>
+  </div>
   <div class="buttons-container">
     <a (click)="onBack()" class="btn btn-danger">Back</a>
     <a (click)="onReset()" class="btn btn-warning">Reset</a>
     <a (click)="onNext()" class="btn btn-primary">Next</a>
   </div>
+
+  {{ selectedCatalogs | json }}
 </div>
