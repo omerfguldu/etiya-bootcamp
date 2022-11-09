@@ -33,6 +33,9 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
   catalogsStore$!: Observable<Catalog[] | null>;
   selectedCatalogs: Catalog[] = [];
+  productType: string = 'Services';
+  toggleProductType: boolean = true;
+  //True ise Services False ise Catalogs
   constructor(
     private servicesService: ServicesService,
     private renderer: Renderer2,
@@ -135,6 +138,13 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     // })
 
     console.log(this.selectedCatalogs);
+    console.log('----');
+    console.log(this.catalogs);
+  }
+  toggleCatalogCss(catalog: Catalog) {
+    return this.selectedCatalogs.some((selectedCatalog) => {
+      return selectedCatalog.id === catalog.id;
+    });
   }
   onServiceClick(service: Service, index: number, event: Event) {
     //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
@@ -192,6 +202,11 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     this.fillServiceStatus();
   }
 
+  onProductTypeChange(type: string) {
+    //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
+    this.toggleProductType = !this.toggleProductType;
+    this.productType = type;
+  }
   ngOnDestroy(): void {
     this.subscriptions.map((sub) => {
       sub.unsubscribe();

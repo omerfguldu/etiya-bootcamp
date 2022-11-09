@@ -1,17 +1,17 @@
-<!-- <div class="select-container">
-  <label for="customerselect" class="form-label">Select Customer Type</label>
+<div class="select-container">
+  <label for="productselect" class="form-label">Select Product Type</label>
   <select
     class="form-select mb-3"
-    name="customertype"
-    id="customerselect"
-    [(ngModel)]="customerType"
-    (ngModelChange)="onCustomerTypeChange($event)"
+    name="producttype"
+    id="productselect"
+    [(ngModel)]="productType"
+    (ngModelChange)="onProductTypeChange($event)"
   >
-    <option selected>Individual Customer</option>
-    <option>Corporate Customer</option>
+    <option selected>Services</option>
+    <option>Catalogs</option>
   </select>
-</div> -->
-<div class="services-container">
+</div>
+<div class="services-container" *ngIf="toggleProductType">
   <p class="form-label">
     Choose services that you want to add in by clicking on them.
   </p>
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<div class="services-container">
+<div class="services-container" *ngIf="!toggleProductType">
   <p class="form-label">
     Choose catalogs that you want to add in by clicking on them.
   </p>
@@ -39,16 +39,17 @@
       class="list-item"
       *ngFor="let catalog of catalogs; let i = index"
       (click)="onCatalogClick(catalog)"
+      [ngClass]="{
+        selected: toggleCatalogCss(catalog)
+      }"
     >
       <strong class="responsive-id service-form-id">{{ catalog.id }}</strong>
       <p>{{ catalog.name }}</p>
     </div>
   </div>
-  <div class="buttons-container">
-    <a (click)="onBack()" class="btn btn-danger">Back</a>
-    <a (click)="onReset()" class="btn btn-warning">Reset</a>
-    <a (click)="onNext()" class="btn btn-primary">Next</a>
-  </div>
-
-  {{ selectedCatalogs | json }}
+</div>
+<div class="buttons-container">
+  <a (click)="onBack()" class="btn btn-danger">Back</a>
+  <a (click)="onReset()" class="btn btn-warning">Reset</a>
+  <a (click)="onNext()" class="btn btn-primary">Next</a>
 </div>
