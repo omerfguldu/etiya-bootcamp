@@ -17,14 +17,11 @@
   margin-bottom: 0.5rem;
   border-radius: 10px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .list-item.selected {
   background-color: #63e6be;
-}
-
-.list-item.reseted {
-  background-color: rgba(255, 255, 255, 0.856);
 }
 
 .list-item p {

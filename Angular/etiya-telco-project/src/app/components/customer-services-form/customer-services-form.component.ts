@@ -33,8 +33,8 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
   catalogsStore$!: Observable<Catalog[] | null>;
   selectedCatalogs: Catalog[] = [];
-  productType: string = 'Services';
-  toggleProductType: boolean = true;
+  // productType: string = 'Catalogs';
+  // toggleProductType: boolean = true;
   //True ise Services False ise Catalogs
   constructor(
     private servicesService: ServicesService,
@@ -59,7 +59,7 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     });
 
     //* SERVISLER GETIRME FONKSIYONUNU CAGIR.
-    this.getServices();
+    // this.getServices();
     this.getCatalogs();
 
     this.subscriptions.push(
@@ -99,23 +99,24 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  getServices() {
-    //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
-    this.servicesService.getServices().subscribe({
-      next: (response) => {
-        this.services = response;
-        this.fillServiceStatus();
-        if (this.selectedServices.length > 0) {
-          this.selectedServices.forEach((service) => {
-            this.servicesSelectedStatus[service.id] = true;
-          });
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-  }
+  // getServices() {
+  //   //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
+  //   this.servicesService.getServices().subscribe({
+  //     next: (response) => {
+  //       this.services = response;
+  //       this.fillServiceStatus();
+  //       if (this.selectedServices.length > 0) {
+  //         this.selectedServices.forEach((service) => {
+  //           this.servicesSelectedStatus[service.id] = true;
+  //         });
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.log(err);
+  //     },
+  //   });
+  // }
+
   onCatalogClick(catalog: Catalog) {
     let removeSelectedCatalog = this.selectedCatalogs.some(
       (selectedCatalog) => {
@@ -137,25 +138,26 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       return selectedCatalog.id === catalog.id;
     });
   }
-  onServiceClick(service: Service, index: number, event: Event) {
-    //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
-    //* SECILI SERVISI GONDER. NGFORDAN GELEN INDEXI GONDER. EVENT'I GONDER.
-    //* EGER SECILI SERVISE KARSILIK SERVISSTATUS DIZISINDEKI INDEX FALSE ISE
-    //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
-    //* SELECTEDSERVICES DIZISINE PUSHLA.
-    //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
-    if (this.servicesSelectedStatus[service.id] === false) {
-      this.servicesSelectedStatus[service.id] = true;
-      this.renderer.addClass(event.target, 'selected');
-      this.selectedServices = [...this.selectedServices, this.services[index]];
-    } else {
-      this.servicesSelectedStatus[service.id] = false;
-      this.renderer.removeClass(event.target, 'selected');
-      this.selectedServices = this.selectedServices.filter(
-        (srv) => srv.id !== service.id
-      );
-    }
-  }
+
+  // onServiceClick(service: Service, index: number, event: Event) {
+  //   //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
+  //   //* SECILI SERVISI GONDER. NGFORDAN GELEN INDEXI GONDER. EVENT'I GONDER.
+  //   //* EGER SECILI SERVISE KARSILIK SERVISSTATUS DIZISINDEKI INDEX FALSE ISE
+  //   //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
+  //   //* SELECTEDSERVICES DIZISINE PUSHLA.
+  //   //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
+  //   if (this.servicesSelectedStatus[service.id] === false) {
+  //     this.servicesSelectedStatus[service.id] = true;
+  //     this.renderer.addClass(event.target, 'selected');
+  //     this.selectedServices = [...this.selectedServices, this.services[index]];
+  //   } else {
+  //     this.servicesSelectedStatus[service.id] = false;
+  //     this.renderer.removeClass(event.target, 'selected');
+  //     this.selectedServices = this.selectedServices.filter(
+  //       (srv) => srv.id !== service.id
+  //     );
+  //   }
+  // }
 
   onNext() {
     //* OVERVIEW EKRANINA GECMEK ISTENDIGINDE CALIS.
@@ -192,11 +194,11 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     this.fillServiceStatus();
   }
 
-  onProductTypeChange(type: string) {
-    //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
-    this.toggleProductType = !this.toggleProductType;
-    this.productType = type;
-  }
+  // onProductTypeChange(type: string) {
+  //   //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
+  //   this.toggleProductType = !this.toggleProductType;
+  //   this.productType = type;
+  // }
   ngOnDestroy(): void {
     this.subscriptions.map((sub) => {
       sub.unsubscribe();

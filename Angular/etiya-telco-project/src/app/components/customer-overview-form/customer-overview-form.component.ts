@@ -1,3 +1,4 @@
+import { ServicesService } from './../../services/services.service';
 import { Catalog } from './../../models/catalog';
 import {
   IconDefinition,
@@ -39,12 +40,14 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
   services: Service[] = [];
+
   catalogs: Catalog[] = [];
   customerType: boolean = true;
   //* customerType TRUE ISE INDIVIDUAL
   //* FALSE ISE CORPORATE CUSTOMER
 
   constructor(
+    private servicesService: ServicesService,
     private customersService: CustomersService,
     private subscriptionsService: SubscriptionsService,
     private invoicesService: InvoicesService,
@@ -64,16 +67,19 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     //* MUSTERININ BILGILERINI AL VE TURUNU(CORPORATE-INDIVIDUAL) TESPIT ET.
     //* STORE'DA KAYITLI SERVISLERI AL.
     this.catalogsStore$.subscribe((res) => {
-      console.log(res);
       if (res) this.catalogs = res;
+      this.catalogs.map((catalog) => {
+        this.servicesService.getService(catalog.serviceId).subscribe((res) => {
+          this.services.push(res);
+        });
+      });
     });
 
     this.subscription1 = this.customerToRegisterModel$.subscribe({
       next: (res: any) => {
         if (res) {
-          const { services, ...customer } = res;
+          const { ...customer } = res;
           this.customer = customer;
-          this.services = services;
 
           this.customer.nationalIdentity
             ? (this.customerType = true)
@@ -141,11 +147,11 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   addServices(customer: any) {
     //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
     //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
-    this.services.map((service) => {
-      console.log(service);
+    this.catalogs.map((catalog) => {
+      console.log(catalog);
       const subscription: Subscriptions = {
         customerId: customer.customerId,
-        serviceId: service.id,
+        serviceId: catalog.serviceId,
         dateStarted: new Date().toISOString().split('T')[0],
       };
       this.subscriptionsService.addSubscription(subscription).subscribe({
