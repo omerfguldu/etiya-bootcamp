@@ -152,6 +152,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
       const subscription: Subscriptions = {
         customerId: customer.customerId,
         serviceId: catalog.serviceId,
+        catalogId: catalog.id,
         dateStarted: new Date().toISOString().split('T')[0],
       };
       this.subscriptionsService.addSubscription(subscription).subscribe({
