@@ -1,4 +1,4 @@
-import { CustomerToRegisterModel } from './../../models/customerToRegisterModel';
+import { CustomerToRegisterModel } from './../../../models/customerToRegisterModel';
 import { Router } from '@angular/router';
 import { CustomersService } from 'src/app/services/customers.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';

@@ -1,5 +1,5 @@
-import { ServicesService } from './../../services/services.service';
-import { Catalog } from './../../models/catalog';
+import { ServicesService } from './../../../services/services.service';
+import { Catalog } from './../../../models/catalog';
 import {
   IconDefinition,
   faFileSignature,
@@ -10,9 +10,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Service } from './../../models/service';
-import { CustomersService } from './../../services/customers.service';
-import { CustomerToRegisterModel } from './../../models/customerToRegisterModel';
+import { Service } from './../../../models/service';
+import { CustomersService } from './../../../services/customers.service';
+import { CustomerToRegisterModel } from './../../../models/customerToRegisterModel';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/models/customer';

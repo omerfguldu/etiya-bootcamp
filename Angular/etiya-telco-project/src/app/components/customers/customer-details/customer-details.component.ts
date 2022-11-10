@@ -1,12 +1,10 @@
 import { CatalogsService } from 'src/app/services/catalogs.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { IndividualCustomer } from '../../models/individualCustomer';
-import { CustomersService } from 'src/app/services/customers.service';
+
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { ServicesService } from 'src/app/services/services.service';
 import { SubscriptionsResponse } from 'src/app/models/subscriptionsResponse';
-import { CorporateCustomer } from 'src/app/models/corporateCustomer';
 
 @Component({
   selector: 'app-customer-details',
