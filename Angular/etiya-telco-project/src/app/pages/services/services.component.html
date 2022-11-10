@@ -109,6 +109,8 @@
   tabindex="-1"
   aria-labelledby="addAndUpdateModalLabel"
   aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -123,6 +125,7 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          (click)="closePopup()"
         ></button>
       </div>
       <div class="modal-body">
@@ -136,6 +139,7 @@
               class="form-control"
               placeholder="Please enter a service name"
             />
+
             <p
               class="error-message"
               *ngIf="
@@ -145,6 +149,54 @@
             >
               Service name field can't be empty.
             </p>
+            <div formArrayName="catalogs">
+              <div class="catalogs-header">
+                <p class="form-label">Catalogs</p>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  (click)="onAddCatalog()"
+                >
+                  New Catalog
+                </button>
+              </div>
+              <div
+                *ngFor="let ingredientCtrl of controls; let i = index"
+                [formGroupName]="i"
+                class="catalog-container"
+                style="margin-top: 10px"
+              >
+                <div>
+                  <label for="catalog-name" class="form-label"
+                    >Catalog Name</label
+                  >
+                  <input
+                    name="catalog-name"
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                  />
+                </div>
+                <div>
+                  <label for="catalog-price" class="form-label">Price</label>
+                  <input
+                    name="catalog-price"
+                    type="number"
+                    class="form-control"
+                    formControlName="price"
+                  />
+                </div>
+                <div class="btn-catalog-delete">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="onDeleteCatalog(i)"
+                  >
+                    X
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>

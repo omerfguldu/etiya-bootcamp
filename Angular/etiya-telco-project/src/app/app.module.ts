@@ -37,6 +37,7 @@ import { CorporateDetailsComponent } from './components/customers/corporate-cust
 import { IndividualListComponent } from './components/customers/individual-customers/individual-list/individual-list.component';
 import { IndividualDetailsComponent } from './components/customers/individual-customers/individual-details/individual-details.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { CustomerCatalogFormComponent } from './components/new-customer/customer-catalog-form/customer-catalog-form.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     CorporateDetailsComponent,
     IndividualListComponent,
     IndividualDetailsComponent,
+    CustomerCatalogFormComponent,
   ],
   imports: [
     BrowserModule,

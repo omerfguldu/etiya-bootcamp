@@ -30,9 +30,7 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   selectedServices: Service[] = [];
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
-  catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
-  catalogsStore$!: Observable<Catalog[] | null>;
-  selectedCatalogs: Catalog[] = [];
+
   // productType: string = 'Catalogs';
   // toggleProductType: boolean = true;
   //True ise Services False ise Catalogs
@@ -40,27 +38,16 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     private servicesService: ServicesService,
     private renderer: Renderer2,
     private customersService: CustomersService,
-    private catalogsService: CatalogsService,
-    private router: Router,
-    private store: Store<AppStoreState>
+
+    private router: Router
   ) {
-    this.catalogsStore$ = this.store.select(
-      (s) => s.catalogsToRegister.catalogsToRegister
-    );
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
   }
 
   ngOnInit(): void {
-    this.catalogsStore$.subscribe((response) => {
-      console.log(response);
-
-      if (response != null) this.selectedCatalogs = response;
-    });
-
     //* SERVISLER GETIRME FONKSIYONUNU CAGIR.
-    // this.getServices();
-    this.getCatalogs();
+    this.getServices();
 
     this.subscriptions.push(
       this.customerToRegisterModel$.subscribe({
@@ -91,73 +78,44 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //   this.servicesSelectedStatus[i] = false;
     // }
   }
-  getCatalogs() {
-    this.catalogsService.getCatalogs().subscribe({
+
+  getServices() {
+    //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
+    this.servicesService.getServices().subscribe({
       next: (response) => {
-        this.catalogs = response;
+        this.services = response;
+        this.fillServiceStatus();
+        if (this.selectedServices.length > 0) {
+          this.selectedServices.forEach((service) => {
+            this.servicesSelectedStatus[service.id] = true;
+          });
+        }
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }
 
-  // getServices() {
-  //   //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
-  //   this.servicesService.getServices().subscribe({
-  //     next: (response) => {
-  //       this.services = response;
-  //       this.fillServiceStatus();
-  //       if (this.selectedServices.length > 0) {
-  //         this.selectedServices.forEach((service) => {
-  //           this.servicesSelectedStatus[service.id] = true;
-  //         });
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     },
-  //   });
-  // }
-
-  onCatalogClick(catalog: Catalog) {
-    let removeSelectedCatalog = this.selectedCatalogs.some(
-      (selectedCatalog) => {
-        return selectedCatalog.id === catalog.id;
-      }
-    ); //Check if the selected catalog already exists if it exists remove it with filter method and return
-    if (removeSelectedCatalog) {
-      this.selectedCatalogs = this.selectedCatalogs.filter(
-        (selectedCatalog) => {
-          return selectedCatalog.id !== catalog.id;
-        }
+  onServiceClick(service: Service, index: number, event: Event) {
+    //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
+    //* SECILI SERVISI GONDER. NGFORDAN GELEN INDEXI GONDER. EVENT'I GONDER.
+    //* EGER SECILI SERVISE KARSILIK SERVISSTATUS DIZISINDEKI INDEX FALSE ISE
+    //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
+    //* SELECTEDSERVICES DIZISINE PUSHLA.
+    //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
+    if (this.servicesSelectedStatus[service.id] === false) {
+      this.servicesSelectedStatus[service.id] = true;
+      this.renderer.addClass(event.target, 'selected');
+      this.selectedServices = [...this.selectedServices, this.services[index]];
+    } else {
+      this.servicesSelectedStatus[service.id] = false;
+      this.renderer.removeClass(event.target, 'selected');
+      this.selectedServices = this.selectedServices.filter(
+        (srv) => srv.id !== service.id
       );
-      return;
     }
-    this.selectedCatalogs = [...this.selectedCatalogs, catalog];
   }
-  toggleCatalogCss(catalog: Catalog) {
-    return this.selectedCatalogs.some((selectedCatalog) => {
-      return selectedCatalog.id === catalog.id;
-    });
-  }
-
-  // onServiceClick(service: Service, index: number, event: Event) {
-  //   //* LISTELENE SERVISLERDEN BIRISINE TIKLANDIGINDA PARAMETRE OLARAK
-  //   //* SECILI SERVISI GONDER. NGFORDAN GELEN INDEXI GONDER. EVENT'I GONDER.
-  //   //* EGER SECILI SERVISE KARSILIK SERVISSTATUS DIZISINDEKI INDEX FALSE ISE
-  //   //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
-  //   //* SELECTEDSERVICES DIZISINE PUSHLA.
-  //   //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
-  //   if (this.servicesSelectedStatus[service.id] === false) {
-  //     this.servicesSelectedStatus[service.id] = true;
-  //     this.renderer.addClass(event.target, 'selected');
-  //     this.selectedServices = [...this.selectedServices, this.services[index]];
-  //   } else {
-  //     this.servicesSelectedStatus[service.id] = false;
-  //     this.renderer.removeClass(event.target, 'selected');
-  //     this.selectedServices = this.selectedServices.filter(
-  //       (srv) => srv.id !== service.id
-  //     );
-  //   }
-  // }
 
   onNext() {
     //* OVERVIEW EKRANINA GECMEK ISTENDIGINDE CALIS.
@@ -168,12 +126,8 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       ...this.customer,
       services: this.selectedServices,
     });
-    this.store.dispatch(
-      addCatalogsToCatalogsRegisterModel({
-        catalogsToRegister: this.selectedCatalogs,
-      })
-    );
-    this.router.navigateByUrl('/homepage/newcustomer/overview');
+
+    this.router.navigateByUrl('/homepage/newcustomer/catalogs');
   }
 
   onBack() {
@@ -181,11 +135,11 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       ...this.customer,
       services: this.selectedServices,
     });
-    this.store.dispatch(
-      addCatalogsToCatalogsRegisterModel({
-        catalogsToRegister: this.selectedCatalogs,
-      })
-    );
+    // this.store.dispatch(
+    //   addCatalogsToCatalogsRegisterModel({
+    //     catalogsToRegister: this.selectedCatalogs,
+    //   })
+    // );
     this.router.navigateByUrl('/homepage/newcustomer/info');
   }
 

@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs';
 import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })

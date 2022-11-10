@@ -13,6 +13,7 @@ import { NewCustomerComponent } from './pages/new-customer/new-customer.componen
 import { CustomerInfoFormComponent } from './components/new-customer/customer-info-form/customer-info-form.component';
 import { CustomerServicesFormComponent } from './components/new-customer/customer-services-form/customer-services-form.component';
 import { CustomerOverviewFormComponent } from './components/new-customer/customer-overview-form/customer-overview-form.component';
+import { CustomerCatalogFormComponent } from './components/new-customer/customer-catalog-form/customer-catalog-form.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,10 @@ const routes: Routes = [
           {
             path: 'services',
             component: CustomerServicesFormComponent,
+          },
+          {
+            path: 'catalogs',
+            component: CustomerCatalogFormComponent,
           },
           {
             path: 'overview',

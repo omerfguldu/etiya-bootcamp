@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { Service } from '../models/service';
+import { ServiceDto } from '../models/serviceDto';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class ServicesService {
   }
 
   //* /services ADRESINE KAYIT OLUSTUR.
-  addService(service: Service): Observable<Service> {
+  addService(service: ServiceDto): Observable<Service> {
     return this.httpClient.post<Service>(this.controllerUrl, service);
   }
 
