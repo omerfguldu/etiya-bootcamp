@@ -79,10 +79,7 @@ export class ServicesComponent implements OnInit {
             new FormGroup({
               id: new FormControl(catalog.id),
               name: new FormControl(catalog.name, Validators.required),
-              price: new FormControl(catalog.price, [
-                Validators.required,
-                Validators.pattern(/^[1-9]+[0-9]*$/),
-              ]),
+              price: new FormControl(catalog.price, [Validators.required]),
             })
           );
         });
@@ -121,10 +118,7 @@ export class ServicesComponent implements OnInit {
     (<FormArray>this.addServiceForm.get('catalogs')).push(
       new FormGroup({
         name: new FormControl(null, Validators.required),
-        price: new FormControl(null, [
-          Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/),
-        ]),
+        price: new FormControl(null, [Validators.required]),
       })
     );
   }
@@ -186,6 +180,13 @@ export class ServicesComponent implements OnInit {
   //   //* ACILAN MODAL'DA DELETE SECILIRSE SERVISI SIL
   deleteService() {
     this.servicesService.deleteService(this.deleteId).subscribe(() => {
+      this.catalogsService
+        .getCatalogsByServiceId(this.deleteId)
+        .subscribe((response) => {
+          response.forEach((catalog) => {
+            this.catalogsService.deleteCatalog(catalog.id).subscribe(() => {});
+          });
+        });
       this.getServices();
     });
   }
@@ -198,10 +199,10 @@ export class ServicesComponent implements OnInit {
     let selectedCatalogs: Catalog[] = [];
 
     this.createAddServiceForm(service);
-    this.addServiceForm.setValue({
-      name: service.name,
-      catalogs: selectedCatalogs, //TODO get catalogs with service id and add them to this field
-    });
+    // this.addServiceForm.setValue({
+    //   name: service.name,
+    //   catalogs: selectedCatalogs, //TODO get catalogs with service id and add them to this field
+    // });
   }
 
   closePopup() {

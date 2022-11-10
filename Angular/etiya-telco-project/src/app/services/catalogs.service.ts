@@ -31,4 +31,7 @@ export class CatalogsService {
       `${this.controllerUrl}?serviceId=${serviceId}`
     );
   }
+  deleteCatalog(id?: number) {
+    return this.httpClient.delete(`${this.controllerUrl}/${id}`);
+  }
 }
