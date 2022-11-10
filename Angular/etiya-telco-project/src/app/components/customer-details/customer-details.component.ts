@@ -1,3 +1,4 @@
+import { CatalogsService } from 'src/app/services/catalogs.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { IndividualCustomer } from '../../models/individualCustomer';
@@ -21,7 +22,8 @@ export class CustomerDetailsComponent implements OnInit {
     private route: ActivatedRoute,
 
     private subscriptionsService: SubscriptionsService,
-    private servicesService: ServicesService
+    private servicesService: ServicesService,
+    private catalogsService: CatalogsService
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +49,12 @@ export class CustomerDetailsComponent implements OnInit {
             .getService(customerSubscription.serviceId)
             .subscribe((response) => {
               customerSubscription.serviceName = response.name;
+            });
+          this.catalogsService
+            .getCatalog(customerSubscription.serviceId)
+            .subscribe((res) => {
+              customerSubscription.catalogName = res.name;
+              customerSubscription.catalogPrice = res.price;
             });
         });
       });

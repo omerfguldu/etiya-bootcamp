@@ -10,6 +10,11 @@
   grid-template-columns: 10rem 1fr;
 }
 
+.catalog-title,
+.catalog-item {
+  grid-template-columns: 10rem 1fr 1fr;
+}
+
 .buttons-container {
   display: flex;
   align-items: center;

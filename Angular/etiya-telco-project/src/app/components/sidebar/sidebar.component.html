@@ -15,6 +15,7 @@
     <ul class="nav nav-pills flex-column mb-auto">
       <li>
         <a
+          (click)="onNavClick()"
           routerLink="/homepage/services"
           routerLinkActive="active"
           class="nav-link text-white"
@@ -25,6 +26,7 @@
       </li>
       <li>
         <a
+          (click)="onNavClick()"
           routerLink="/homepage/customers"
           routerLinkActive="active"
           class="nav-link text-white"
@@ -34,13 +36,13 @@
         </a>
       </li>
       <li>
-        <a class="nav-link text-white">
+        <a (click)="onNavClick()" class="nav-link text-white">
           <fa-icon class="sidebar-icon" [icon]="profileIcon"></fa-icon>
           <p>Profile</p>
         </a>
       </li>
       <li>
-        <a class="nav-link text-white">
+        <a (click)="onNavClick()" class="nav-link text-white">
           <fa-icon class="sidebar-icon" [icon]="settingsIcon"></fa-icon>
           <p>Settings</p>
         </a>

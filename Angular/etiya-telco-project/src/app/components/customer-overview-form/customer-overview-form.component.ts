@@ -1,3 +1,4 @@
+import { Catalog } from './../../models/catalog';
 import {
   IconDefinition,
   faFileSignature,
@@ -18,6 +19,9 @@ import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { Subscriptions } from 'src/app/models/subscriptions';
 import { Invoices } from 'src/app/models/invoices';
 import { InvoicesService } from 'src/app/services/invoices.service';
+import { Store } from '@ngrx/store';
+import { AppStoreState } from 'src/app/store/app.state';
+import { deleteCatalogs } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 
 @Component({
   selector: 'app-customer-overview-form',
@@ -31,9 +35,11 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   companyIcon: IconDefinition = faBuilding;
   taxIcon: IconDefinition = faFileSignature;
   subscription1!: Subscription;
+  catalogsStore$!: Observable<Catalog[] | null>;
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   customer: any;
   services: Service[] = [];
+  catalogs: Catalog[] = [];
   customerType: boolean = true;
   //* customerType TRUE ISE INDIVIDUAL
   //* FALSE ISE CORPORATE CUSTOMER
@@ -43,8 +49,12 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     private subscriptionsService: SubscriptionsService,
     private invoicesService: InvoicesService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppStoreState>
   ) {
+    this.catalogsStore$ = this.store.select(
+      (s) => s.catalogsToRegister.catalogsToRegister
+    );
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
   }
@@ -53,15 +63,22 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     //* OVERVIEW COMPONENT YUKLENDIGINDE STOREDAKI KAYITLI
     //* MUSTERININ BILGILERINI AL VE TURUNU(CORPORATE-INDIVIDUAL) TESPIT ET.
     //* STORE'DA KAYITLI SERVISLERI AL.
+    this.catalogsStore$.subscribe((res) => {
+      console.log(res);
+      if (res) this.catalogs = res;
+    });
+
     this.subscription1 = this.customerToRegisterModel$.subscribe({
       next: (res: any) => {
-        const { services, ...customer } = res;
-        this.customer = customer;
-        this.services = services;
+        if (res) {
+          const { services, ...customer } = res;
+          this.customer = customer;
+          this.services = services;
 
-        this.customer.nationalIdentity
-          ? (this.customerType = true)
-          : (this.customerType = false);
+          this.customer.nationalIdentity
+            ? (this.customerType = true)
+            : (this.customerType = false);
+        }
       },
       error: () => {
         this.toastr.error('Something went wrong');
@@ -93,6 +110,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
             next: (res) => {
               //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
               this.addServices(res);
+              this.addCatalogs(res);
             },
             error: () => {
               this.toastr.error('Something went wrong');
@@ -109,6 +127,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
             next: (res) => {
               //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
               this.addServices(res);
+              this.addCatalogs(res);
             },
             error: () => {
               this.toastr.error('Something went wrong.');
@@ -125,6 +144,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
     //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
     this.services.map((service) => {
+      console.log(service);
       const subscription: Subscriptions = {
         customerId: customer.customerId,
         serviceId: service.id,
@@ -149,12 +169,50 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.subscription1.unsubscribe();
-
-          this.customersService.deleteCustomerToRegisterModelStoreState();
-          this.router.navigateByUrl('/homepage/customers/list');
+          // this.router.navigateByUrl('/homepage/customers/list');
         },
       });
     });
+  }
+
+  addCatalogs(customer: any) {
+    //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
+    //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
+    console.log(this.catalogs);
+    this.catalogs.map((catalog) => {
+      console.log(catalog);
+      const subscription: Subscriptions = {
+        customerId: customer.customerId,
+        serviceId: catalog.serviceId,
+        dateStarted: new Date().toISOString().split('T')[0],
+      };
+      this.subscriptionsService.addSubscription(subscription).subscribe({
+        //* SUBSCRIPTION EKLENDIKTEN SONRA ILGILI SUBSCRIPTIONA AIT INVOICE OLUSTUR
+        //* OLUSAN INVOICE OBJESINI INVOICES SERVISI ILE DB'YE EKLE.
+        next: (response) => {
+          let date = new Date(response.dateStarted);
+          date.setDate(date.getDate() + 28);
+          let dateDue = date.toISOString().split('T')[0];
+          let invoice: Invoices = {
+            subscriptionId: response.id,
+            dateCreated: response.dateStarted,
+            dateDue: dateDue,
+          };
+          this.invoicesService.addInvoice(invoice).subscribe();
+        },
+        error: () => {
+          this.toastr.error('Something went wrong');
+        },
+        complete: () => {
+          // this.customersService.deleteCustomerToRegisterModelStoreState();
+          // this.store.dispatch(deleteCatalogs());
+          // this.router.navigateByUrl('/homepage/customers/list');
+        },
+      });
+    });
+    this.customersService.deleteCustomerToRegisterModelStoreState();
+    this.store.dispatch(deleteCatalogs());
+    this.router.navigateByUrl('/homepage/customers/list');
   }
 
   onBack() {

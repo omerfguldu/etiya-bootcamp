@@ -6,6 +6,7 @@ import {
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { Token } from 'src/app/models/token';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,12 @@ export class HeaderComponent implements OnInit {
   settingsIcon: IconDefinition = faGear;
   notificationsIcon: IconDefinition = faBell;
   activeUserName!: Token;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private location: Location) {
+    this.location.onUrlChange(() => {
+      this.isChecked = false;
+      this.onInputChange();
+    });
+  }
 
   ngOnInit(): void {
     this.activeUserName = this.authService.decodedToken;

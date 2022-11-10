@@ -28,13 +28,13 @@
 </div>
 
 <div class="list-item-container" *ngIf="!customer.firstName">
-  <div class="overview-list-title corporate-title">
+  <div class="list-title corporate-title">
     <strong>Company Name</strong>
     <strong>Tax Number</strong>
   </div>
   <div class="list-item corporate-item">
     <div class="list-item-content">
-      <fa-icon class="overview-list-item-icon" [icon]="companyIcon"></fa-icon>
+      <fa-icon class="list-item-icon" [icon]="companyIcon"></fa-icon>
       <p>{{ customer.companyName }}</p>
     </div>
     <div class="list-item-content">
@@ -59,6 +59,26 @@
   >
     <strong>{{ i + 1 }}</strong>
     <p>{{ service.name }}</p>
+  </div>
+</div>
+
+<br />
+<hr />
+<br />
+
+<div class="services-content">
+  <div class="overview-list-title catalog-title">
+    <strong></strong>
+    <strong>Catalog Name</strong>
+    <strong>Catalog Price</strong>
+  </div>
+  <div
+    class="overview-list-item catalog-item"
+    *ngFor="let catalog of catalogs; let i = index"
+  >
+    <strong>{{ i + 1 }}</strong>
+    <p>{{ catalog.name }}</p>
+    <p>{{ catalog.price }}</p>
   </div>
 </div>
 

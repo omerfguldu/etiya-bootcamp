@@ -21,9 +21,9 @@ export class ServicesComponent implements OnInit {
   plusIcon: IconDefinition = faPlus;
   searchName: string = '';
   services: Service[] = [];
+  deleteId: number = 0;
   isModal: boolean = false;
   isUpdate: boolean = false;
-  displayStyle: string = 'none';
   addServiceForm!: FormGroup;
   selectedService: Service = {
     id: 0,
@@ -86,9 +86,9 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  deleteService(id: number) {
-    //* SECILI SERVISI ID'YE GORE SIL
-    this.servicesService.deleteService(id).subscribe(() => {
+  //   //* ACILAN MODAL'DA DELETE SECILIRSE SERVISI SIL
+  deleteService() {
+    this.servicesService.deleteService(this.deleteId).subscribe(() => {
       this.getServices();
     });
   }
@@ -97,21 +97,13 @@ export class ServicesComponent implements OnInit {
     //* UPDATE BUTONU TIKLANDIGINDA SERVIS BILGISINI
     //* FORM MODALI ACILDIGINDA OTOMATIK OLARAK GOSTER.
     this.isUpdate = true;
-    this.openPopup();
     this.selectedService = service;
     this.addServiceForm.setValue({
       name: service.name,
     });
   }
 
-  openPopup() {
-    //* MODAL GOSTER
-    this.displayStyle = 'block';
-  }
-
   closePopup() {
-    //* MODAL GIZLE
-    this.displayStyle = 'none';
     this.isUpdate = false;
     this.addServiceForm.reset();
   }

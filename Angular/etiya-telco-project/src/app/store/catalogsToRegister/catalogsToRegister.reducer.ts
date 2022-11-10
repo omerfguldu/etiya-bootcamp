@@ -1,6 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { deleteCustomerToRegisterModel } from '../customerToRegister/customerToRegister.actions';
-import { addCatalogsToCatalogsRegisterModel } from './catalogsToRegister.actions';
+import {
+  addCatalogsToCatalogsRegisterModel,
+  deleteCatalogs,
+} from './catalogsToRegister.actions';
 import {
   catalogsToRegisterStoreState,
   initialCatalogsToRegisterStoreState,
@@ -12,10 +14,10 @@ export const catalogsToRegisterReducer =
     on(addCatalogsToCatalogsRegisterModel, (currentState, action) => {
       return { ...currentState, catalogsToRegister: action.catalogsToRegister };
     }),
-    on(deleteCustomerToRegisterModel, (currentState) => {
+    on(deleteCatalogs, (currentState) => {
       return {
         ...currentState,
-        customerToRegisterModel: null,
+        catalogsToRegister: null,
       };
     })
   );

@@ -3,6 +3,11 @@
   grid-template-columns: 1fr repeat(2, 2fr);
 }
 
+.catalogs-title,
+.catalog-item {
+  grid-template-columns: 1fr repeat(3, 2fr);
+}
+
 .subscriptions-list-title,
 .subscriptions-list-item {
   position: relative;

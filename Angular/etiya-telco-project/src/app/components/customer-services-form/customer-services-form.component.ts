@@ -131,15 +131,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.selectedCatalogs = [...this.selectedCatalogs, catalog];
-
-    // this.selectedCatalogs.forEach(selectedCatalog=> {
-    //    if(catalog===selectedCatalog)
-    //    this.selectedCatalogs.splice
-    // })
-
-    console.log(this.selectedCatalogs);
-    console.log('----');
-    console.log(this.catalogs);
   }
   toggleCatalogCss(catalog: Catalog) {
     return this.selectedCatalogs.some((selectedCatalog) => {
@@ -153,10 +144,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* BU SERVIS HENUZ SECILMEMISTIR. SERVISI SECILI HALE GETIR VE GEREKLI CSS SINIFINI EKLE
     //* SELECTEDSERVICES DIZISINE PUSHLA.
     //* ELSE TARAFINDA TAM TERSI ISLEMLERI GERCEKLESTIR.
-    // if(this.formReseted === true){
-
-    // }
-    // this.formReseted = false;
     if (this.servicesSelectedStatus[service.id] === false) {
       this.servicesSelectedStatus[service.id] = true;
       this.renderer.addClass(event.target, 'selected');
@@ -175,8 +162,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     //* STOREDA KAYITLI CUSTOMER VERISINI GETIR VE DEGISKENE AT.
     //* BU DEGISKENLE BIRLIKTE SECILI SERVISLER DIZISINI
     //* STORE'A KAYDET VE OVERVIEW'A YONLENDIR.
-    console.log(this.services);
-
     this.customersService.setCustomerToRegisterModelStoreState({
       ...this.customer,
       services: this.selectedServices,
@@ -194,6 +179,11 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       ...this.customer,
       services: this.selectedServices,
     });
+    this.store.dispatch(
+      addCatalogsToCatalogsRegisterModel({
+        catalogsToRegister: this.selectedCatalogs,
+      })
+    );
     this.router.navigateByUrl('/homepage/newcustomer/info');
   }
 

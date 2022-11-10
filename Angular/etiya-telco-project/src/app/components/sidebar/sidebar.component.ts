@@ -34,4 +34,8 @@ export class SidebarComponent implements OnInit {
   onLogo() {
     this.router.navigate(['homepage', 'services']);
   }
+
+  onNavClick() {
+    this.isActive = false;
+  }
 }

@@ -13,4 +13,8 @@ export class CatalogsService {
   getCatalogs(): Observable<Catalog[]> {
     return this.httpClient.get<Catalog[]>(this.controllerUrl);
   }
+
+  getCatalog(id: number): Observable<Catalog> {
+    return this.httpClient.get<Catalog>(`${this.controllerUrl}/${id}`);
+  }
 }
