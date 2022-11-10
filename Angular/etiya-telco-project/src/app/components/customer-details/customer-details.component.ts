@@ -52,9 +52,9 @@ export class CustomerDetailsComponent implements OnInit {
             });
           this.catalogsService
             .getCatalog(customerSubscription.serviceId)
-            .subscribe((res) => {
-              customerSubscription.catalogName = res.name;
-              customerSubscription.catalogPrice = res.price;
+            .subscribe((response) => {
+              customerSubscription.catalogName = response.name;
+              customerSubscription.catalogPrice = response.price;
             });
         });
       });

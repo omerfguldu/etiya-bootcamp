@@ -110,7 +110,6 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
             next: (res) => {
               //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
               this.addServices(res);
-              this.addCatalogs(res);
             },
             error: () => {
               this.toastr.error('Something went wrong');
@@ -127,7 +126,6 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
             next: (res) => {
               //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
               this.addServices(res);
-              this.addCatalogs(res);
             },
             error: () => {
               this.toastr.error('Something went wrong.');
@@ -169,50 +167,13 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.subscription1.unsubscribe();
+          this.customersService.deleteCustomerToRegisterModelStoreState();
+          this.store.dispatch(deleteCatalogs());
+          this.router.navigateByUrl('/homepage/customers/list');
           // this.router.navigateByUrl('/homepage/customers/list');
         },
       });
     });
-  }
-
-  addCatalogs(customer: any) {
-    //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
-    //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
-    console.log(this.catalogs);
-    this.catalogs.map((catalog) => {
-      console.log(catalog);
-      const subscription: Subscriptions = {
-        customerId: customer.customerId,
-        serviceId: catalog.serviceId,
-        dateStarted: new Date().toISOString().split('T')[0],
-      };
-      this.subscriptionsService.addSubscription(subscription).subscribe({
-        //* SUBSCRIPTION EKLENDIKTEN SONRA ILGILI SUBSCRIPTIONA AIT INVOICE OLUSTUR
-        //* OLUSAN INVOICE OBJESINI INVOICES SERVISI ILE DB'YE EKLE.
-        next: (response) => {
-          let date = new Date(response.dateStarted);
-          date.setDate(date.getDate() + 28);
-          let dateDue = date.toISOString().split('T')[0];
-          let invoice: Invoices = {
-            subscriptionId: response.id,
-            dateCreated: response.dateStarted,
-            dateDue: dateDue,
-          };
-          this.invoicesService.addInvoice(invoice).subscribe();
-        },
-        error: () => {
-          this.toastr.error('Something went wrong');
-        },
-        complete: () => {
-          // this.customersService.deleteCustomerToRegisterModelStoreState();
-          // this.store.dispatch(deleteCatalogs());
-          // this.router.navigateByUrl('/homepage/customers/list');
-        },
-      });
-    });
-    this.customersService.deleteCustomerToRegisterModelStoreState();
-    this.store.dispatch(deleteCatalogs());
-    this.router.navigateByUrl('/homepage/customers/list');
   }
 
   onBack() {
