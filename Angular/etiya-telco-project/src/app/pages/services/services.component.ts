@@ -188,6 +188,13 @@ export class ServicesComponent implements OnInit {
   //   //* ACILAN MODAL'DA DELETE SECILIRSE SERVISI SIL
   deleteService() {
     this.servicesService.deleteService(this.deleteId).subscribe(() => {
+      this.catalogsService
+        .getCatalogsByServiceId(this.deleteId)
+        .subscribe((response) => {
+          response.forEach((catalog) => {
+            this.catalogsService.deleteCatalog(catalog.id).subscribe(() => {});
+          });
+        });
       this.getServices();
     });
   }

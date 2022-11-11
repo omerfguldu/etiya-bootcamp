@@ -154,6 +154,7 @@
               <div class="catalogs-header">
                 <p class="form-label">Catalogs</p>
                 <button
+                  *ngIf="!isUpdate"
                   type="button"
                   class="btn btn-success"
                   (click)="onAddCatalog()"
@@ -189,9 +190,10 @@
                 </div>
                 <div class="btn-catalog-delete">
                   <button
+                    *ngIf="!isUpdate"
                     type="button"
                     class="btn btn-danger"
-                    (click)="onDeleteCatalog(catalogCtrl,i)"
+                    (click)="onDeleteCatalog(catalogCtrl, i)"
                   >
                     X
                   </button>
