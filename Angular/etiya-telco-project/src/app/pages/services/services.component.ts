@@ -1,5 +1,7 @@
+import { deleteCatalogs } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -34,12 +36,12 @@ export class ServicesComponent implements OnInit {
   isModal: boolean = false;
   isUpdate: boolean = false;
   addServiceForm!: FormGroup;
-  catalogsForm!: FormGroup;
   selectedService: Service = {
     id: 0,
     name: '',
   };
   selectedCatalogs: Catalog[] = [];
+  removedCatalogs: Catalog[] = [];
   constructor(
     private servicesService: ServicesService,
     private formbuilder: FormBuilder,
@@ -56,10 +58,6 @@ export class ServicesComponent implements OnInit {
   get catalogs() {
     return this.addServiceForm.get('catalogs ') as FormArray;
   }
-  // group({
-  //   catalogName: ['', Validators.required],
-  //   price: ['', Validators.required],
-  // }),
   createAddServiceForm(service?: Service) {
     let catalogs = new FormArray([]);
     if (service === undefined) {
@@ -79,10 +77,7 @@ export class ServicesComponent implements OnInit {
             new FormGroup({
               id: new FormControl(catalog.id),
               name: new FormControl(catalog.name, Validators.required),
-              price: new FormControl(catalog.price, [
-                Validators.required,
-                Validators.pattern(/^[1-9]+[0-9]*$/),
-              ]),
+              price: new FormControl(catalog.price, [Validators.required]),
             })
           );
         });
@@ -113,7 +108,8 @@ export class ServicesComponent implements OnInit {
     return (<FormArray>this.addServiceForm.get('catalogs')).controls;
   }
 
-  onDeleteCatalog(index: number) {
+  onDeleteCatalog(control: AbstractControl, index: number) {
+    this.removedCatalogs.push(control.value);
     (<FormArray>this.addServiceForm.get('catalogs')).removeAt(index);
   }
 
@@ -121,12 +117,13 @@ export class ServicesComponent implements OnInit {
     (<FormArray>this.addServiceForm.get('catalogs')).push(
       new FormGroup({
         name: new FormControl(null, Validators.required),
-        price: new FormControl(null, [
-          Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/),
-        ]),
+        price: new FormControl(null, [Validators.required]),
       })
     );
+  }
+
+  onNewService() {
+    this.createAddServiceForm();
   }
 
   addService() {
@@ -138,24 +135,32 @@ export class ServicesComponent implements OnInit {
       name: this.addServiceForm.value.name,
     };
     const catalogs: Catalog[] = this.addServiceForm.value.catalogs;
+    console.log(catalogs);
 
     if (this.isUpdate === true) {
+      this.removedCatalogs.forEach((ctlg) => {
+        if (ctlg.id) {
+          this.catalogsService.deleteCatalog(ctlg.id).subscribe();
+        }
+      });
+
       const updateService: Service = {
         ...this.selectedService,
+        name: this.addServiceForm.value.name,
       };
-
       this.servicesService.updateService(updateService).subscribe({
         next: (response) => {
           catalogs.forEach((catalog) => {
             catalog.serviceId = response.id;
             console.log(catalog);
-
-            this.catalogsService
-              .updateCatalog(catalog)
-              .subscribe((response) => {
-                {
-                }
+            if (!catalog.id) {
+              this.catalogsService.addCatalog(catalog).subscribe((res) => {
+                this.catalogsService.updateCatalog(res).subscribe();
               });
+              return;
+            }
+
+            this.catalogsService.updateCatalog(catalog).subscribe();
           });
         },
         error: (err) => {
@@ -174,10 +179,7 @@ export class ServicesComponent implements OnInit {
       catalogs.forEach((catalog) => {
         catalog.serviceId = response.id;
 
-        this.catalogsService.addCatalog(catalog).subscribe((response) => {
-          {
-          }
-        });
+        this.catalogsService.addCatalog(catalog).subscribe();
       });
       this.closePopup();
     });
@@ -195,17 +197,12 @@ export class ServicesComponent implements OnInit {
     //* FORM MODALI ACILDIGINDA OTOMATIK OLARAK GOSTER.
     this.isUpdate = true;
     this.selectedService = service;
-    let selectedCatalogs: Catalog[] = [];
-
     this.createAddServiceForm(service);
-    this.addServiceForm.setValue({
-      name: service.name,
-      catalogs: selectedCatalogs, //TODO get catalogs with service id and add them to this field
-    });
   }
 
   closePopup() {
     this.isUpdate = false;
+    this.removedCatalogs = [];
     this.addServiceForm.reset();
   }
 }

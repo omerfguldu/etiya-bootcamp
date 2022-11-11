@@ -78,7 +78,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     this.subscription1 = this.customerToRegisterModel$.subscribe({
       next: (res: any) => {
         if (res) {
-          const { ...customer } = res;
+          const { services, ...customer } = res;
           this.customer = customer;
 
           this.customer.nationalIdentity
@@ -150,6 +150,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     this.catalogs.map((catalog) => {
       console.log(catalog);
       const subscription: Subscriptions = {
+        catalogId: catalog.id,
         customerId: customer.customerId,
         serviceId: catalog.serviceId,
         dateStarted: new Date().toISOString().split('T')[0],
@@ -176,7 +177,6 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
           this.customersService.deleteCustomerToRegisterModelStoreState();
           this.store.dispatch(deleteCatalogs());
           this.router.navigateByUrl('/homepage/customers/list');
-          // this.router.navigateByUrl('/homepage/customers/list');
         },
       });
     });

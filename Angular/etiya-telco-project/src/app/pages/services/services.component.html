@@ -5,6 +5,7 @@
       class="btn btn-add"
       data-bs-toggle="modal"
       data-bs-target="#addAndUpdateModal"
+      (click)="onNewService()"
     >
       <fa-icon [icon]="plusIcon"></fa-icon>
       New Service
@@ -161,7 +162,7 @@
                 </button>
               </div>
               <div
-                *ngFor="let ingredientCtrl of controls; let i = index"
+                *ngFor="let catalogCtrl of controls; let i = index"
                 [formGroupName]="i"
                 class="catalog-container"
                 style="margin-top: 10px"
@@ -190,7 +191,7 @@
                   <button
                     type="button"
                     class="btn btn-danger"
-                    (click)="onDeleteCatalog(i)"
+                    (click)="onDeleteCatalog(catalogCtrl,i)"
                   >
                     X
                   </button>
@@ -222,62 +223,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div
-  class="modal"
-  tabindex="-1"
-  role="dialog"
-  [ngStyle]="{ display: displayStyle }"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">
-          {{
-            isUpdate ? "Update Service " + selectedService.id : "Add Service"
-          }}
-        </h4>
-      </div>
-      <div class="modal-body p-5">
-        <form id="myForm" [formGroup]="addServiceForm" (submit)="addService()">
-          <div class="mb-3">
-            <label for="name" class="form-label">Service Name</label>
-            <input
-              id="name"
-              formControlName="name"
-              type="text"
-              class="form-control"
-              placeholder="Please enter a service name"
-            />
-            <p
-              class="error-message"
-              *ngIf="
-                addServiceForm.get('name')?.invalid &&
-                addServiceForm.get('name')?.touched
-              "
-            >
-              Service name field can't be empty.
-            </p>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-danger"
-          (click)="closePopup()"
-        >
-          Close
-        </button>
-        <button
-          form="myForm"
-          class="btn btn-success"
-          type="submit"
-          [disabled]="addServiceForm.invalid"
-        >
-          {{ isUpdate ? "Update" : "Add" }}
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->

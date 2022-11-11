@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Catalog } from 'src/app/models/catalog';
 import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { Service } from 'src/app/models/service';
@@ -14,7 +14,8 @@ import { addCatalogsToCatalogsRegisterModel } from 'src/app/store/catalogsToRegi
   templateUrl: './customer-catalog-form.component.html',
   styleUrls: ['./customer-catalog-form.component.css'],
 })
-export class CustomerCatalogFormComponent implements OnInit {
+export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
+  subscription!: Subscription;
   catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
   catalogsStore$!: Observable<Catalog[] | null>;
   selectedCatalogs: Catalog[] = [];
@@ -36,19 +37,18 @@ export class CustomerCatalogFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.catalogsStore$.subscribe((response) => {
-      console.log(response);
-
       if (response != null) this.selectedCatalogs = response;
     });
-    this.customerToRegisterModel$.subscribe((response: any) => {
-      if (response.services) {
-        const { services } = response;
-        this.selectedServices = services;
-        return;
+    this.subscription = this.customerToRegisterModel$.subscribe(
+      (response: any) => {
+        if (response.services) {
+          const { services } = response;
+          this.selectedServices = services;
+          return;
+        }
       }
-    });
+    );
     this.getCatalogs(this.selectedServices);
-    console.log(this.catalogs);
   }
   getCatalogs(services: Service[]) {
     services.forEach((service) => {
@@ -98,6 +98,19 @@ export class CustomerCatalogFormComponent implements OnInit {
     );
     this.router.navigateByUrl('/homepage/newcustomer/overview');
   }
-  onBack() {}
-  onReset() {}
+  onBack() {
+    this.store.dispatch(
+      addCatalogsToCatalogsRegisterModel({
+        catalogsToRegister: this.selectedCatalogs,
+      })
+    );
+    this.router.navigateByUrl('/homepage/newcustomer/services');
+  }
+  onReset() {
+    this.selectedCatalogs = [];
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

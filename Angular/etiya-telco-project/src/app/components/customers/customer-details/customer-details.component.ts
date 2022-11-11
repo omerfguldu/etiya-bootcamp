@@ -49,7 +49,7 @@ export class CustomerDetailsComponent implements OnInit {
               customerSubscription.serviceName = response.name;
             });
           this.catalogsService
-            .getCatalog(customerSubscription.serviceId)
+            .getCatalog(customerSubscription.catalogId)
             .subscribe((response) => {
               customerSubscription.catalogName = response.name;
               customerSubscription.catalogPrice = response.price;

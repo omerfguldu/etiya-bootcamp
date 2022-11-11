@@ -21,12 +21,14 @@ export class NotificationInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (request.url === `${environment.apiUrl}/auth/login`) {
+    if (
+      request.url === `${environment.apiUrl}/auth/login` ||
+      request.method === 'GET' ||
+      request.url.includes(`${environment.apiUrl}/catalogs`)
+    ) {
       return next.handle(request);
     }
-    if (request.method === 'GET') {
-      return next.handle(request);
-    }
+
     return next.handle(request).pipe(
       finalize(() => {
         switch (request.method) {

@@ -1,22 +1,14 @@
+import { addCatalogsToCatalogsRegisterModel } from './../../../store/catalogsToRegister/catalogsToRegister.actions';
+import { Catalog } from 'src/app/models/catalog';
+import { AppStoreState } from './../../../store/app.state';
+import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import {
-  Component,
-  OnInit,
-  Renderer2,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { Service } from 'src/app/models/service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { ServicesService } from 'src/app/services/services.service';
-import { CatalogsService } from 'src/app/services/catalogs.service';
-import { Catalog } from 'src/app/models/catalog';
-import { Store } from '@ngrx/store';
-import { AppStoreState } from 'src/app/store/app.state';
-import { addCatalogsToCatalogsRegisterModel } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 
 @Component({
   selector: 'app-customer-services-form',
@@ -29,20 +21,22 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   servicesSelectedStatus: boolean[] = [];
   selectedServices: Service[] = [];
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
+  catalogsStore$!: Observable<Catalog[] | null>;
   customer: any;
-
-  // productType: string = 'Catalogs';
-  // toggleProductType: boolean = true;
-  //True ise Services False ise Catalogs
+  newCatalogs: any;
   constructor(
     private servicesService: ServicesService,
     private renderer: Renderer2,
+    private store: Store<AppStoreState>,
     private customersService: CustomersService,
 
     private router: Router
   ) {
     this.customerToRegisterModel$ =
       this.customersService.customerToRegisterModel$;
+    this.catalogsStore$ = this.store.select(
+      (s) => s.catalogsToRegister.catalogsToRegister
+    );
   }
 
   ngOnInit(): void {
@@ -73,10 +67,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     this.services.forEach((service) => {
       this.servicesSelectedStatus[service.id] = false;
     });
-
-    // for (let i = 0; i < this.services.length; i++) {
-    //   this.servicesSelectedStatus[i] = false;
-    // }
   }
 
   getServices() {
@@ -126,7 +116,21 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       ...this.customer,
       services: this.selectedServices,
     });
-
+    this.catalogsStore$.subscribe((res: any) => {
+      if (res && res.length > 0) {
+        this.newCatalogs = res;
+        this.newCatalogs = this.newCatalogs.filter((newctlg: any) => {
+          return this.selectedServices.some((srv) => {
+            if (srv.id === newctlg.serviceId) return newctlg;
+          });
+        });
+      }
+    });
+    this.store.dispatch(
+      addCatalogsToCatalogsRegisterModel({
+        catalogsToRegister: this.newCatalogs,
+      })
+    );
     this.router.navigateByUrl('/homepage/newcustomer/catalogs');
   }
 
@@ -135,11 +139,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
       ...this.customer,
       services: this.selectedServices,
     });
-    // this.store.dispatch(
-    //   addCatalogsToCatalogsRegisterModel({
-    //     catalogsToRegister: this.selectedCatalogs,
-    //   })
-    // );
     this.router.navigateByUrl('/homepage/newcustomer/info');
   }
 
@@ -148,11 +147,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
     this.fillServiceStatus();
   }
 
-  // onProductTypeChange(type: string) {
-  //   //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
-  //   this.toggleProductType = !this.toggleProductType;
-  //   this.productType = type;
-  // }
   ngOnDestroy(): void {
     this.subscriptions.map((sub) => {
       sub.unsubscribe();
