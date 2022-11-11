@@ -42,7 +42,6 @@ export class CustomerDetailsComponent implements OnInit {
       .getSubscriptionsWithCustomerId(id)
       .subscribe((response) => {
         this.customerSubscriptions = response;
-        console.log(this.customerSubscriptions);
 
         this.customerSubscriptions.map((customerSubscription) => {
           this.servicesService
@@ -50,14 +49,12 @@ export class CustomerDetailsComponent implements OnInit {
             .subscribe((response) => {
               customerSubscription.serviceName = response.name;
             });
-          if (customerSubscription.catalogId !== null) {
-            this.catalogsService
-              .getCatalog(customerSubscription.catalogId)
-              .subscribe((response) => {
-                customerSubscription.catalogName = response.name;
-                customerSubscription.catalogPrice = response.price;
-              });
-          }
+          this.catalogsService
+            .getCatalog(customerSubscription.catalogId)
+            .subscribe((response) => {
+              customerSubscription.catalogName = response.name;
+              customerSubscription.catalogPrice = response.price;
+            });
         });
       });
   }

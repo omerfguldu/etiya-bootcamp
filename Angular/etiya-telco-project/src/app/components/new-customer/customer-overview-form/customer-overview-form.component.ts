@@ -148,7 +148,6 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
     //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
     this.catalogs.map((catalog) => {
-      console.log(catalog);
       const subscription: Subscriptions = {
         customerId: customer.customerId,
         serviceId: catalog.serviceId,

@@ -58,12 +58,6 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
           this.catalogs = this.catalogs.concat(response);
         });
     });
-
-    // this.catalogsService.getCatalogs().subscribe({
-    //   next: (response) => {
-    //     this.catalogs = response;
-    //   },
-    // });
   }
   onCatalogClick(catalog: Catalog) {
     let removeSelectedCatalog = this.selectedCatalogs.some(

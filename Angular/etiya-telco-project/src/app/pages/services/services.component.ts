@@ -1,4 +1,3 @@
-import { deleteCatalogs } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -129,13 +128,10 @@ export class ServicesComponent implements OnInit {
   addService() {
     //* UPDATE YAPILACAKSA UPDATESERVICE METODUNU CAGIR.
     //* YENI SERVIS EKLENECEKSE ADDSERVICE METODUNU CAGIR.
-    console.log(this.addServiceForm.value);
-
     const service: ServiceDto = {
       name: this.addServiceForm.value.name,
     };
     const catalogs: Catalog[] = this.addServiceForm.value.catalogs;
-    console.log(catalogs);
 
     if (this.isUpdate === true) {
       this.removedCatalogs.forEach((ctlg) => {
@@ -152,7 +148,6 @@ export class ServicesComponent implements OnInit {
         next: (response) => {
           catalogs.forEach((catalog) => {
             catalog.serviceId = response.id;
-            console.log(catalog);
             if (!catalog.id) {
               this.catalogsService.addCatalog(catalog).subscribe((res) => {
                 this.catalogsService.updateCatalog(res).subscribe();
