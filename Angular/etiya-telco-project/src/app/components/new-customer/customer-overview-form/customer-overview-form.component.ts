@@ -150,9 +150,9 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     this.catalogs.map((catalog) => {
       console.log(catalog);
       const subscription: Subscriptions = {
-        catalogId: catalog.id,
         customerId: customer.customerId,
         serviceId: catalog.serviceId,
+        catalogId: catalog.id,
         dateStarted: new Date().toISOString().split('T')[0],
       };
       this.subscriptionsService.addSubscription(subscription).subscribe({

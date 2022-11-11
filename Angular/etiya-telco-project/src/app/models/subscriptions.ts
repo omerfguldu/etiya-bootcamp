@@ -1,7 +1,7 @@
 export interface Subscriptions {
   id?: number;
   serviceId: number;
-  catalogId: number;
   customerId: number;
+  catalogId?: number;
   dateStarted: string;
 }
