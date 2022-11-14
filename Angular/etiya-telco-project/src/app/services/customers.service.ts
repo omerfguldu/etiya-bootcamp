@@ -1,3 +1,15 @@
+import { NewCustomerStoreState } from './../store/newCustomer/newCustomer.state';
+import { Catalog } from './../models/catalog';
+import {
+  deleteNewCustomerCatalogs,
+  deleteNewIndividualCustomerInfo,
+  deleteNewCorporateCustomerInfo,
+  setNewCorporateCustomerInfo,
+  deleteNewCustomerServices,
+  setNewCustomerCatalogs,
+  setNewIndividualCustomerInfo,
+  setNewCustomerServices,
+} from './../store/newCustomer/newCustomer.actions';
 import {
   deleteCustomerToRegisterModel,
   setCustomerToRegisterModel,
@@ -11,6 +23,7 @@ import { IndividualCustomer } from '../models/individualCustomer';
 import { CorporateCustomer } from '../models/corporateCustomer';
 import { Store } from '@ngrx/store';
 import { AppStoreState } from '../store/app.state';
+import { Service } from '../models/service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +33,7 @@ export class CustomersService {
   private individualUrl = `${environment.apiUrl}/individualCustomers`;
   private corporateUrl = `${environment.apiUrl}/corporateCustomers`;
   customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
+  newCustomer$: Observable<NewCustomerStoreState | null>;
 
   constructor(
     private httpClient: HttpClient,
@@ -28,7 +42,51 @@ export class CustomersService {
     this.customerToRegisterModel$ = this.store.select(
       (state) => state.customerToRegister.customerToRegisterModel
     );
+    this.newCustomer$ = this.store.select((state) => state.newCustomer);
   }
+
+  //* NEW CUSTOMER STORE CODES STARTS
+  setNewIndividualCustomerInfoStoreState(
+    newIndividualCustomerInfo: IndividualCustomer
+  ) {
+    this.store.dispatch(
+      setNewIndividualCustomerInfo({ newIndividualCustomerInfo })
+    );
+  }
+
+  setNewCorporateCustomerInfoStoreState(
+    newCorporateCustomerInfo: CorporateCustomer
+  ) {
+    this.store.dispatch(
+      setNewCorporateCustomerInfo({ newCorporateCustomerInfo })
+    );
+  }
+
+  setNewCustomerServicesStoreState(newCustomerServices: Service[]) {
+    this.store.dispatch(setNewCustomerServices({ newCustomerServices }));
+  }
+
+  setNewCustomerCatalogsStoreState(newCustomerCatalogs: Catalog[]) {
+    this.store.dispatch(setNewCustomerCatalogs({ newCustomerCatalogs }));
+  }
+
+  deleteNewIndividualCustomerInfoStoreState() {
+    this.store.dispatch(deleteNewIndividualCustomerInfo());
+  }
+
+  deleteNewCorporateCustomerInfoStoreState() {
+    this.store.dispatch(deleteNewCorporateCustomerInfo());
+  }
+
+  deleteNewCustomerServicesStoreState() {
+    this.store.dispatch(deleteNewCustomerServices());
+  }
+
+  deleteNewCustomerCatalogsStoreState() {
+    this.store.dispatch(deleteNewCustomerCatalogs());
+  }
+
+  //* NEW CUSTOMER STORE CODES ENDS
 
   //* CUSTOMER EKLEME FORMLARINDAN GELEN VERIYI DISPATCH ILE STORE'A EKLE.
   setCustomerToRegisterModelStoreState(
