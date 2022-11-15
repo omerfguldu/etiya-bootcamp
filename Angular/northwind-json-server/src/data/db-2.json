@@ -18,7 +18,7 @@
     },
     {
       "id": 5,
-      "name": "Faturasız Telefon Hattı Güncellendi"
+      "name": "Faturasız Telefon Hattı"
     },
     {
       "id": 6,
@@ -39,10 +39,6 @@
     {
       "id": 10,
       "name": "Fatura Ödeme"
-    },
-    {
-      "name": "IP TV",
-      "id": 11
     }
   ],
   "catalogs": [
@@ -89,10 +85,10 @@
       "id": 7
     },
     {
-      "id": 8,
       "name": "Faturasız Telefon Hattı 1 aylık",
       "price": 59.99,
-      "serviceId": 5
+      "serviceId": 5,
+      "id": 8
     },
     {
       "name": "Ev Telefonu 6 aylık",
@@ -135,18 +131,6 @@
       "price": 79.99,
       "serviceId": 9,
       "id": 15
-    },
-    {
-      "id": 16,
-      "name": "IP TV 1 aylık",
-      "price": 199.99,
-      "serviceId": 11
-    },
-    {
-      "id": 17,
-      "name": "IP TV 3 aylık",
-      "price": 259.99,
-      "serviceId": 11
     }
   ],
   "customers": [
@@ -209,10 +193,6 @@
     {
       "customerNumber": 12345679,
       "id": 15
-    },
-    {
-      "customerNumber": 234234,
-      "id": 16
     }
   ],
   "individualCustomers": [
@@ -287,12 +267,6 @@
       "customerId": 10,
       "companyName": "Hepsiburada",
       "taxNumber": 53569170
-    },
-    {
-      "customerId": 16,
-      "companyName": "asdf",
-      "taxNumber": 234234,
-      "id": 6
     }
   ],
   "subscriptions": [
@@ -379,27 +353,6 @@
       "serviceId": 7,
       "catalogId": 11,
       "dateStarted": "2022-06-09"
-    },
-    {
-      "customerId": 16,
-      "serviceId": 8,
-      "catalogId": 13,
-      "dateStarted": "2022-11-11",
-      "id": 17
-    },
-    {
-      "customerId": 16,
-      "serviceId": 5,
-      "catalogId": 8,
-      "dateStarted": "2022-11-11",
-      "id": 18
-    },
-    {
-      "customerId": 16,
-      "serviceId": 1,
-      "catalogId": 2,
-      "dateStarted": "2022-11-11",
-      "id": 19
     }
   ],
   "invoices": [
@@ -444,24 +397,6 @@
       "subscriptionId": 16,
       "dateCreated": "2022-06-30",
       "dateDue": "2022-07-28"
-    },
-    {
-      "subscriptionId": 17,
-      "dateCreated": "2022-11-11",
-      "dateDue": "2022-12-09",
-      "id": 10
-    },
-    {
-      "subscriptionId": 18,
-      "dateCreated": "2022-11-11",
-      "dateDue": "2022-12-09",
-      "id": 11
-    },
-    {
-      "subscriptionId": 19,
-      "dateCreated": "2022-11-11",
-      "dateDue": "2022-12-09",
-      "id": 12
     }
   ],
   "users": [
