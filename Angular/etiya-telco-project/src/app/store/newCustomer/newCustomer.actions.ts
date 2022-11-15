@@ -1,26 +1,17 @@
-import { CorporateCustomer } from 'src/app/models/corporateCustomer';
+import { CorporateCustomer } from './../../models/corporateCustomer';
 import { IndividualCustomer } from 'src/app/models/individualCustomer';
 import { Catalog } from './../../models/catalog';
 import { Service } from './../../models/service';
 import { createAction, props } from '@ngrx/store';
 
 //* NEW CUSTOMER INFO ACTIONS
-export const setNewIndividualCustomerInfo = createAction(
-  '[New Customer Info] Set New Individual Customer Info',
-  props<{ newIndividualCustomerInfo: IndividualCustomer }>()
+export const setNewCustomerInfo = createAction(
+  '[New Customer Info] Set New Customer Info',
+  props<{ newCustomerInfo: IndividualCustomer | CorporateCustomer | null }>()
 );
 
-export const deleteNewIndividualCustomerInfo = createAction(
-  '[New Customer Info] Delete New Individual Customer Info'
-);
-
-export const setNewCorporateCustomerInfo = createAction(
-  '[New Customer Info] Set New Corporate Customer Info',
-  props<{ newCorporateCustomerInfo: CorporateCustomer }>()
-);
-
-export const deleteNewCorporateCustomerInfo = createAction(
-  '[New Customer Info] Delete New Corporate Customer Info'
+export const deleteNewCustomerInfo = createAction(
+  '[New Customer Info] Delete New Customer Info'
 );
 
 //* NEW CUSTOMER SERVICES ACTIONS

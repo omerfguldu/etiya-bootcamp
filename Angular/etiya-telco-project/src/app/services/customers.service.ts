@@ -2,12 +2,10 @@ import { NewCustomerStoreState } from './../store/newCustomer/newCustomer.state'
 import { Catalog } from './../models/catalog';
 import {
   deleteNewCustomerCatalogs,
-  deleteNewIndividualCustomerInfo,
-  deleteNewCorporateCustomerInfo,
-  setNewCorporateCustomerInfo,
+  deleteNewCustomerInfo,
   deleteNewCustomerServices,
   setNewCustomerCatalogs,
-  setNewIndividualCustomerInfo,
+  setNewCustomerInfo,
   setNewCustomerServices,
 } from './../store/newCustomer/newCustomer.actions';
 import {
@@ -46,20 +44,10 @@ export class CustomersService {
   }
 
   //* NEW CUSTOMER STORE CODES STARTS
-  setNewIndividualCustomerInfoStoreState(
-    newIndividualCustomerInfo: IndividualCustomer
+  setNewCustomerInfoStoreState(
+    newCustomerInfo: IndividualCustomer | CorporateCustomer | null
   ) {
-    this.store.dispatch(
-      setNewIndividualCustomerInfo({ newIndividualCustomerInfo })
-    );
-  }
-
-  setNewCorporateCustomerInfoStoreState(
-    newCorporateCustomerInfo: CorporateCustomer
-  ) {
-    this.store.dispatch(
-      setNewCorporateCustomerInfo({ newCorporateCustomerInfo })
-    );
+    this.store.dispatch(setNewCustomerInfo({ newCustomerInfo }));
   }
 
   setNewCustomerServicesStoreState(newCustomerServices: Service[]) {
@@ -70,12 +58,8 @@ export class CustomersService {
     this.store.dispatch(setNewCustomerCatalogs({ newCustomerCatalogs }));
   }
 
-  deleteNewIndividualCustomerInfoStoreState() {
-    this.store.dispatch(deleteNewIndividualCustomerInfo());
-  }
-
-  deleteNewCorporateCustomerInfoStoreState() {
-    this.store.dispatch(deleteNewCorporateCustomerInfo());
+  deleteNewCustomerInfoStoreState() {
+    this.store.dispatch(deleteNewCustomerInfo());
   }
 
   deleteNewCustomerServicesStoreState() {

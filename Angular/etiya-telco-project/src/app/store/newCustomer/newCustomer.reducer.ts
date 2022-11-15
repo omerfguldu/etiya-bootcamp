@@ -3,10 +3,8 @@ import {
   setNewCustomerCatalogs,
   deleteNewCustomerCatalogs,
   deleteNewCustomerServices,
-  setNewIndividualCustomerInfo,
-  deleteNewIndividualCustomerInfo,
-  setNewCorporateCustomerInfo,
-  deleteNewCorporateCustomerInfo,
+  setNewCustomerInfo,
+  deleteNewCustomerInfo,
 } from './newCustomer.actions';
 import {
   NewCustomerStoreState,
@@ -16,25 +14,13 @@ import { createReducer, on } from '@ngrx/store';
 
 export const newCustomerReducer = createReducer<NewCustomerStoreState>(
   initialNewCustomerStoreState,
-  on(setNewIndividualCustomerInfo, (currentState, action) => {
+  on(setNewCustomerInfo, (currentState, action) => {
     return {
       ...currentState,
-      info: action.newIndividualCustomerInfo,
+      info: action.newCustomerInfo,
     };
   }),
-  on(deleteNewIndividualCustomerInfo, (currentState) => {
-    return {
-      ...currentState,
-      info: null,
-    };
-  }),
-  on(setNewCorporateCustomerInfo, (currentState, action) => {
-    return {
-      ...currentState,
-      info: action.newCorporateCustomerInfo,
-    };
-  }),
-  on(deleteNewCorporateCustomerInfo, (currentState) => {
+  on(deleteNewCustomerInfo, (currentState) => {
     return {
       ...currentState,
       info: null,

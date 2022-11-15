@@ -1,7 +1,5 @@
 import { CorporateCustomer } from './../../../models/corporateCustomer';
 import { IndividualCustomer } from './../../../models/individualCustomer';
-import { NewCustomerStoreState } from './../../../store/newCustomer/newCustomer.state';
-import { CustomerToRegisterModel } from './../../../models/customerToRegisterModel';
 import { Router } from '@angular/router';
 import { CustomersService } from 'src/app/services/customers.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -17,12 +15,11 @@ import { AppStoreState } from 'src/app/store/app.state';
 })
 export class CustomerInfoFormComponent implements OnInit, OnDestroy {
   //* BASLANGICTA CUSTOMER TYPE INDIVIDUAL OLARAK BELIRLE.
-  subscription1!: Subscription;
-  customerValues!: IndividualCustomer | CorporateCustomer;
   customerType: string = 'Individual Customer';
+  customerInfoSub!: Subscription;
+  customerValues!: IndividualCustomer | CorporateCustomer | null;
   customerInfoForm!: FormGroup;
-  customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
-  newCustomerInfo$: Observable<IndividualCustomer | CorporateCustomer>;
+  newCustomerInfo$: Observable<IndividualCustomer | CorporateCustomer | null>;
 
   dateOfToday = new Date().toISOString().split('T')[0];
 
@@ -32,8 +29,6 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppStoreState>
   ) {
-    this.customerToRegisterModel$ =
-      this.customersService.customerToRegisterModel$;
     this.newCustomerInfo$ = this.store.select((s) => s.newCustomer.info);
   }
 
@@ -43,30 +38,15 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
 
   onCustomerTypeChange(type: string) {
     //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
-    this.customersService.deleteCustomerToRegisterModelStoreState();
-    this.customersService.deleteNewIndividualCustomerInfoStoreState();
-    this.customersService.deleteNewCorporateCustomerInfoStoreState();
+    this.customersService.deleteNewCustomerInfoStoreState();
     this.customerType = type;
     this.createCustomerInfoForm();
   }
 
   onSubmit() {
     //* FORMA GIRILEN BILGILERI STORE'A KAYDET VE SERVIS SECIM EKRANINA YONLENDIR.
-    this.customersService.setCustomerToRegisterModelStoreState({
-      ...this.customerValues,
+    this.customersService.setNewCustomerInfoStoreState({
       ...this.customerInfoForm.value,
-    });
-    if (this.customerType === 'Individual Customer') {
-      this.customersService.setNewIndividualCustomerInfoStoreState({
-        ...this.customerInfoForm.value,
-      });
-    } else {
-      this.customersService.setNewCorporateCustomerInfoStoreState({
-        ...this.customerInfoForm.value,
-      });
-    }
-    this.newCustomerInfo$.subscribe((res) => {
-      console.log(res);
     });
     this.router.navigateByUrl('homepage/newcustomer/services');
   }
@@ -74,8 +54,8 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
   createCustomerInfoForm() {
     //* CUSTOMER TYPE'A GORE FORM BUILDER ILE FORM OLUSTUR.
     //* EGER STORE'DA KAYITLI VERI VARSA ILK OLARAK O DEGERLERI FORMDA GOSTER.
-    this.subscription1 = this.newCustomerInfo$.subscribe({
-      next: (res: IndividualCustomer | CorporateCustomer) => {
+    this.customerInfoSub = this.newCustomerInfo$.subscribe({
+      next: (res: IndividualCustomer | CorporateCustomer | null) => {
         this.customerValues = res;
       },
       complete: () => {},
@@ -123,6 +103,6 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription1.unsubscribe();
+    this.customerInfoSub.unsubscribe();
   }
 }

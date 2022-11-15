@@ -3,11 +3,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Catalog } from 'src/app/models/catalog';
-import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { Service } from 'src/app/models/service';
 import { CatalogsService } from 'src/app/services/catalogs.service';
+import { CustomersService } from 'src/app/services/customers.service';
 import { AppStoreState } from 'src/app/store/app.state';
-import { addCatalogsToCatalogsRegisterModel } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 
 @Component({
   selector: 'app-customer-catalog-form',
@@ -17,48 +16,47 @@ import { addCatalogsToCatalogsRegisterModel } from 'src/app/store/catalogsToRegi
 export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
-  catalogsStore$!: Observable<Catalog[] | null>;
+  newCustomerCatalogs$!: Observable<Catalog[] | null>;
+  newCustomerServices$!: Observable<Service[] | null>;
   selectedCatalogs: Catalog[] = [];
-  customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   selectedServices: Service[] = [];
+
   constructor(
+    private customersService: CustomersService,
     private catalogsService: CatalogsService,
     private store: Store<AppStoreState>,
     private router: Router
   ) {
-    this.customerToRegisterModel$ = this.store.select((state) => {
-      return state.customerToRegister.customerToRegisterModel;
-    });
-
-    this.catalogsStore$ = this.store.select(
-      (s) => s.catalogsToRegister.catalogsToRegister
+    this.newCustomerCatalogs$ = this.store.select(
+      (s) => s.newCustomer.catalogs
+    );
+    this.newCustomerServices$ = this.store.select(
+      (s) => s.newCustomer.services
     );
   }
 
   ngOnInit(): void {
-    this.catalogsStore$.subscribe((response) => {
-      if (response != null) this.selectedCatalogs = response;
+    this.newCustomerCatalogs$.subscribe((res: Catalog[] | null) => {
+      if (res) this.selectedCatalogs = res;
     });
-    this.subscription = this.customerToRegisterModel$.subscribe(
-      (response: any) => {
-        if (response.services) {
-          const { services } = response;
-          this.selectedServices = services;
-          return;
-        }
+    this.subscription = this.newCustomerServices$.subscribe(
+      (res: Service[] | null) => {
+        if (res) this.selectedServices = res;
       }
     );
     this.getCatalogs(this.selectedServices);
   }
+
   getCatalogs(services: Service[]) {
     services.forEach((service) => {
       this.catalogsService
         .getCatalogsByServiceId(service.id)
-        .subscribe((response) => {
-          this.catalogs = this.catalogs.concat(response);
+        .subscribe((res: Catalog[]) => {
+          this.catalogs = this.catalogs.concat(res);
         });
     });
   }
+
   onCatalogClick(catalog: Catalog) {
     let removeSelectedCatalog = this.selectedCatalogs.some(
       (selectedCatalog) => {
@@ -73,33 +71,32 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
       );
       return;
     }
-
     this.selectedCatalogs = this.selectedCatalogs.filter((selectedCatalog) => {
       return selectedCatalog.serviceId !== catalog.serviceId;
     });
     this.selectedCatalogs = [...this.selectedCatalogs, catalog];
   }
+
   toggleCatalogCss(catalog: Catalog) {
     return this.selectedCatalogs.some((selectedCatalog) => {
       return selectedCatalog.id === catalog.id;
     });
   }
+
   onNext() {
-    this.store.dispatch(
-      addCatalogsToCatalogsRegisterModel({
-        catalogsToRegister: this.selectedCatalogs,
-      })
+    this.customersService.setNewCustomerCatalogsStoreState(
+      this.selectedCatalogs
     );
     this.router.navigateByUrl('/homepage/newcustomer/overview');
   }
+
   onBack() {
-    this.store.dispatch(
-      addCatalogsToCatalogsRegisterModel({
-        catalogsToRegister: this.selectedCatalogs,
-      })
+    this.customersService.setNewCustomerCatalogsStoreState(
+      this.selectedCatalogs
     );
     this.router.navigateByUrl('/homepage/newcustomer/services');
   }
+
   onReset() {
     this.selectedCatalogs = [];
   }
