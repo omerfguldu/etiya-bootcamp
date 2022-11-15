@@ -39,12 +39,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    //* LOGIN FORMUNU OLUSTURMA FONKSIYONUNU CAGIR VE LOADING GOZLEMLE.
+    //* call create login form and observe the loading state
     this.createLoginForm();
     this.subscribeToLoading();
-    this.customersService.deleteNewCustomerCatalogsStoreState();
-    this.customersService.deleteNewCustomerInfoStoreState();
-    this.customersService.deleteNewCustomerServicesStoreState();
+    this.customersService.deleteNewCustomerStoreStates();
   }
 
   ngOnDestroy(): void {
@@ -52,10 +50,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    //* LOGIN FORMDAN GELEN VERILERI SERVISE YOLLA.
-    //* RESPONSE OLUMLU ISE LOCALSTOREGE DA TOKEN OLUSTUR VE TOKEN KEYI EKLE.
+    //* send the values which comes from the loginform to authService login function.
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
+        //* if response is valid create a token key on local storage and assign token key as its value.
         this.isUserValid = true;
         this.localstorageService.setItem('token', res['access_token']);
         this.authService.decodeToken(res['access_token']);
@@ -80,12 +78,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     //* HOMEPAGE'E YONLENDIR.
     //* LOADING TAMAMLANMIS AMA USER INVALID ISE TOASTR ILE HATA GOSTER.
     this.subscription = this.loadingService.isLoadingSubject.subscribe(
-      (isLoading) => {
-        this.isLoading = isLoading;
+      (res: boolean) => {
+        this.isLoading = res;
+        //* if user valid and loading completed then navigate user to homepage
         if (!this.isLoading && this.isUserValid) {
           this.toastr.success(`Welcome ${this.validUserName}`);
           this.router.navigateByUrl('homepage');
-        } else if (!this.isLoading && !this.isUserValid) {
+        }
+        //* if user invalid and loading completed inform user with toaster error.
+        else if (!this.isLoading && !this.isUserValid) {
           this.toastr.error('Login failed.');
         }
       }
@@ -97,6 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onEye() {
+    //* password input show and hide functionality
     if (this.passwordInput.nativeElement.type === 'password') {
       this.passwordInput.nativeElement.type = 'text';
     } else {

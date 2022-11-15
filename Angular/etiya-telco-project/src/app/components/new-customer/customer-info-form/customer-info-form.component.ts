@@ -14,13 +14,11 @@ import { AppStoreState } from 'src/app/store/app.state';
   styleUrls: ['./customer-info-form.component.css'],
 })
 export class CustomerInfoFormComponent implements OnInit, OnDestroy {
-  //* BASLANGICTA CUSTOMER TYPE INDIVIDUAL OLARAK BELIRLE.
-  customerType: string = 'Individual Customer';
+  customerType: string = 'Individual Customer'; //* initial value Individual
   customerInfoSubs: Subscription[] = [];
   customerValues!: IndividualCustomer | CorporateCustomer | null;
   customerInfoForm!: FormGroup;
   newCustomerInfo$: Observable<IndividualCustomer | CorporateCustomer | null>;
-
   dateOfToday = new Date().toISOString().split('T')[0];
 
   constructor(
@@ -36,15 +34,17 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
     this.createCustomerInfoForm();
   }
 
+  //* on customer type select input change
+  //* delete customer value from store
+  //* create form according to selected customer type
   onCustomerTypeChange(type: string) {
-    //* CUSTOMER TYPE SECIMI YAPILAN INPUT HER DEGISTIGINDE YENI FORM OLUSTUR.
-    this.customersService.deleteNewCustomerInfoStoreState();
+    this.customersService.deleteNewCustomerStoreStates();
     this.customerType = type;
     this.createCustomerInfoForm();
   }
 
   onSubmit() {
-    //* FORMA GIRILEN BILGILERI STORE'A KAYDET VE SERVIS SECIM EKRANINA YONLENDIR.
+    //* save customer info values to store and navigate to service selection page.
     this.customersService.setNewCustomerInfoStoreState({
       ...this.customerInfoForm.value,
     });
@@ -52,8 +52,8 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
   }
 
   createCustomerInfoForm() {
-    //* CUSTOMER TYPE'A GORE FORM BUILDER ILE FORM OLUSTUR.
-    //* EGER STORE'DA KAYITLI VERI VARSA ILK OLARAK O DEGERLERI FORMDA GOSTER.
+    //* create form according to selected customer type
+    //* if there is value in store, use them for initial form value
     this.customerInfoSubs.push(
       this.newCustomerInfo$.subscribe({
         next: (res: IndividualCustomer | CorporateCustomer | null) => {

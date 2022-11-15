@@ -12,7 +12,6 @@ export class SubscriptionsService {
   private sub: SubscriptionsResponse[] = [];
   constructor(private httpClient: HttpClient) {}
 
-  //* /subscriptions ADRESINE KAYIT OLUSTUR.
   addSubscription(subscription: Subscriptions) {
     return this.httpClient.post<Subscriptions>(
       `${this.controllerUrl}`,
@@ -20,14 +19,12 @@ export class SubscriptionsService {
     );
   }
 
-  //* ID'YE GORE SUBSCRIPTION GETIR.
   getSubscription(id: number): Observable<SubscriptionsResponse> {
     return this.httpClient.get<SubscriptionsResponse>(
       `${this.controllerUrl}/${id}`
     );
   }
 
-  //* CUSTOMER ID'YE GORE SUBSCRIPTION GETIR.
   getSubscriptionsWithCustomerId(
     customerId: number
   ): Observable<SubscriptionsResponse[]> {

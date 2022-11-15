@@ -16,17 +16,20 @@ export class CorporateDetailsComponent implements OnInit {
   companyIcon: IconDefinition = faBuilding;
   taxIcon: IconDefinition = faFileSignature;
   @Input() selectedUserID!: number;
-
   corporateCustomerDetails!: CorporateCustomer[];
+
   constructor(private customersService: CustomersService) {}
 
   ngOnInit(): void {
     this.getCorporateCustomer(this.selectedUserID);
   }
+
   getCorporateCustomer(id: number) {
-    //* CUSTOMER ID YE AIT BILGILERI CORPRATE CUSTOMERS UZERINDEN GETIR
-    this.customersService.getCorporateCustomer(id).subscribe((res) => {
-      this.corporateCustomerDetails = res;
-    });
+    //* get corporateCustomer values with id
+    this.customersService
+      .getCorporateCustomer(id)
+      .subscribe((res: CorporateCustomer[]) => {
+        this.corporateCustomerDetails = res;
+      });
   }
 }

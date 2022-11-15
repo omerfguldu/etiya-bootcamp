@@ -11,8 +11,7 @@ export class CustomersComponent implements OnInit {
   constructor(private customersService: CustomersService) {}
 
   ngOnInit(): void {
-    this.customersService.deleteNewCustomerCatalogsStoreState();
-    this.customersService.deleteNewCustomerInfoStoreState();
-    this.customersService.deleteNewCustomerServicesStoreState();
+    //* delete store values if there is stored values
+    this.customersService.deleteNewCustomerStoreStates();
   }
 }

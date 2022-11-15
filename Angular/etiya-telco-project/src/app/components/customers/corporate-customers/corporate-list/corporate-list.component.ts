@@ -15,13 +15,15 @@ import { CustomersService } from 'src/app/services/customers.service';
   styleUrls: ['./corporate-list.component.css'],
 })
 export class CorporateListComponent implements OnInit {
+  updateIcon: IconDefinition = faCircleInfo;
+  companyIcon: IconDefinition = faBuilding;
+  taxIcon: IconDefinition = faFileSignature;
+
   corporateCustomers!: CorporateCustomer[];
   searchCompanyName: string = '';
   searchId: string = '';
   searchTax: string = '';
-  updateIcon: IconDefinition = faCircleInfo;
-  companyIcon: IconDefinition = faBuilding;
-  taxIcon: IconDefinition = faFileSignature;
+
   constructor(
     private router: Router,
     private customersService: CustomersService
@@ -32,10 +34,10 @@ export class CorporateListComponent implements OnInit {
   }
 
   getCorporateCustomers() {
-    //* CORPORATE CUSTOMERLARI GETIR.
+    //* get all corporate customers
     this.customersService.getCorporateCustomers().subscribe({
-      next: (response) => {
-        this.corporateCustomers = response;
+      next: (res: CorporateCustomer[]) => {
+        this.corporateCustomers = res;
       },
       error: (err) => {
         console.log(err);
@@ -44,7 +46,8 @@ export class CorporateListComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    //* SECILI MUSTERININ ID SINI AL VE DETAY SAYFASINA YONLENDIR.
+    //* get id as parameter and navigate to details page using id
+    //* send customerType state to details page with router.
     this.router.navigateByUrl(`${this.router.url}/${id}`, {
       state: { customerType: 'corporate' },
     });
@@ -52,7 +55,7 @@ export class CorporateListComponent implements OnInit {
 
   onReset() {
     this.searchId = '';
-    this.searchCompanyName = '';    
-    this.searchTax= '';    
+    this.searchCompanyName = '';
+    this.searchTax = '';
   }
 }

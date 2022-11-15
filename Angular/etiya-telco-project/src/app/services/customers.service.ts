@@ -1,4 +1,4 @@
-import { NewCustomerStoreState } from './../store/newCustomer/newCustomer.state';
+import { Customer } from 'src/app/models/customer';
 import { Catalog } from './../models/catalog';
 import {
   deleteNewCustomerCatalogs,
@@ -25,50 +25,55 @@ export class CustomersService {
   private customersUrl = `${environment.apiUrl}/customers`;
   private individualUrl = `${environment.apiUrl}/individualCustomers`;
   private corporateUrl = `${environment.apiUrl}/corporateCustomers`;
-  newCustomer$: Observable<NewCustomerStoreState | null>;
 
   constructor(
     private httpClient: HttpClient,
     private store: Store<AppStoreState>
-  ) {
-    this.newCustomer$ = this.store.select((state) => state.newCustomer);
-  }
+  ) {}
 
-  //* NEW CUSTOMER STORE CODES STARTS
+  //* save new customer info to store
   setNewCustomerInfoStoreState(
     newCustomerInfo: IndividualCustomer | CorporateCustomer | null
   ) {
     this.store.dispatch(setNewCustomerInfo({ newCustomerInfo }));
   }
 
+  //* save new customer services to store
   setNewCustomerServicesStoreState(newCustomerServices: Service[]) {
     this.store.dispatch(setNewCustomerServices({ newCustomerServices }));
   }
 
+  //* save new customer catalogs to store
   setNewCustomerCatalogsStoreState(newCustomerCatalogs: Catalog[]) {
     this.store.dispatch(setNewCustomerCatalogs({ newCustomerCatalogs }));
   }
 
+  //* remove customer info from store
   deleteNewCustomerInfoStoreState() {
     this.store.dispatch(deleteNewCustomerInfo());
   }
 
+  //* remove customer services from store
   deleteNewCustomerServicesStoreState() {
     this.store.dispatch(deleteNewCustomerServices());
   }
 
+  //* remove customer catalogs from store
   deleteNewCustomerCatalogsStoreState() {
     this.store.dispatch(deleteNewCustomerCatalogs());
   }
 
-  //* NEW CUSTOMER STORE CODES ENDS
-
-  //* /customers ADRESINE KAYIT OLUSTUR.
-  addCustomer(customer: any) {
-    return this.httpClient.post(this.customersUrl, customer);
+  //* remove store values at once
+  deleteNewCustomerStoreStates() {
+    this.deleteNewCustomerInfoStoreState();
+    this.deleteNewCustomerServicesStoreState();
+    this.deleteNewCustomerCatalogsStoreState();
   }
 
-  //* /individualCustomers ADRESINE KAYIT OLUSTUR.
+  addCustomer(customer: Customer) {
+    return this.httpClient.post<Customer>(this.customersUrl, customer);
+  }
+
   addIndividualCustomer(customer: IndividualCustomer) {
     return this.httpClient.post<IndividualCustomer>(
       this.individualUrl,
@@ -76,29 +81,24 @@ export class CustomersService {
     );
   }
 
-  //* INDIVIDUAL CUSTOMERLARI GETIR.
   getIndividualCustomers(): Observable<IndividualCustomer[]> {
     return this.httpClient.get<IndividualCustomer[]>(this.individualUrl);
   }
 
-  //* ID YE GORE INDIVIDUAL CUSTOMER GETIR
   getIndividualCustomer(id: number): Observable<IndividualCustomer[]> {
     return this.httpClient.get<IndividualCustomer[]>(
       `${this.individualUrl}?customerId=${id}`
     );
   }
 
-  //* /corporateCustomers ADRESINE KAYIT OLUSTUR.
   addCorporateCustomer(customer: CorporateCustomer) {
     return this.httpClient.post<CorporateCustomer>(this.corporateUrl, customer);
   }
 
-  //* CORPORATE CUSTOMERLARI GETIR.
   getCorporateCustomers(): Observable<CorporateCustomer[]> {
     return this.httpClient.get<CorporateCustomer[]>(this.corporateUrl);
   }
 
-  //* ID YE GORE CORPORATE CUSTOMER GETIR.
   getCorporateCustomer(id: number): Observable<CorporateCustomer[]> {
     return this.httpClient.get<CorporateCustomer[]>(
       `${this.corporateUrl}?customerId=${id}`

@@ -9,16 +9,20 @@ import { Catalog } from '../models/catalog';
 })
 export class CatalogsService {
   private controllerUrl = `${environment.apiUrl}/catalogs`;
+
   constructor(private httpClient: HttpClient) {}
+
   addCatalog(catalog: Catalog): Observable<Catalog> {
     return this.httpClient.post<Catalog>(this.controllerUrl, catalog);
   }
+
   updateCatalog(catalog: Catalog): Observable<Catalog> {
     return this.httpClient.put<Catalog>(
       `${this.controllerUrl}/${catalog.id}`,
       catalog
     );
   }
+
   getCatalogs(): Observable<Catalog[]> {
     return this.httpClient.get<Catalog[]>(this.controllerUrl);
   }
@@ -26,6 +30,7 @@ export class CatalogsService {
   getCatalog(id: number): Observable<Catalog> {
     return this.httpClient.get<Catalog>(`${this.controllerUrl}/${id}`);
   }
+
   getCatalogsByServiceId(serviceId: number): Observable<Catalog[]> {
     return this.httpClient.get<Catalog[]>(
       `${this.controllerUrl}?serviceId=${serviceId}`

@@ -15,7 +15,7 @@ import { AppStoreState } from 'src/app/store/app.state';
 })
 export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   customerCatalogsSubs: Subscription[] = [];
-  catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
+  catalogs: Catalog[] = [];
   newCustomerCatalogs$!: Observable<Catalog[] | null>;
   newCustomerServices$!: Observable<Service[] | null>;
   selectedCatalogs: Catalog[] = [];
@@ -36,6 +36,7 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //* get catalogs and services value from store
     this.customerCatalogsSubs.push(
       this.newCustomerCatalogs$.subscribe((res: Catalog[] | null) => {
         if (res) this.selectedCatalogs = res;
@@ -50,6 +51,7 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   }
 
   getCatalogs(services: Service[]) {
+    //* get catalogs by service id
     services.forEach((service) => {
       this.catalogsService
         .getCatalogsByServiceId(service.id)
@@ -64,7 +66,8 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
       (selectedCatalog) => {
         return selectedCatalog.id === catalog.id;
       }
-    ); //Check if the selected catalog already exists if it exists remove it with filter method and return
+    );
+    //* check if the selected catalog already exists if it exists remove it with filter method and return
     if (removeSelectedCatalog) {
       this.selectedCatalogs = this.selectedCatalogs.filter(
         (selectedCatalog) => {
@@ -80,6 +83,8 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   }
 
   toggleCatalogCss(catalog: Catalog) {
+    //* if catalog id equals to selected catalog id return true
+    //* control css class with ngclass
     return this.selectedCatalogs.some((selectedCatalog) => {
       return selectedCatalog.id === catalog.id;
     });

@@ -11,6 +11,7 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
   userToken!: string;
+
   constructor(
     private router: Router,
     private localstorageService: LocalstorageService,
@@ -19,12 +20,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.userToken = this.localstorageService.getItem('token') || '';
-    //* UYGULAMA ACILDIGINDA LOCALSTORAGE'DA KEY VAR VE AUTHENTICATED ISE
-    //* HOMEPAGE'DEN BASLAT. YOKSA LOGIN PAGE'DEN BASLAT.
     if (!this.authService.isAuthenticated) {
+      //* if user is not authenticated navigate to login page
       this.router.navigateByUrl('login');
       return;
     }
+
+    //* if user is authenticated navigate to homepage
     this.authService.decodeToken(this.userToken);
     this.router.navigateByUrl('homepage');
   }

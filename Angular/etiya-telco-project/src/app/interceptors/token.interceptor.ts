@@ -18,6 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    //* if user is authenticated add token to http request headers
     if (this.authService.isAuthenticated) {
       const modifiedRequest = request.clone({
         headers: request.headers.append(

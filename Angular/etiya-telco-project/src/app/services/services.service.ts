@@ -14,22 +14,18 @@ export class ServicesService {
 
   constructor(private httpClient: HttpClient) {}
 
-  //* SERVISLERI GETIR.
   getServices(): Observable<Service[]> {
     return this.httpClient.get<Service[]>(this.controllerUrl);
   }
 
-  //* ID YE GORE SERVIS GETIR
   getService(id: number): Observable<Service> {
     return this.httpClient.get<Service>(`${this.controllerUrl}/${id}`);
   }
 
-  //* /services ADRESINE KAYIT OLUSTUR.
   addService(service: ServiceDto): Observable<Service> {
     return this.httpClient.post<Service>(this.controllerUrl, service);
   }
 
-  //* PARAMETRE OLARAK GELEN SERVIS VERISINI GUNCELLE
   updateService(service: Service): Observable<Service> {
     return this.httpClient.put<Service>(
       `${this.controllerUrl}/${service.id}`,
@@ -37,7 +33,6 @@ export class ServicesService {
     );
   }
 
-  //* ID'YE GORE SERVIS SIL.
   deleteService(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.controllerUrl}/${id}`);
   }

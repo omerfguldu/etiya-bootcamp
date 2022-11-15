@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -29,6 +30,7 @@ export class ServicesComponent implements OnInit {
   updateIcon: IconDefinition = faPenToSquare;
   deleteIcon: IconDefinition = faTrash;
   plusIcon: IconDefinition = faPlus;
+
   searchName: string = '';
   services: Service[] = [];
   deleteId: number = 0;
@@ -41,26 +43,29 @@ export class ServicesComponent implements OnInit {
   };
   selectedCatalogs: Catalog[] = [];
   removedCatalogs: Catalog[] = [];
+
   constructor(
     private servicesService: ServicesService,
     private formbuilder: FormBuilder,
     private customersService: CustomersService,
-    private catalogsService: CatalogsService
+    private catalogsService: CatalogsService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    //* SERVISLERI GETIR VE SERVIS EKLEME FORMU OLUSTUR.
-    this.customersService.deleteNewCustomerCatalogsStoreState();
-    this.customersService.deleteNewCustomerInfoStoreState();
-    this.customersService.deleteNewCustomerServicesStoreState();
+    this.customersService.deleteNewCustomerStoreStates();
     this.getServices();
     this.createAddServiceForm();
   }
+
+  //* get catalogs inside the form array
   get catalogs() {
     return this.addServiceForm.get('catalogs ') as FormArray;
   }
+
   createAddServiceForm(service?: Service) {
     let catalogs = new FormArray([]);
+    //* if service parameter is undefined create form for add new service
     if (service === undefined) {
       this.addServiceForm = this.formbuilder.group({
         name: ['', Validators.required],
@@ -69,10 +74,11 @@ export class ServicesComponent implements OnInit {
       return;
     }
 
+    //* if there is service create catalog side of the form with service's catalogs
     this.catalogsService
       .getCatalogsByServiceId(service.id)
-      .subscribe((response) => {
-        this.selectedCatalogs = response;
+      .subscribe((res: Catalog[]) => {
+        this.selectedCatalogs = res;
         this.selectedCatalogs.forEach((catalog) => {
           (<FormArray>this.addServiceForm.get('catalogs')).push(
             new FormGroup({
@@ -84,37 +90,40 @@ export class ServicesComponent implements OnInit {
         });
       });
 
-    //* SERVIS EKLEME FORMU BUILDER
+    //* if there is service create service side of the form with service's values
     this.addServiceForm = this.formbuilder.group({
       name: [service?.name ?? '', Validators.required],
       catalogs,
     });
   }
+
   addCatalog() {
     this.catalogs.push(this.formbuilder.control(''));
   }
 
   getServices() {
-    //* SERVISLERI GETIR VE ILGILI DEGISKENE AKTAR.
+    //* get all services
     this.servicesService.getServices().subscribe({
-      next: (response) => {
-        this.services = response;
+      next: (res: Service[]) => {
+        this.services = res;
       },
-      error: (err) => {
-        console.error(err);
-      },
+      error: (err) => this.toastr.error(err.message),
     });
   }
+
   get controls() {
+    //* get catalog controls array
     return (<FormArray>this.addServiceForm.get('catalogs')).controls;
   }
 
   onDeleteCatalog(control: AbstractControl, index: number) {
+    //* add removed catalog to an array and remove from form array
     this.removedCatalogs.push(control.value);
     (<FormArray>this.addServiceForm.get('catalogs')).removeAt(index);
   }
 
   onAddCatalog() {
+    //* add new catalog to form array
     (<FormArray>this.addServiceForm.get('catalogs')).push(
       new FormGroup({
         name: new FormControl(null, Validators.required),
@@ -128,40 +137,46 @@ export class ServicesComponent implements OnInit {
   }
 
   addService() {
-    //* UPDATE YAPILACAKSA UPDATESERVICE METODUNU CAGIR.
-    //* YENI SERVIS EKLENECEKSE ADDSERVICE METODUNU CAGIR.
+    //* get service name from form
     const service: ServiceDto = {
       name: this.addServiceForm.value.name,
     };
+    //* get catalogs from form
     const catalogs: Catalog[] = this.addServiceForm.value.catalogs;
 
+    //* if button works for update service
     if (this.isUpdate === true) {
+      //* map removedCatalogs array. if there is a catalog in array, remove it from database
       this.removedCatalogs.forEach((ctlg) => {
         if (ctlg.id) {
           this.catalogsService.deleteCatalog(ctlg.id).subscribe();
         }
       });
 
+      //* store new service values in a variable
       const updateService: Service = {
         ...this.selectedService,
         name: this.addServiceForm.value.name,
       };
+
+      //* update service and catalog with new value
       this.servicesService.updateService(updateService).subscribe({
-        next: (response) => {
+        next: (res: Service) => {
           catalogs.forEach((catalog) => {
-            catalog.serviceId = response.id;
+            catalog.serviceId = res.id;
             if (!catalog.id) {
-              this.catalogsService.addCatalog(catalog).subscribe((res) => {
-                this.catalogsService.updateCatalog(res).subscribe();
-              });
+              this.catalogsService
+                .addCatalog(catalog)
+                .subscribe((res: Catalog) => {
+                  this.catalogsService.updateCatalog(res).subscribe();
+                });
               return;
             }
-
             this.catalogsService.updateCatalog(catalog).subscribe();
           });
         },
         error: (err) => {
-          console.error(err);
+          this.toastr.error(err.message);
         },
         complete: () => {
           this.closePopup();
@@ -169,26 +184,28 @@ export class ServicesComponent implements OnInit {
         },
       });
       return;
-    } //TODO UPDATE CATALOGS
-    this.servicesService.addService(service).subscribe((response) => {
+    }
+
+    //* if button works for add new service
+    //* add new service to database
+    this.servicesService.addService(service).subscribe((res: Service) => {
       this.getServices();
-
+      //* add catalogs to database
       catalogs.forEach((catalog) => {
-        catalog.serviceId = response.id;
-
+        catalog.serviceId = res.id;
         this.catalogsService.addCatalog(catalog).subscribe();
       });
       this.closePopup();
     });
   }
 
-  //   //* ACILAN MODAL'DA DELETE SECILIRSE SERVISI SIL
+  //* delete selected service and relative catalogs from database
   deleteService() {
     this.servicesService.deleteService(this.deleteId).subscribe(() => {
       this.catalogsService
         .getCatalogsByServiceId(this.deleteId)
-        .subscribe((response) => {
-          response.forEach((catalog) => {
+        .subscribe((res: Service[]) => {
+          res.forEach((catalog) => {
             this.catalogsService.deleteCatalog(catalog.id).subscribe(() => {});
           });
         });
@@ -197,8 +214,6 @@ export class ServicesComponent implements OnInit {
   }
 
   updateService(service: Service) {
-    //* UPDATE BUTONU TIKLANDIGINDA SERVIS BILGISINI
-    //* FORM MODALI ACILDIGINDA OTOMATIK OLARAK GOSTER.
     this.isUpdate = true;
     this.selectedService = service;
     this.createAddServiceForm(service);

@@ -14,12 +14,15 @@ import { Location } from '@angular/common';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  isChecked: boolean = false;
-  @Output() isSidebarActive = new EventEmitter<boolean>();
   settingsIcon: IconDefinition = faGear;
   notificationsIcon: IconDefinition = faBell;
+
   activeUserName!: Token;
+  isChecked: boolean = false;
+  @Output() isSidebarActive = new EventEmitter<boolean>();
+
   constructor(private authService: AuthService, private location: Location) {
+    //* on mobile view if location changes close the sidebar
     this.location.onUrlChange(() => {
       this.isChecked = false;
       this.onInputChange();

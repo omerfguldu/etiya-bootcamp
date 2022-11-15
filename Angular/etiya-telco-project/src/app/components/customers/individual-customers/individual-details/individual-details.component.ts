@@ -26,9 +26,11 @@ export class IndividualDetailsComponent implements OnInit {
   }
 
   getIndividualCustomer(id: number) {
-    //* CUSTOMER ID YE AIT BILGILERI INDIVIDUAL CUSTOMERS UZERINDEN GETIR
-    this.customersService.getIndividualCustomer(id).subscribe((res) => {
-      this.individualCustomerDetails = res;
-    });
+    //* get individualCustomer values with id
+    this.customersService
+      .getIndividualCustomer(id)
+      .subscribe((res: IndividualCustomer[]) => {
+        this.individualCustomerDetails = res;
+      });
   }
 }

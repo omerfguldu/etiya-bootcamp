@@ -16,15 +16,17 @@ import { CustomersService } from 'src/app/services/customers.service';
   styleUrls: ['./individual-list.component.css'],
 })
 export class IndividualListComponent implements OnInit {
-  searchName: string = '';
-  searchSurName: string = '';
-  searchDate: Date = new Date(1970, 1, 1);
-  individualCustomers!: IndividualCustomer[];
   updateIcon: IconDefinition = faCircleInfo;
   nameIcon: IconDefinition = faUserPen;
   dateIcon: IconDefinition = faCalendarDays;
   idIcon: IconDefinition = faIdCard;
+
+  searchName: string = '';
+  searchSurName: string = '';
+  searchDate: Date = new Date(1970, 1, 1);
+  individualCustomers!: IndividualCustomer[];
   dateOfToday = new Date().toISOString().split('T')[0];
+
   constructor(
     private router: Router,
     private customersService: CustomersService
@@ -33,11 +35,12 @@ export class IndividualListComponent implements OnInit {
   ngOnInit(): void {
     this.getIndividualCustomers();
   }
+
   getIndividualCustomers() {
-    //* INDIVIDUAL CUSTOMERLARI GETIR.
+    //* get all individual customers
     this.customersService.getIndividualCustomers().subscribe({
-      next: (response) => {
-        this.individualCustomers = response;
+      next: (res: IndividualCustomer[]) => {
+        this.individualCustomers = res;
       },
       error: (err) => {
         console.log(err);
@@ -45,7 +48,8 @@ export class IndividualListComponent implements OnInit {
     });
   }
   goToDetails(id: number) {
-    //* SECILI MUSTERININ ID SINI AL VE DETAY SAYFASINA YONLENDIR.
+    //* get id as parameter and navigate to details page using id
+    //* send customerType state to details page with router.
     this.router.navigateByUrl(`${this.router.url}/${id}`, {
       state: { customerType: 'individual' },
     });

@@ -15,13 +15,10 @@ export class CustomerListComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    //* INDIVIDUAL VE CORPORATE CUSTOMERLARI GETIREN FONKSIYONLARI CAGIR.
-  }
+  ngOnInit(): void {}
 
   onCustomerTypeChange(type: string) {
-    //* SELECT INPUTU DEGISTIGINDE LIST EKRANINDA GOZUKEN TEXT'I GUNCELLE.
-    //* SECILEN MUSTERI TURUNE AIT BLOGU GOSTER. DIGERINI GIZLE.
+    //* on customer type selection input change, update variable values.
     if (type === 'Individual Customers') {
       this.customerTypeText = 'Individual';
       this.showIndividualCustomers = true;

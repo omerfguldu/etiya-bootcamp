@@ -13,14 +13,12 @@ import { environment } from '../../environments/environment';
 export class NotificationInterceptor implements HttpInterceptor {
   constructor(private notificationService: NotificationService) {}
 
-  //* HTTP ISTEGI GELDIGINDE ISTEGI KONTROL ET.
-  //* EGER GELEN ISTEK LOGIN EKRANINDAN GELIYORSA BIR SEY YAPMA.
-  //* GELEN ISTEK GET ISE BIR SEY YAPMA.
-  //* POST-DELETE-PUT ISTEKLERI SONLANDIGINDA TOASTR SERVISI ILE BILGILENDIR.
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    //* if the reqeust comes from login page do nothing
+    //* if the request method is get do nothing
     if (
       request.url === `${environment.apiUrl}/auth/login` ||
       request.method === 'GET' ||
@@ -30,6 +28,7 @@ export class NotificationInterceptor implements HttpInterceptor {
     }
 
     return next.handle(request).pipe(
+      //* inform the user with toaster service when put-post-delete requests done.
       finalize(() => {
         switch (request.method) {
           case 'POST':

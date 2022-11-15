@@ -23,7 +23,7 @@ export class AuthService {
     private helper: JwtHelperService
   ) {}
 
-  //* GELEN USER VERISI ILE GIRIS ISTEGI GONDER
+  //* send login request with user value
   login(user: LoginDto): Observable<LoginResponseModel> {
     return this.http.post<LoginResponseModel>(
       `${this.controllerUrl}/login`,
@@ -31,25 +31,25 @@ export class AuthService {
     );
   }
 
-  //* LOCALSTOREGE'DA YER ALAN TOKENI SIL. LOGIN PAGE YONLENDIR.
+  //* remove token from localstorage and navigate to login page
   logout() {
     this.localstorageService.deleteItem('token');
     this.router.navigateByUrl('login');
   }
 
-  //* JWTHELPER SERVIS ILE TOKENDE YER ALAN BILGILERI COZUMLE.
+  //* decode token values using JwtHelperService
   decodeToken(token: string) {
     const tokenValues: Token = this.helper.decodeToken(token);
     this.decodedToken = tokenValues;
   }
 
-  //* AUTHENTICATED KONTROLUNU GERCEKLESTIR.
-  //* TOKEN TOKSA FALSE
-  //* TOKEN VAR AMA EXPIRED ISE FALSE
-  //* TOKEN VAR VE VALID ISE TRUE
+
   get isAuthenticated(): boolean {
+    //* get token from localstorage
     const token = this.localstorageService.getItem('token');
+    //* if there is no token return false
     if (!token) return false;
+    //* if token expired return false
     if (this.helper.isTokenExpired()) return false;
     return true;
   }

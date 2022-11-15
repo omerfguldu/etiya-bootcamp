@@ -65,14 +65,18 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //* get customer values from store
     this.customerOverviewSubs.push(
       this.newCustomerInfo$.subscribe({
         next: (res: IndividualCustomer | CorporateCustomer | null) => {
           if (res) {
+            //* if value has firstName, assign values to individualInfo
             if ((res as IndividualCustomer).firstName) {
               this.individualInfo = res as IndividualCustomer;
               this.isIndividual = true;
-            } else {
+            }
+            //* if value doesn't have firstName, assign values to corporateInfo
+            else {
               this.corporateInfo = res as CorporateCustomer;
               this.isIndividual = false;
             }
@@ -82,10 +86,8 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
       })
     );
 
-    //* OVERVIEW COMPONENT YUKLENDIGINDE STOREDAKI KAYITLI
-    //* MUSTERININ BILGILERINI AL VE TURUNU(CORPORATE-INDIVIDUAL) TESPIT ET.
-    //* STORE'DA KAYITLI SERVISLERI AL.
-
+    //* get customer catalog values from store
+    //* map catalogs and get service for each catalog
     this.customerOverviewSubs.push(
       this.newCustomerCatalogs$.subscribe({
         next: (res: Catalog[] | null) => {
@@ -105,47 +107,48 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   }
 
   onSaveCustomer() {
-    //* SAVE BUTONUNA BASILDIGINDA YENI BIR CUSTOMER OLUSTUR
-    //* CORPORATE TURUNDE ISE CUSTOMER NUMBER = TAXNUMBER OLSUN.
-    //* INDIVIDUAL TURUNDE ISE CUSTOMER NUMBER = NATIONAL IDENTITY OLSUN.
+    //* create a new customer
     let customer: Customer = {
       customerNumber: 0,
     };
+    //* if customer is individual give its nationalIdentity as its customerNumber
+    //* if customer is corporate give its taxNumber as its customerNumber
     this.isIndividual
       ? (customer.customerNumber = +this.individualInfo.nationalIdentity)
       : (customer.customerNumber = +this.corporateInfo.taxNumber);
     this.customerOverviewSubs.push(
       this.customersService.addCustomer(customer).subscribe({
-        next: (res: any) => {
-          console.log(res);
+        next: (res: Customer) => {
           if (this.isIndividual) {
-            //* INDIVIDUAL CUSTOMER TURUNDE ISE CALIS VE INDIVIDUAL CUSTOMER'A KAYIT EKLE.
+            //* if customer equals to individual create new customer variable
             const customerToAdd = {
               ...this.individualInfo,
               customerId: res.id,
               nationalIdentity: res.customerNumber,
             };
+            //* add this customer to individual customers
             this.customersService
               .addIndividualCustomer(customerToAdd as IndividualCustomer)
               .subscribe({
                 next: (res: IndividualCustomer) => {
-                  //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
+                  //* send the new customer value that comes as a response, to addServices function
                   this.addServices(res);
                 },
                 error: (err) => this.toastr.error(err.message),
               });
           } else {
-            //* CORPORATE CUSTOMER TURUNDE ISE CALIS VE CORPORATE CUSTOMER'A KAYIT EKLE.
+            //* if customer equals to corporate create new customer variable
             const customerToAdd = {
               ...this.corporateInfo,
               customerId: res.id,
               taxNumber: res.customerNumber,
             };
+            //* add this customer to corporate customers
             this.customersService
               .addCorporateCustomer(customerToAdd as CorporateCustomer)
               .subscribe({
                 next: (res: CorporateCustomer) => {
-                  //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
+                  //* send the new customer value that comes as a response, to addServices function
                   this.addServices(res);
                 },
                 error: (err) => this.toastr.error(err.message),
@@ -158,19 +161,19 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   }
 
   addServices(customer: IndividualCustomer | CorporateCustomer) {
-    //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
-    //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
+    //* map the catalogs array
     this.catalogs.map((catalog) => {
+      //* create new subscription object
       const subscription: Subscriptions = {
         customerId: customer.customerId,
         serviceId: catalog.serviceId,
         catalogId: catalog.id,
         dateStarted: new Date().toISOString().split('T')[0],
       };
+      //* add this subscription object to database
       this.subscriptionsService.addSubscription(subscription).subscribe({
-        //* SUBSCRIPTION EKLENDIKTEN SONRA ILGILI SUBSCRIPTIONA AIT INVOICE OLUSTUR
-        //* OLUSAN INVOICE OBJESINI INVOICES SERVISI ILE DB'YE EKLE.
         next: (res: Subscriptions) => {
+          //* create invoices using new subscription
           let date = new Date(res.dateStarted);
           date.setDate(date.getDate() + 28);
           let dateDue = date.toISOString().split('T')[0];
@@ -185,9 +188,7 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
           this.toastr.error('Something went wrong');
         },
         complete: () => {
-          this.customersService.deleteNewCustomerCatalogsStoreState();
-          this.customersService.deleteNewCustomerInfoStoreState();
-          this.customersService.deleteNewCustomerServicesStoreState();
+          this.customersService.deleteNewCustomerStoreStates();
           this.router.navigateByUrl('/homepage/customers/list');
         },
       });
