@@ -1,3 +1,5 @@
+import { CorporateCustomer } from './../../../models/corporateCustomer';
+import { IndividualCustomer } from './../../../models/individualCustomer';
 import { ServicesService } from './../../../services/services.service';
 import { Catalog } from './../../../models/catalog';
 import {
@@ -12,7 +14,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Service } from './../../../models/service';
 import { CustomersService } from './../../../services/customers.service';
-import { CustomerToRegisterModel } from './../../../models/customerToRegisterModel';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/models/customer';
@@ -22,7 +23,6 @@ import { Invoices } from 'src/app/models/invoices';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { Store } from '@ngrx/store';
 import { AppStoreState } from 'src/app/store/app.state';
-import { deleteCatalogs } from 'src/app/store/catalogsToRegister/catalogsToRegister.actions';
 
 @Component({
   selector: 'app-customer-overview-form',
@@ -35,16 +35,16 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   idIcon: IconDefinition = faIdCard;
   companyIcon: IconDefinition = faBuilding;
   taxIcon: IconDefinition = faFileSignature;
-  subscription1!: Subscription;
-  catalogsStore$!: Observable<Catalog[] | null>;
-  customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
-  customer: any;
-  services: Service[] = [];
 
+  customerOverviewSubs: Subscription[] = [];
+  newCustomerInfo$!: Observable<IndividualCustomer | CorporateCustomer | null>;
+  newCustomerCatalogs$!: Observable<Catalog[] | null>;
+  newCustomerServices$!: Observable<Service[] | null>;
+  individualInfo!: IndividualCustomer;
+  corporateInfo!: CorporateCustomer;
+  services: Service[] = [];
   catalogs: Catalog[] = [];
-  customerType: boolean = true;
-  //* customerType TRUE ISE INDIVIDUAL
-  //* FALSE ISE CORPORATE CUSTOMER
+  isIndividual: boolean = true;
 
   constructor(
     private servicesService: ServicesService,
@@ -55,42 +55,53 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppStoreState>
   ) {
-    this.catalogsStore$ = this.store.select(
-      (s) => s.catalogsToRegister.catalogsToRegister
+    this.newCustomerInfo$ = this.store.select((s) => s.newCustomer.info);
+    this.newCustomerServices$ = this.store.select(
+      (s) => s.newCustomer.services
     );
-    this.customerToRegisterModel$ =
-      this.customersService.customerToRegisterModel$;
+    this.newCustomerCatalogs$ = this.store.select(
+      (s) => s.newCustomer.catalogs
+    );
   }
 
   ngOnInit(): void {
+    this.customerOverviewSubs.push(
+      this.newCustomerInfo$.subscribe({
+        next: (res: IndividualCustomer | CorporateCustomer | null) => {
+          if (res) {
+            if ((res as IndividualCustomer).firstName) {
+              this.individualInfo = res as IndividualCustomer;
+              this.isIndividual = true;
+            } else {
+              this.corporateInfo = res as CorporateCustomer;
+              this.isIndividual = false;
+            }
+          }
+        },
+        error: (err) => this.toastr.error(err.message),
+      })
+    );
+
     //* OVERVIEW COMPONENT YUKLENDIGINDE STOREDAKI KAYITLI
     //* MUSTERININ BILGILERINI AL VE TURUNU(CORPORATE-INDIVIDUAL) TESPIT ET.
     //* STORE'DA KAYITLI SERVISLERI AL.
-    this.catalogsStore$.subscribe((res) => {
-      if (res) this.catalogs = res;
-      this.catalogs.map((catalog) => {
-        this.servicesService.getService(catalog.serviceId).subscribe((res) => {
-          this.services.push(res);
-        });
-      });
-    });
 
-    this.subscription1 = this.customerToRegisterModel$.subscribe({
-      next: (res: any) => {
-        if (res) {
-          const { services, ...customer } = res;
-          this.customer = customer;
-
-          this.customer.nationalIdentity
-            ? (this.customerType = true)
-            : (this.customerType = false);
-        }
-      },
-      error: () => {
-        this.toastr.error('Something went wrong');
-      },
-      complete: () => {},
-    });
+    this.customerOverviewSubs.push(
+      this.newCustomerCatalogs$.subscribe({
+        next: (res: Catalog[] | null) => {
+          if (res) this.catalogs = res;
+          this.catalogs.map((catalog) => {
+            this.servicesService.getService(catalog.serviceId).subscribe({
+              next: (res: Service) => {
+                this.services.push(res);
+              },
+              error: (err) => this.toastr.error(err.message),
+            });
+          });
+        },
+        error: (err) => this.toastr.error(err.message),
+      })
+    );
   }
 
   onSaveCustomer() {
@@ -100,51 +111,53 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
     let customer: Customer = {
       customerNumber: 0,
     };
-    this.customerType
-      ? (customer.customerNumber = +this.customer.nationalIdentity)
-      : (customer.customerNumber = +this.customer.taxNumber);
-    this.customersService.addCustomer(customer).subscribe({
-      next: (res: any) => {
-        if (this.customerType) {
-          //* INDIVIDUAL CUSTOMER TURUNDE ISE CALIS VE INDIVIDUAL CUSTOMER'A KAYIT EKLE.
-          const customerToAdd = {
-            customerId: res.id,
-            ...this.customer,
-            nationalIdentity: res.customerNumber,
-          };
-          this.customersService.addIndividualCustomer(customerToAdd).subscribe({
-            next: (res) => {
-              //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
-              this.addServices(res);
-            },
-            error: () => {
-              this.toastr.error('Something went wrong');
-            },
-          });
-        } else {
-          //* CORPORATE CUSTOMER TURUNDE ISE CALIS VE CORPORATE CUSTOMER'A KAYIT EKLE.
-          const customerToAdd = {
-            customerId: res.id,
-            ...this.customer,
-            taxNumber: res.customerNumber,
-          };
-          this.customersService.addCorporateCustomer(customerToAdd).subscribe({
-            next: (res) => {
-              //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
-              this.addServices(res);
-            },
-            error: () => {
-              this.toastr.error('Something went wrong.');
-            },
-          });
-        }
-      },
-      error: () => {
-        this.toastr.error('Something went wrong.');
-      },
-    });
+    this.isIndividual
+      ? (customer.customerNumber = +this.individualInfo.nationalIdentity)
+      : (customer.customerNumber = +this.corporateInfo.taxNumber);
+    this.customerOverviewSubs.push(
+      this.customersService.addCustomer(customer).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          if (this.isIndividual) {
+            //* INDIVIDUAL CUSTOMER TURUNDE ISE CALIS VE INDIVIDUAL CUSTOMER'A KAYIT EKLE.
+            const customerToAdd = {
+              ...this.individualInfo,
+              customerId: res.id,
+              nationalIdentity: res.customerNumber,
+            };
+            this.customersService
+              .addIndividualCustomer(customerToAdd as IndividualCustomer)
+              .subscribe({
+                next: (res: IndividualCustomer) => {
+                  //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
+                  this.addServices(res);
+                },
+                error: (err) => this.toastr.error(err.message),
+              });
+          } else {
+            //* CORPORATE CUSTOMER TURUNDE ISE CALIS VE CORPORATE CUSTOMER'A KAYIT EKLE.
+            const customerToAdd = {
+              ...this.corporateInfo,
+              customerId: res.id,
+              taxNumber: res.customerNumber,
+            };
+            this.customersService
+              .addCorporateCustomer(customerToAdd as CorporateCustomer)
+              .subscribe({
+                next: (res: CorporateCustomer) => {
+                  //* ADD SERVICES FONKSIYONUNA PARAMETRE OLARAK RESPONSE GONDER.
+                  this.addServices(res);
+                },
+                error: (err) => this.toastr.error(err.message),
+              });
+          }
+        },
+        error: (err) => this.toastr.error(err.message),
+      })
+    );
   }
-  addServices(customer: any) {
+
+  addServices(customer: IndividualCustomer | CorporateCustomer) {
     //* MUSTERI ICIN SECILEN SERVISLERI MAP ILE GEZ.
     //* HER SERVIS ICIN SUBSCRIPTION OLUSTUR VE DB'YE EKLE.
     this.catalogs.map((catalog) => {
@@ -157,13 +170,13 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
       this.subscriptionsService.addSubscription(subscription).subscribe({
         //* SUBSCRIPTION EKLENDIKTEN SONRA ILGILI SUBSCRIPTIONA AIT INVOICE OLUSTUR
         //* OLUSAN INVOICE OBJESINI INVOICES SERVISI ILE DB'YE EKLE.
-        next: (response) => {
-          let date = new Date(response.dateStarted);
+        next: (res: Subscriptions) => {
+          let date = new Date(res.dateStarted);
           date.setDate(date.getDate() + 28);
           let dateDue = date.toISOString().split('T')[0];
           let invoice: Invoices = {
-            subscriptionId: response.id,
-            dateCreated: response.dateStarted,
+            subscriptionId: res.id,
+            dateCreated: res.dateStarted,
             dateDue: dateDue,
           };
           this.invoicesService.addInvoice(invoice).subscribe();
@@ -172,9 +185,9 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
           this.toastr.error('Something went wrong');
         },
         complete: () => {
-          this.subscription1.unsubscribe();
-          this.customersService.deleteCustomerToRegisterModelStoreState();
-          this.store.dispatch(deleteCatalogs());
+          this.customersService.deleteNewCustomerCatalogsStoreState();
+          this.customersService.deleteNewCustomerInfoStoreState();
+          this.customersService.deleteNewCustomerServicesStoreState();
           this.router.navigateByUrl('/homepage/customers/list');
         },
       });
@@ -186,6 +199,6 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription1.unsubscribe();
+    this.customerOverviewSubs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

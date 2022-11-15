@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { AppStoreState } from 'src/app/store/app.state';
   styleUrls: ['./customer-catalog-form.component.css'],
 })
 export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
-  subscription!: Subscription;
+  customerCatalogsSubs: Subscription[] = [];
   catalogs: Catalog[] = []; //tüm kataloglar veri tabanından çekilip bu değişkene atanacak
   newCustomerCatalogs$!: Observable<Catalog[] | null>;
   newCustomerServices$!: Observable<Service[] | null>;
@@ -36,13 +36,15 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.newCustomerCatalogs$.subscribe((res: Catalog[] | null) => {
-      if (res) this.selectedCatalogs = res;
-    });
-    this.subscription = this.newCustomerServices$.subscribe(
-      (res: Service[] | null) => {
+    this.customerCatalogsSubs.push(
+      this.newCustomerCatalogs$.subscribe((res: Catalog[] | null) => {
+        if (res) this.selectedCatalogs = res;
+      })
+    );
+    this.customerCatalogsSubs.push(
+      this.newCustomerServices$.subscribe((res: Service[] | null) => {
         if (res) this.selectedServices = res;
-      }
+      })
     );
     this.getCatalogs(this.selectedServices);
   }
@@ -102,6 +104,6 @@ export class CustomerCatalogFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.customerCatalogsSubs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

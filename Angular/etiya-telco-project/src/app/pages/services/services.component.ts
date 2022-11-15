@@ -50,7 +50,9 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit(): void {
     //* SERVISLERI GETIR VE SERVIS EKLEME FORMU OLUSTUR.
-    this.customersService.deleteCustomerToRegisterModelStoreState();
+    this.customersService.deleteNewCustomerCatalogsStoreState();
+    this.customersService.deleteNewCustomerInfoStoreState();
+    this.customersService.deleteNewCustomerServicesStoreState();
     this.getServices();
     this.createAddServiceForm();
   }

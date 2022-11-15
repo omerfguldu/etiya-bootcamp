@@ -8,9 +8,11 @@ import { CustomersService } from 'src/app/services/customers.service';
 })
 export class CustomersComponent implements OnInit {
   plusIcon: IconDefinition = faPlus;
-  constructor(private customerService: CustomersService) {}
+  constructor(private customersService: CustomersService) {}
 
   ngOnInit(): void {
-    this.customerService.deleteCustomerToRegisterModelStoreState();
+    this.customersService.deleteNewCustomerCatalogsStoreState();
+    this.customersService.deleteNewCustomerInfoStoreState();
+    this.customersService.deleteNewCustomerServicesStoreState();
   }
 }

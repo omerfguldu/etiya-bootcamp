@@ -42,7 +42,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     //* LOGIN FORMUNU OLUSTURMA FONKSIYONUNU CAGIR VE LOADING GOZLEMLE.
     this.createLoginForm();
     this.subscribeToLoading();
-    this.customersService.deleteCustomerToRegisterModelStoreState();
+    this.customersService.deleteNewCustomerCatalogsStoreState();
+    this.customersService.deleteNewCustomerInfoStoreState();
+    this.customersService.deleteNewCustomerServicesStoreState();
   }
 
   ngOnDestroy(): void {

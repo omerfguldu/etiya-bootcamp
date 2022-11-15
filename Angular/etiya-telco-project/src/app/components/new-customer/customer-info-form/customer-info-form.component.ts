@@ -16,7 +16,7 @@ import { AppStoreState } from 'src/app/store/app.state';
 export class CustomerInfoFormComponent implements OnInit, OnDestroy {
   //* BASLANGICTA CUSTOMER TYPE INDIVIDUAL OLARAK BELIRLE.
   customerType: string = 'Individual Customer';
-  customerInfoSub!: Subscription;
+  customerInfoSubs: Subscription[] = [];
   customerValues!: IndividualCustomer | CorporateCustomer | null;
   customerInfoForm!: FormGroup;
   newCustomerInfo$: Observable<IndividualCustomer | CorporateCustomer | null>;
@@ -54,12 +54,14 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
   createCustomerInfoForm() {
     //* CUSTOMER TYPE'A GORE FORM BUILDER ILE FORM OLUSTUR.
     //* EGER STORE'DA KAYITLI VERI VARSA ILK OLARAK O DEGERLERI FORMDA GOSTER.
-    this.customerInfoSub = this.newCustomerInfo$.subscribe({
-      next: (res: IndividualCustomer | CorporateCustomer | null) => {
-        this.customerValues = res;
-      },
-      complete: () => {},
-    });
+    this.customerInfoSubs.push(
+      this.newCustomerInfo$.subscribe({
+        next: (res: IndividualCustomer | CorporateCustomer | null) => {
+          this.customerValues = res;
+        },
+        complete: () => {},
+      })
+    );
     if (this.customerValues) {
       this.customerType = (this.customerValues as IndividualCustomer).firstName
         ? 'Individual Customer'
@@ -102,7 +104,7 @@ export class CustomerInfoFormComponent implements OnInit, OnDestroy {
     this.customerInfoForm.reset();
   }
 
-  ngOnDestroy() {
-    this.customerInfoSub.unsubscribe();
+  ngOnDestroy(): void {
+    this.customerInfoSubs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

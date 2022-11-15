@@ -1,4 +1,4 @@
-<div *ngIf="customer.firstName">
+<div *ngIf="isIndividual">
   <div class="list-title individual-title">
     <strong>First Name</strong>
     <strong>Last Name</strong>
@@ -9,25 +9,25 @@
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="nameIcon"></fa-icon>
       <p>
-        {{ customer.firstName }}
+        {{ individualInfo.firstName }}
       </p>
     </div>
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="nameIcon"></fa-icon>
-      <p>{{ customer.lastName }}</p>
+      <p>{{ individualInfo.lastName }}</p>
     </div>
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="dateIcon"></fa-icon>
-      <p>{{ customer.dateOfBirth }}</p>
+      <p>{{ individualInfo.dateOfBirth }}</p>
     </div>
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="idIcon"></fa-icon>
-      <p>{{ customer.nationalIdentity }}</p>
+      <p>{{ individualInfo.nationalIdentity }}</p>
     </div>
   </div>
 </div>
 
-<div class="list-item-container" *ngIf="!customer.firstName">
+<div class="list-item-container" *ngIf="!isIndividual">
   <div class="list-title corporate-title">
     <strong>Company Name</strong>
     <strong>Tax Number</strong>
@@ -35,11 +35,11 @@
   <div class="list-item corporate-item">
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="companyIcon"></fa-icon>
-      <p>{{ customer.companyName }}</p>
+      <p>{{ corporateInfo.companyName }}</p>
     </div>
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="taxIcon"></fa-icon>
-      <p>{{ customer.taxNumber }}</p>
+      <p>{{ corporateInfo.taxNumber }}</p>
     </div>
   </div>
 </div>

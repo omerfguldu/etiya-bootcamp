@@ -8,11 +8,6 @@ import {
   setNewCustomerInfo,
   setNewCustomerServices,
 } from './../store/newCustomer/newCustomer.actions';
-import {
-  deleteCustomerToRegisterModel,
-  setCustomerToRegisterModel,
-} from './../store/customerToRegister/customerToRegister.actions';
-import { CustomerToRegisterModel } from 'src/app/models/customerToRegisterModel';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -30,16 +25,12 @@ export class CustomersService {
   private customersUrl = `${environment.apiUrl}/customers`;
   private individualUrl = `${environment.apiUrl}/individualCustomers`;
   private corporateUrl = `${environment.apiUrl}/corporateCustomers`;
-  customerToRegisterModel$: Observable<CustomerToRegisterModel | null>;
   newCustomer$: Observable<NewCustomerStoreState | null>;
 
   constructor(
     private httpClient: HttpClient,
     private store: Store<AppStoreState>
   ) {
-    this.customerToRegisterModel$ = this.store.select(
-      (state) => state.customerToRegister.customerToRegisterModel
-    );
     this.newCustomer$ = this.store.select((state) => state.newCustomer);
   }
 
@@ -71,19 +62,6 @@ export class CustomersService {
   }
 
   //* NEW CUSTOMER STORE CODES ENDS
-
-  //* CUSTOMER EKLEME FORMLARINDAN GELEN VERIYI DISPATCH ILE STORE'A EKLE.
-  setCustomerToRegisterModelStoreState(
-    customerToRegisterModel: CustomerToRegisterModel
-  ) {
-    this.store.dispatch(
-      setCustomerToRegisterModel({ customerToRegisterModel })
-    );
-  }
-
-  deleteCustomerToRegisterModelStoreState() {
-    this.store.dispatch(deleteCustomerToRegisterModel());
-  }
 
   //* /customers ADRESINE KAYIT OLUSTUR.
   addCustomer(customer: any) {

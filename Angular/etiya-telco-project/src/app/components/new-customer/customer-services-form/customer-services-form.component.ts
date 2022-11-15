@@ -1,6 +1,4 @@
 import { ToastrService } from 'ngx-toastr';
-import { CorporateCustomer } from './../../../models/corporateCustomer';
-import { IndividualCustomer } from './../../../models/individualCustomer';
 import { Catalog } from 'src/app/models/catalog';
 import { AppStoreState } from './../../../store/app.state';
 import { Store } from '@ngrx/store';
@@ -64,22 +62,21 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
 
   getServices() {
     //* SERVISLERI CAGIR, CEVAP GELINCE FILLSERVICESTATUS CAGIR.
-    this.customerServicesSubs.push(
-      this.servicesService.getServices().subscribe({
-        next: (response: Service[]) => {
-          this.services = response;
-          this.fillServiceStatus();
-          if (this.selectedServices.length > 0) {
-            this.selectedServices.forEach((service) => {
-              this.servicesSelectedStatus[service.id] = true;
-            });
-          }
-        },
-        error: (err) => {
-          this.toastr.error(err.message);
-        },
-      })
-    );
+
+    this.servicesService.getServices().subscribe({
+      next: (response: Service[]) => {
+        this.services = response;
+        this.fillServiceStatus();
+        if (this.selectedServices.length > 0) {
+          this.selectedServices.forEach((service) => {
+            this.servicesSelectedStatus[service.id] = true;
+          });
+        }
+      },
+      error: (err) => {
+        this.toastr.error(err.message);
+      },
+    });
   }
 
   onServiceClick(service: Service, index: number, event: Event) {
@@ -122,6 +119,7 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+
     this.customersService.setNewCustomerCatalogsStoreState(this.newCatalogs);
     this.router.navigateByUrl('/homepage/newcustomer/catalogs');
   }
@@ -139,8 +137,6 @@ export class CustomerServicesFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.customerServicesSubs.map((sub: Subscription) => {
-      sub.unsubscribe();
-    });
+    this.customerServicesSubs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }
