@@ -100,6 +100,8 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
               error: (err) => this.toastr.error(err.message),
             });
           });
+          console.log(this.services);
+          console.log(this.catalogs);
         },
         error: (err) => this.toastr.error(err.message),
       })
@@ -109,13 +111,8 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   onSaveCustomer() {
     //* create a new customer
     let customer: Customer = {
-      customerNumber: 0,
+      customerNumber: this.customersService.createNewCustomerNumber(), //* unique customer number creator
     };
-    //* if customer is individual give its nationalIdentity as its customerNumber
-    //* if customer is corporate give its taxNumber as its customerNumber
-    this.isIndividual
-      ? (customer.customerNumber = +this.individualInfo.nationalIdentity)
-      : (customer.customerNumber = +this.corporateInfo.taxNumber);
     this.customerOverviewSubs.push(
       this.customersService.addCustomer(customer).subscribe({
         next: (res: Customer) => {
@@ -161,6 +158,12 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
   }
 
   addServices(customer: IndividualCustomer | CorporateCustomer) {
+    //* if there is no selected catalog then we dont need to create subscriptions
+    if (this.catalogs.length === 0) {
+      this.customersService.deleteNewCustomerStoreStates();
+      this.router.navigateByUrl('/homepage/customers/list');
+      return;
+    }
     //* map the catalogs array
     this.catalogs.map((catalog) => {
       //* create new subscription object

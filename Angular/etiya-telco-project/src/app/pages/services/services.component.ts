@@ -84,6 +84,7 @@ export class ServicesComponent implements OnInit {
             new FormGroup({
               id: new FormControl(catalog.id),
               name: new FormControl(catalog.name, Validators.required),
+              duration: new FormControl(catalog.duration, Validators.required),
               price: new FormControl(catalog.price, [Validators.required]),
             })
           );
@@ -127,6 +128,7 @@ export class ServicesComponent implements OnInit {
     (<FormArray>this.addServiceForm.get('catalogs')).push(
       new FormGroup({
         name: new FormControl(null, Validators.required),
+        duration: new FormControl(null, Validators.required),
         price: new FormControl(null, [Validators.required]),
       })
     );

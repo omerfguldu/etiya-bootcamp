@@ -104,4 +104,23 @@ export class CustomersService {
       `${this.corporateUrl}?customerId=${id}`
     );
   }
+
+  createNewCustomerNumber(): number {
+    const customerNumbers: number[] = [];
+    this.httpClient
+      .get<Customer[]>(this.customersUrl)
+      .subscribe((res: Customer[]) => {
+        res.map((customer) => customerNumbers.push(customer.customerNumber));
+      });
+    let newCustomerNumber: string = '';
+    for (let i = 0; i < 8; i++) {
+      i === 0
+        ? (newCustomerNumber += Math.floor(Math.random() * 9) + 1)
+        : (newCustomerNumber += Math.floor(Math.random() * 10));
+    }
+    if (customerNumbers.some((number) => number === +newCustomerNumber)) {
+      this.createNewCustomerNumber();
+    }
+    return +newCustomerNumber;
+  }
 }

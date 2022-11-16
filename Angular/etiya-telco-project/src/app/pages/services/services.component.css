@@ -54,6 +54,20 @@
   margin-bottom: 0;
 }
 
+.catalog-container {
+  display: grid;
+  grid-template-columns: 6fr 3fr 3fr 1fr;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.catalogs-header {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 800px) {
   .service-buttons {
     position: absolute;
@@ -70,17 +84,4 @@
   .list-item {
     margin-bottom: 0;
   }
-}
-.catalog-container {
-  display: grid;
-  grid-template-columns: 6fr 3fr 1fr;
-  align-items: flex-end;
-  gap: 20px;
-}
-
-.catalogs-header {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
