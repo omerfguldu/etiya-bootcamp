@@ -1,6 +1,6 @@
 <div class="corporate-customer">
   <div class="list-title corporate-title">
-    <strong>ID</strong>
+    <strong>Number</strong>
     <strong>Company Name</strong>
     <strong>Tax Number</strong>
   </div>
@@ -8,7 +8,7 @@
     class="list-item corporate-item"
     *ngFor="let detail of corporateCustomerDetails"
   >
-    <strong class="responsive-id"> {{ detail.customerId }} </strong>
+    <strong class="responsive-id"> {{ customerNumber }} </strong>
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="companyIcon"></fa-icon>
       <p>

@@ -5,7 +5,8 @@
 
 .catalogs-title,
 .catalog-item {
-  grid-template-columns: 1fr repeat(3, 2fr);
+  grid-template-columns: 1fr 3fr repeat(4, 2fr);
+  gap: 2rem;
 }
 
 .subscriptions-list-title,

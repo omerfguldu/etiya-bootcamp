@@ -14,4 +14,10 @@ export class InvoicesService {
   addInvoice(invoice: Invoices) {
     return this.httpClient.post<Invoices>(`${this.controllerUrl}`, invoice);
   }
+
+  getInvoice(id: number) {
+    return this.httpClient.get<Invoices[]>(
+      `${this.controllerUrl}?subscriptionId=${id}`
+    );
+  }
 }

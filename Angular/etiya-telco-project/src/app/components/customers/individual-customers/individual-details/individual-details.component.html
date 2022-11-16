@@ -1,6 +1,6 @@
 <div class="individual-customer">
   <div class="list-title individual-title">
-    <strong>ID</strong>
+    <strong>Number</strong>
     <strong>First Name</strong>
     <strong>Last Name</strong>
     <strong>Date of Birth</strong>
@@ -10,7 +10,7 @@
     class="list-item individual-item"
     *ngFor="let detail of individualCustomerDetails"
   >
-    <strong class="responsive-id"> {{ detail.customerId }} </strong>
+    <strong class="responsive-id"> {{ customerNumber }} </strong>
     <div class="list-item-content">
       <fa-icon class="list-item-icon" [icon]="nameIcon"></fa-icon>
       <p>

@@ -178,8 +178,10 @@ export class CustomerOverviewFormComponent implements OnInit, OnDestroy {
         next: (res: Subscriptions) => {
           //* create invoices using new subscription
           let date = new Date(res.dateStarted);
-          date.setDate(date.getDate() + 28);
+          date.setMonth(date.getMonth() + catalog.duration);
+          console.log(date);
           let dateDue = date.toISOString().split('T')[0];
+          console.log(dateDue);
           let invoice: Invoices = {
             subscriptionId: res.id,
             dateCreated: res.dateStarted,

@@ -1,3 +1,4 @@
+import { InvoicesService } from 'src/app/services/invoices.service';
 import { Catalog } from './../../../models/catalog';
 import { CatalogsService } from 'src/app/services/catalogs.service';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +8,7 @@ import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { ServicesService } from 'src/app/services/services.service';
 import { SubscriptionsResponse } from 'src/app/models/subscriptionsResponse';
 import { Service } from 'src/app/models/service';
+import { Invoices } from 'src/app/models/invoices';
 
 @Component({
   selector: 'app-customer-details',
@@ -23,7 +25,8 @@ export class CustomerDetailsComponent implements OnInit {
 
     private subscriptionsService: SubscriptionsService,
     private servicesService: ServicesService,
-    private catalogsService: CatalogsService
+    private catalogsService: CatalogsService,
+    private invoicesService: InvoicesService
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +43,6 @@ export class CustomerDetailsComponent implements OnInit {
       .getSubscriptionsWithCustomerId(id)
       .subscribe((res: SubscriptionsResponse[]) => {
         this.customerSubscriptions = res;
-
         //* map subscriptions array
         this.customerSubscriptions.map((customerSubscription) => {
           //* for each subscription, get its relative services and catalogs
@@ -53,8 +55,18 @@ export class CustomerDetailsComponent implements OnInit {
             .getCatalog(customerSubscription.catalogId)
             .subscribe((res: Catalog) => {
               customerSubscription.catalogName = res.name;
+              customerSubscription.catalogDuration = res.duration;
               customerSubscription.catalogPrice = res.price;
             });
+          if (customerSubscription.id) {
+            this.invoicesService
+              .getInvoice(customerSubscription.id)
+              .subscribe((res: Invoices[]) => {
+                res.map(
+                  (invoice) => (customerSubscription.dateDue = invoice.dateDue)
+                );
+              });
+          }
         });
       });
   }

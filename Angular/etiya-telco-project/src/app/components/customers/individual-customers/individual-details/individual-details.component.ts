@@ -1,3 +1,4 @@
+import { Customer } from 'src/app/models/customer';
 import { Component, Input, OnInit } from '@angular/core';
 import { IndividualCustomer } from 'src/app/models/individualCustomer';
 import { CustomersService } from 'src/app/services/customers.service';
@@ -19,10 +20,16 @@ export class IndividualDetailsComponent implements OnInit {
   idIcon: IconDefinition = faIdCard;
   @Input() selectedUserID!: number;
   individualCustomerDetails!: IndividualCustomer[];
+  customerNumber!: number;
   constructor(private customersService: CustomersService) {}
 
   ngOnInit(): void {
     this.getIndividualCustomer(this.selectedUserID);
+    this.customersService
+      .getCustomer(this.selectedUserID)
+      .subscribe((res: Customer) => {
+        this.customerNumber = res.customerNumber;
+      });
   }
 
   getIndividualCustomer(id: number) {

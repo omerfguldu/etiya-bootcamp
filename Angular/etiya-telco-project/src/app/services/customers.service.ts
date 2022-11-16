@@ -74,6 +74,10 @@ export class CustomersService {
     return this.httpClient.post<Customer>(this.customersUrl, customer);
   }
 
+  getCustomer(id: number) {
+    return this.httpClient.get<Customer>(`${this.customersUrl}/${id}`);
+  }
+
   addIndividualCustomer(customer: IndividualCustomer) {
     return this.httpClient.post<IndividualCustomer>(
       this.individualUrl,

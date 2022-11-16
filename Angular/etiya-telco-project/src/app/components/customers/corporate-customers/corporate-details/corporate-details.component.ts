@@ -1,3 +1,4 @@
+import { Customer } from 'src/app/models/customer';
 import { Component, Input, OnInit } from '@angular/core';
 import {
   faBuilding,
@@ -17,11 +18,17 @@ export class CorporateDetailsComponent implements OnInit {
   taxIcon: IconDefinition = faFileSignature;
   @Input() selectedUserID!: number;
   corporateCustomerDetails!: CorporateCustomer[];
+  customerNumber!: number;
 
   constructor(private customersService: CustomersService) {}
 
   ngOnInit(): void {
     this.getCorporateCustomer(this.selectedUserID);
+    this.customersService
+      .getCustomer(this.selectedUserID)
+      .subscribe((res: Customer) => {
+        this.customerNumber = res.customerNumber;
+      });
   }
 
   getCorporateCustomer(id: number) {

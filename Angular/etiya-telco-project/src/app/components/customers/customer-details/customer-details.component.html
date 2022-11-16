@@ -34,8 +34,10 @@
 <div class="subscriptions-list-title catalogs-title">
   <strong>Service ID</strong>
   <strong>Catalog Name</strong>
+  <strong>Catalog Duration</strong>
   <strong>Catalog Price</strong>
   <strong>Date Started</strong>
+  <strong>Date Due</strong>
 </div>
 <div *ngFor="let subscription of customerSubscriptions">
   <div
@@ -44,7 +46,9 @@
   >
     <strong> {{ subscription.serviceId }} </strong>
     <p>{{ subscription.catalogName }}</p>
+    <p>{{ subscription.catalogDuration }}</p>
     <p>{{ subscription.catalogPrice }}</p>
     <p>{{ subscription.dateStarted }}</p>
+    <p>{{ subscription.dateDue }}</p>
   </div>
 </div>
